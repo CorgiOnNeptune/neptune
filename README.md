@@ -1,6 +1,6 @@
 # LHL Node Skeleton
 
-Weehaw
+
 
 ## Project Setup
 
