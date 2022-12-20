@@ -1,6 +1,10 @@
 # Git Workflow w/ PRs
 
-## Make sure your master branch is up to date
+## NEVER CODE ON MAIN/MASTER
+
+---
+
+## Update Master Branch
 
 1. Open your forked repo
 2. Sync master branch of your forked repo to the original repo
@@ -24,7 +28,7 @@ Your branch is up to date with 'origin/master'.
 
 &nbsp;
 
-## Make a PR (Pull Request)
+## Make a new branch and Pull Request
 
 1. Complete [^above^](#make-sure-your-main-branch-is-up-to-date) to make sure your master branch is up to date.
 2. Create a new branch from your up to date master.
