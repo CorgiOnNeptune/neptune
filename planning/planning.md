@@ -44,6 +44,7 @@ app.get("/login/:id", (req, res) => {
 ## Project Management
 
 - [Trello](https://trello.com/)
+- GitHub Projects
 
 ## API Tools
 
@@ -55,3 +56,8 @@ app.get("/login/:id", (req, res) => {
 - [Adobe Kuller](https://color.adobe.com/create/color-wheel)
 - [Google Fonts](https://fonts.google.com)
 - [Font Awesome](https://fontawesome.com/)
+
+## Other
+
+- [Place Kitten](http://placekitten.com/)
+- [Ipsums](http://meettheipsums.com/)
