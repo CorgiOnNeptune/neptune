@@ -8,6 +8,9 @@
 
 ## User Scenarios
 
-- A user scenario is a syntactic alternative to user stories
+- A user scenario is a syntactic alternative to user stories.
 - They have the form: Given **\_\_**, when **\_\_**, then **\_\_**.
 - eg. Given that I am logged in, when I click favourite on a post, then it is added to my favourites.
+
+As a user, I want to create a task, because I want a reminder to do something later.
+Given that I have a task, when I click the button, it should be marked as complete

@@ -3,7 +3,7 @@
 - [User Stories](user-stories.md)
 - [RESTful Routes](routes.md)
 - [ERD]()
-- [Wireframes]()
+- [Wireframes](wireframe.jpg)
 - [Page Flow/Mockup]()
 - [Tools and Resources](#tools--resources)
 - [Pull Request Workflow](project-workflow.md)
@@ -12,11 +12,14 @@
 
 ---
 
-&nbsp;
+## Features
 
-### SPA or MPA?
-
-&nbsp;
+- Add/edit tasks
+- Categorize by shopping, watch, red, eat
+- Filter by category or by all
+- Mark tasks as complete
+- Due dates
+- More info via the APIs
 
 ### User Login
 
