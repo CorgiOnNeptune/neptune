@@ -109,7 +109,7 @@ INSERT INTO products(
   )
 VALUES (
     4,
-    "Cat food",
+    "Purina ® Friskies ® Ocean Delights Cat Food Variety Pack 24 - 156g Cans",
     "https://placekitten.com/200/300",
     "https://www.amazon.ca/dp/B079NHK95Y",
     4.6,
