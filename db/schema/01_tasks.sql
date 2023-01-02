@@ -3,15 +3,16 @@ DROP TABLE IF EXISTS restaurants CASCADE;
 DROP TABLE IF EXISTS films CASCADE;
 DROP TABLE IF EXISTS books CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
-
+--
 -- User schema commented out as login system not planned for implementation
+-- user_id INT REFERENCES users(id) ON DELETE CASCADE,
+--
 CREATE TABLE tasks(
   id SERIAL PRIMARY KEY NOT NULL,
-  -- user_id INT REFERENCES users(id) ON DELETE CASCADE,
   category VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL,
   due_date DATE,
-  complete BOOL DEFAULT FALSE NOT NULL,
+  complete BOOL DEFAULT FALSE NOT NULL
 );
 
 CREATE TABLE restaurants(
@@ -61,5 +62,5 @@ CREATE TABLE products(
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
   rating SMALLINT DEFAULT 0,
-  price VARCHAR(255) DEFAULT "$0.00"
+  price VARCHAR(255)
 );
