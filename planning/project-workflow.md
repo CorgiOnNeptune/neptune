@@ -30,7 +30,7 @@ Your branch is up to date with 'origin/master'.
 
 ## Make a new branch and Pull Request
 
-1. Complete [^above^](#make-sure-your-main-branch-is-up-to-date) to make sure your master branch is up to date.
+1. Complete [^above^](#update-master-branch) to make sure your master branch is up to date.
 2. Create a new branch from your up to date master.
 
 ```bash
