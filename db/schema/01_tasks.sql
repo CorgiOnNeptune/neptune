@@ -21,12 +21,10 @@ CREATE TABLE restaurants(
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
   rating SMALLINT DEFAULT 0,
-  summary TEXT,
   phone_number VARCHAR(30),
-  address VARCHAR(255),
-  is_closed BOOL DEFAULT FALSE,
-  price SMALLINT,
-  hours VARCHAR(255) []
+  address VARCHAR(255) [],
+  cuisine_type VARCHAR(255),
+  is_closed BOOL DEFAULT FALSE
 );
 
 -- Films includes both movies and TV shows
@@ -46,12 +44,12 @@ CREATE TABLE books(
   id SERIAL PRIMARY KEY NOT NULL,
   task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
+  author VARCHAR(255),
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
   rating SMALLINT DEFAULT 0,
   summary TEXT,
-  genres VARCHAR(255) [],
-  author VARCHAR(255)
+  genres VARCHAR(255) []
 );
 
 CREATE TABLE products(
@@ -61,24 +59,5 @@ CREATE TABLE products(
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
   rating SMALLINT DEFAULT 0,
-  price SMALLINT DEFAULT 0
+  price VARCHAR(255) DEFAULT "$0.00"
 );
-
-
-
--- CREATE TABLE categories(
---   id SERIAL PRIMARY KEY NOT NULL,
---   buy BOOL NOT NULL DEFAULT FALSE,
---   watch BOOL NOT NULL DEFAULT FALSE,
---   buy BOOL NOT NULL DEFAULT FALSE,
---   buy BOOL NOT NULL DEFAULT FALSE,
--- );
--- CREATE TABLE buy(
---   id SERIAL PRIMARY KEY NOT NULL,
---   task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
---   title VARCHAR(255) NOT NULL,
---   details_url VARCHAR(255) NOT NULL,
---   price INT DEFAULT 0,
---   rating SMALLINT DEFAULT 0,
---   image_url VARCHAR(255),
--- );
