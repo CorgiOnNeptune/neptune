@@ -54,6 +54,7 @@ VALUES (
 INSERT INTO films(
     task_id,
     title,
+    release_date,
     cover_photo_url,
     more_info_url,
     rating,
@@ -64,6 +65,7 @@ INSERT INTO films(
 VALUES (
     2,
     "The Shining",
+    "1980-05-23",
     "https://placekitten.com/200/300",
     "https://www.themoviedb.org/movie/694-the-shining?language=en-CA",
     8.2,
@@ -79,6 +81,7 @@ INSERT INTO books(
     task_id,
     title,
     author,
+    release_date,
     cover_photo_url,
     more_info_url,
     rating,
@@ -89,10 +92,11 @@ VALUES (
     3,
     "The Catcher in the Rye",
     "Jerome David Salinger",
+    "1951-07-16",
     "https://placekitten.com/200/300",
     "https://books.google.ca/books/about/The_Catcher_in_the_Rye.html?id=j--EMdEfmbkC&",
     4,
-    "Story of Holden Caulfield WITH his idiosyncrasies, penetrating insight, confusion, sensitivity AND negativism.The hero - narrator of 'The Catcher in the Rye' IS an ancient child of sixteen, a native New Yorker named Holden Caulfield.Through circumstances that tend TO preclude adult, secondhand description, he leaves his prep school IN Pennsylvania AND goes underground IN New York City FOR three days.The boy himself IS at once too simple AND too complex FOR us TO make any final COMMENT about him OR his story",
+    "Story of Holden Caulfield WITH his idiosyncrasies, penetrating insight, confusion, sensitivity AND negativism. The hero - narrator of 'The Catcher in the Rye' IS an ancient child of sixteen, a native New Yorker named Holden Caulfield.Through circumstances that tend TO preclude adult, secondhand description, he leaves his prep school IN Pennsylvania AND goes underground IN New York City FOR three days.The boy himself IS at once too simple AND too complex FOR us TO make any final COMMENT about him OR his story",
     [
       "Fiction",
       "Classics"
