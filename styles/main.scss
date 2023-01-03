@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 $dark-theme: #1E2B32;
+$main-font: 'Lato';
 
 main {
   display: flex;
@@ -9,8 +10,9 @@ main {
 #menu {
   width: 20%;
   background-color: $dark-theme;
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
   height: 100vh;
-  font-family: 'Lato', sans-serif;
+  font-family: $main-font, sans-serif;
   color: #FFFFFF;
 
   .header {
@@ -63,11 +65,27 @@ main {
 
   .header {
     height: 100px;
+    color: $dark-theme;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    p {
+      font-size: 2rem;
+      font-family: $main-font, sans-serif;
+      position: absolute;
+      left: 5%;
+    }
+
   }
 
   #to-do-entries {
     width: 90%;
     margin: 0 auto;
+
+    ul {
+      padding: 0;
+    }
 
     li {
       margin-top: 4px;
