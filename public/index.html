@@ -5,10 +5,51 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart To-Do List</title>
+  <!-- font awesome library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./styles/layout.css">
+  <link rel="stylesheet" href="./styles/main.css">
   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
-<!-- Bootstrap JS -->
+<main>
+  <div id="menu">
+    <div class="header">
+      <h5>
+        Smart To-Do List
+      </h5>
+    </div>
+    <div class="body">
+      <ul>
+        <li><a href=""><i class="fa-solid fa-video"></i>Watch</a></li>
+        <li><a href=""><i class="fa-solid fa-book-open"></i>Read</a></li>
+        <li><a href=""><i class="fa-solid fa-utensils"></i> Eat</a></li>
+        <li><a href=""><i class="fa-solid fa-cart-shopping"></i>Buy</a></li>
+        <li><a href=""><i class="fa-solid fa-list-check"></i>Others</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="main-board">
+    <div class="header"></div>
+    <div id="to-do-entries">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox">
+          <label class="form-check-label" for="firstCheckbox">First checkwefefefewfwefefefwefwefwefeox</label>
+        </li>
+        <li class="list-group-item">
+          <input class="form-check-input me-1" type="checkbox" value="" id="secondCheckbox">
+          <label class="form-check-label" for="secondCheckbox">Second checkbox</label>
+        </li>
+        <li class="list-group-item">
+          <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckbox">
+          <label class="form-check-label" for="thirdCheckbox">Third checkbox</label>
+        </li>
+      </ul>
+    </div>
+  </div>
+</main>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>
