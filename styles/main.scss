@@ -1,10 +1,52 @@
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+@import url(https://fonts.googleapis.com/css?family=Lato);
 
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+#menu {
+  width: 20%;
+  background-color: #1E2B32;
+  height: 100vh;
+  font-family: 'Lato', sans-serif;
+  color: #FFFFFF;
+
+  .header {
+    background-color: #2A3942;
+    padding: 5px;
+    h5 {
+      margin-left: 1rem;
+    }
+  }
+
+  li {
+    font-size: 18px;
+    line-height: 3rem;
+
+    i {
+      margin-right: 1rem;
+    }
+
+    a {
+      text-decoration: none;
+      display: block;
+      color: inherit;
+      position: relative;
+
+      &:hover {
+        transition: 1s all;
+        color: #2faafc;
+        cursor: pointer;
+      }
+    }
+  }
+
+}
+
+#main-board {
+  width: 80%;
+  height: 100vh;
   background: rgb(163, 208, 219);
   background: linear-gradient(
     227deg,
@@ -15,4 +57,12 @@ body {
     rgba(163, 208, 219, 1) 74%,
     rgba(163, 208, 219, 1) 100%
   );
+  .header {
+    height: 100px;
+  }
+}
+
+#to-do-entries {
+  width: 90%;
+  margin: 0 auto;
 }
