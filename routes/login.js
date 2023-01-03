@@ -5,9 +5,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/:id', (req, res) => {
   // Set to 1 for simple login and functionality testing
-  req.session.user_id = 1;
+  req.session.user_id = req.params.id;
 
   res.redirect('/');
 });
