@@ -1,5 +1,7 @@
 /*
- * All routes for logout are defined here
+ * All routes for logout are defined here.
+ * This file is loaded in server.js into /logout,
+ * so these routes are mounted onto /logout.
  */
 
 const express = require('express');

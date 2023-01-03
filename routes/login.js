@@ -1,5 +1,7 @@
 /*
- * All routes for login are defined here
+ * All routes for login are defined here.
+ * This file is loaded in server.js into /login,
+ * so these routes are mounted onto /login.
  */
 
 const express = require('express');
