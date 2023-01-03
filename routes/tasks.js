@@ -9,8 +9,18 @@ const router = express.Router();
 const taskQueries = require('../db/queries/tasks');
 
 router.get('/:filter/:completed', (req, res) => {
+  const queryParams = {user_id = req.session.user_id}
+
+  if (req.params.filter) {
+    queryParams.filter = req.params.filter;
+  }
+
+  if (req.params.completed === 'completed') {
+    queryParams.completed = true;
+  }
+
   taskQueries
-    .getAllTasks(req.session.user_id, req.params.filter, req.params.completed)
+    .getAllTasks(queryParams)
     .then((tasks) => {
       res.json({ tasks });
     })
