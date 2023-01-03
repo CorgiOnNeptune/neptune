@@ -50,7 +50,6 @@ CREATE TABLE books(
   release_date DATE,
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
-  rating SMALLINT DEFAULT 0,
   summary TEXT,
   genres VARCHAR(255) []
 );

@@ -94,7 +94,6 @@ INSERT INTO books(
     release_date,
     cover_photo_url,
     more_info_url,
-    rating,
     summary,
     genres
   )
@@ -105,7 +104,6 @@ VALUES (
     '1951-07-16',
     'https://placekitten.com/200/300',
     'https://books.google.ca/books/about/The_Catcher_in_the_Rye.html?id=j--EMdEfmbkC&',
-    4,
     'description',
     ARRAY [
       'Fiction',
