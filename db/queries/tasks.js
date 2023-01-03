@@ -3,13 +3,11 @@ const checkValidCategory = require('../db-helpers');
 
 /**
  * Get all tasks for user.
- * @param {string} user_id The id of the user.
- * @param {string} category Filter tasks in this category, defaults to 'all'.
- * Other valid entries include 'restaraunts', 'films', 'books', 'products', 'others'
- * @param {boolean} completed Filter tasks by completed, defaults to false.
+ * @param {object} queryParams Takes in a user_id {string}, category filter {string} defaulted to 'all', and completed filter {boolean} defaulted to false.
+ * Valid categories include 'restaraunts', 'films', 'books', 'products', 'others', 'all'
  * @return {Promise<[{}]>} A promise to the tasks.
  */
-const getAllTasks = (user_id, category = 'all', completed = false) => {
+const getAllTasks = ({ user_id, category: 'all', completed: false }) => {
   // Default back to 'all' if given invalid category input
   checkValidCategory(category);
 
