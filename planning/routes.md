@@ -12,14 +12,14 @@
 |     DELETE      |    /tasks:id    |           Deletes task            |
 
 &nbsp;
-Get following views via queries:
+Get following views via database queries:
 
-- GET /tasks/eat
-- GET /tasks/watch
-- GET /tasks/read
-- GET /tasks/buy
-- GET /tasks/other
-- GET /tasks/completed
+- GET /api/restaurants
+- GET /api/films
+- GET /api/books
+- GET /api/products
+- GET /api/other
+- GET /api/completed
 
 &nbsp;
 
