@@ -5,14 +5,10 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/login/:id', (req, res) => {
-  req.session.user_id = req.params.id;
+router.get('/', (req, res) => {
+  // Set to 1 for simple login and functionality testing
+  req.session.user_id = 1;
 
-  res.redirect('/');
-});
-
-router.get('/logout', (req, res) => {
-  req.session = null;
   res.redirect('/');
 });
 
