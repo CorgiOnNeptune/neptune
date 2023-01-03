@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+$bg-color: #bec6a9;
+$theme-color: #f2f1f0;
+$main-font: 'Lato';
+$font-color: #0B4141;
+$secondary-font-color: #051622;
+
+#main-board {
+  width: 80%;
+  height: 100vh;
+  background-image: linear-gradient(to bottom right, $font-color, $bg-color);
+  .header {
+    height: 100px;
+    color: $secondary-font-color;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    p {
+      font-size: 2rem;
+      font-family: $main-font, sans-serif;
+      position: absolute;
+      left: 5%;
+      color: $theme-color;
+    }
+
+  }
+
+  #to-do-entries {
+    width: 90%;
+    margin: 0 auto;
+
+    ul {
+      padding: 0;
+    }
+
+    .new-task {
+      text-align: center;
+    }
+
+    li {
+      margin-top: 2em;
+      border-radius: 10px 10px;
+      line-height: 3rem;
+      background-color: $theme-color;
+      color: $font-color;
+      padding: 1em;
+      position: relative;
+
+      .fa-circle-plus {
+        font-size: 3em;
+
+        &:hover {
+          color: #97b251;
+          cursor: pointer;
+        }
+      };
+
+      &:hover {
+        box-shadow: 10px 10px $secondary-font-color;
+      }
+
+      button {
+        border: none;
+        background-color: transparent;
+        color: $font-color;
+        position: absolute;
+        bottom: 0.5em;;
+        right: 50%;
+        line-height: 1em;
+      }
+    }
+    .details {
+      background-color: $theme-color;
+    }
+
+    input {
+      margin-right: 1em;
+    }
+  }
+}
