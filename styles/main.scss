@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
+$dark-theme: #1E2B32;
 
 main {
   display: flex;
@@ -7,13 +8,15 @@ main {
 
 #menu {
   width: 20%;
-  background-color: #1E2B32;
+  background-color: $dark-theme;
   height: 100vh;
   font-family: 'Lato', sans-serif;
   color: #FFFFFF;
 
   .header {
-    background-color: #2A3942;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+
     padding: 5px;
     h5 {
       margin-left: 1rem;
@@ -57,12 +60,39 @@ main {
     rgba(163, 208, 219, 1) 74%,
     rgba(163, 208, 219, 1) 100%
   );
+
   .header {
     height: 100px;
   }
-}
 
-#to-do-entries {
-  width: 90%;
-  margin: 0 auto;
+  #to-do-entries {
+    width: 90%;
+    margin: 0 auto;
+
+    li {
+      margin-top: 4px;
+      border-radius: 10px 10px;
+      line-height: 3rem;
+      background-color: $dark-theme;
+      color: white;
+      padding: 1em;
+      position: relative;
+
+      button {
+        border: none;
+        background-color: transparent;
+        color: white;
+        position: absolute;
+        bottom: 0.5em;;
+        right: 50%;
+        line-height: 1em;
+      }
+    }
+    .details {
+      background-color: $dark-theme;
+    }
+    input {
+      margin-right: 1em;
+    }
+  }
 }
