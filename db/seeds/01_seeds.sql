@@ -1,23 +1,33 @@
-INSERT INTO tasks(category, description, due_date, complete)
+INSERT INTO tasks(
+    user_id,
+    category,
+    description,
+    due_date,
+    complete
+  )
 VALUES (
+    1,
     'restaurants',
     'Eat at Shimizu',
     '2023-01-06',
     FALSE
   ),
   (
+    1,
     'films',
     'Watch The Shining',
     '2023-01-06',
     FALSE
   ),
   (
+    1,
     'books',
     'Read The Catcher in the Rye',
     '2023-01-06',
     FALSE
   ),
   (
+    1,
     'products',
     'Buy cat food',
     '2023-01-06',
