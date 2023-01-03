@@ -34,14 +34,17 @@ app.use(
 );
 
 // Separated Routes for each Resource
+const loginRoutes = require('./routes/login');
+const logoutRoutes = require('./routes/logout');
 const userApiRoutes = require('./routes/users-api');
 const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
 
 // Mount all resource routes
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
+app.use('/login', loginRoutes);
+app.use('/logout', logoutRoutes);
 app.use('/api/users', userApiRoutes);
-app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
 
 // Home page
