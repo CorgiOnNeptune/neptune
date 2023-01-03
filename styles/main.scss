@@ -87,9 +87,16 @@ main {
 
   }
 
+  #login-btn {
+    border: none;
+    background-color: pink;
+    color: red;
+  }
+
   #to-do-entries {
     width: 90%;
     margin: 0 auto;
+
 
     ul {
       padding: 0;
