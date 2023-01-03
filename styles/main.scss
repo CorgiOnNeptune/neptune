@@ -42,6 +42,17 @@ main {
     }
   }
 
+  button {
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    width: 100%;
+    margin-left: 0;
+    text-align: left;
+    padding: 0;
+  }
+
   li {
     font-size: 18px;
     line-height: 3rem;
@@ -87,19 +98,16 @@ main {
 
   }
 
-  #login-btn {
-    border: none;
-    background-color: pink;
-    color: red;
-  }
-
   #to-do-entries {
     width: 90%;
     margin: 0 auto;
 
-
     ul {
       padding: 0;
+    }
+
+    .new-task {
+      text-align: center;
     }
 
     li {
@@ -110,6 +118,15 @@ main {
       color: $font-color;
       padding: 1em;
       position: relative;
+
+      .fa-circle-plus {
+        font-size: 3em;
+
+        &:hover {
+          color: #97b251;
+          cursor: pointer;
+        }
+      };
 
       &:hover {
         box-shadow: 10px 10px $secondary-font-color;
