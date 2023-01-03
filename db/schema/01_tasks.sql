@@ -4,13 +4,11 @@ DROP TABLE IF EXISTS films CASCADE;
 DROP TABLE IF EXISTS books CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 --
--- User schema commented out as login system not planned for implementation
--- user_id INT REFERENCES users(id) ON DELETE CASCADE,
---
 -- `npm run db:reset to initialize locally`
 --
 CREATE TABLE tasks(
 id SERIAL PRIMARY KEY NOT NULL,
+user_id INT REFERENCES users(id) ON DELETE CASCADE,
 category VARCHAR(255) NOT NULL,
 description VARCHAR(255) NOT NULL,
 due_date DATE,
