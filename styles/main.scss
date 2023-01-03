@@ -1,10 +1,13 @@
-@import url(https://fonts.googleapis.com/css?family=Lato);
-$theme-color: #fff8d2;
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
 $bg-color: #bec6a9;
-$main-font: 'Arial';
-$secondary-font: 'Futura';
-$font-color: black;
-$secondary-font-color: #7b382a;
+$theme-color: #f2f1f0;
+$main-font: 'Lato';
+$logo-font: 'Syncopate';
+$font-color: #0B4141;
+$secondary-font-color: #051622;
 
 main {
   display: flex;
@@ -16,8 +19,9 @@ main {
   width: 20%;
   background-color: $theme-color;
   height: 100vh;
-  font-family: $secondary-font, sans-serif;
-  color: $secondary-font-color;
+  font-family: $main-font, sans-serif;
+  font-weight: 700;
+  color: $font-color;
 
   .header {
     margin-bottom: 1.5rem;
@@ -27,10 +31,14 @@ main {
       width: 100%;
       height: 5em;
       line-height: 5em;
-      background-color: $secondary-font-color;
+      background-color: $font-color;
       color: $theme-color;
-      font-size: 1.5em;
+      font-size: 1.2em;
+      font-family: $logo-font;
       text-align: center;
+      img {
+        width: 60px;
+      }
     }
   }
 
@@ -50,7 +58,7 @@ main {
 
       &:hover {
         transition: 0.5s all;
-        color: $bg-color;
+        color: #97b251;
         cursor: pointer;
       }
     }
@@ -61,10 +69,10 @@ main {
 #main-board {
   width: 80%;
   height: 100vh;
-  background-color: $bg-color;
+  background-image: linear-gradient(to bottom right, $font-color, $bg-color);
   .header {
     height: 100px;
-    color: $theme-color;
+    color: $secondary-font-color;
     position: relative;
     display: flex;
     align-items: center;
@@ -74,6 +82,7 @@ main {
       font-family: $main-font, sans-serif;
       position: absolute;
       left: 5%;
+      color: $theme-color;
     }
 
   }
@@ -87,13 +96,17 @@ main {
     }
 
     li {
-      margin-top: 4px;
+      margin-top: 2em;
       border-radius: 10px 10px;
       line-height: 3rem;
       background-color: $theme-color;
       color: $font-color;
       padding: 1em;
       position: relative;
+
+      &:hover {
+        box-shadow: 10px 10px $secondary-font-color;
+      }
 
       button {
         border: none;
@@ -108,6 +121,7 @@ main {
     .details {
       background-color: $theme-color;
     }
+
     input {
       margin-right: 1em;
     }
