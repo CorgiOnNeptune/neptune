@@ -2,7 +2,7 @@
 
 - [User Stories](user-stories.md)
 - [RESTful Routes](routes.md)
-- [ERD]()
+- [ERD](images/do-smart-erd.png)
 - [Wireframes](wireframe.jpg)
 - [Page Flow/Mockup]()
 - [Tools and Resources](#tools--resources)
