@@ -6,15 +6,23 @@
 
 const express = require('express');
 const router = express.Router();
-const taskQueries = require('../db/queries/tasks');
+const database = require('../db/queries/tasks');
 
 /*
  * Get all incomplete tasks at '/tasks'
  */
 router.get('/', (req, res) => {
-  const queryParams = { user_id: req.session.user_id };
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to view tasks.');
+    return;
+  }
 
-  taskQueries
+  const queryParams = {
+    user_id: req.session.user_id,
+    completed: false,
+  };
+
+  database
     .getAllTasks(queryParams)
     .then((tasks) => {
       res.json({ tasks });
@@ -28,12 +36,17 @@ router.get('/', (req, res) => {
  * Get all completed tasks
  */
 router.get('/completed', (req, res) => {
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to view tasks.');
+    return;
+  }
+
   const queryParams = {
     user_id: req.session.user_id,
     completed: true,
   };
 
-  taskQueries
+  database
     .getAllTasks(queryParams)
     .then((tasks) => {
       res.json({ tasks });
@@ -47,13 +60,18 @@ router.get('/completed', (req, res) => {
  * Get incomplete tasks filtered by category
  */
 router.get('/:filter', (req, res) => {
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to view tasks.');
+    return;
+  }
+
   const queryParams = {
     user_id: req.session.user_id,
     category: req.params.filter,
     completed: false,
   };
 
-  taskQueries
+  database
     .getAllTasks(queryParams)
     .then((tasks) => {
       res.json({ tasks });
@@ -67,14 +85,51 @@ router.get('/:filter', (req, res) => {
  * Get tasks filtered by category and completion status
  */
 router.get('/:filter/:completed', (req, res) => {
+  if (!req.session.user_id) {
+    res.error('Must be logged in to view tasks.');
+    return;
+  }
+
   const queryParams = {
     user_id: req.session.user_id,
     category: req.params.filter,
     completed: req.params.completed,
   };
 
-  taskQueries
+  database
     .getAllTasks(queryParams)
+    .then((tasks) => {
+      res.json({ tasks });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+/*
+ * Post to create new task
+ */
+// TODO: NOT IMPLEMENTED AT ALL. DOESN'T WORK.
+router.post('/new', (req, res) => {
+  // if (!req.session.user_id) {
+  //   throw new Error('Must be logged in to create tasks.');
+  //   return;
+  // }
+
+  const user_id = req.session.user_id;
+
+  const task = req.body;
+  console.log('task', task);
+
+  const queryParams = {
+    user_id,
+    description,
+    category,
+    due_date,
+  };
+
+  database
+    .createTask(queryParams)
     .then((tasks) => {
       res.json({ tasks });
     })
