@@ -60,11 +60,19 @@
         border: none;
         background-color: transparent;
         color: $font-color;
+      }
+
+      .collapse-btn {
         position: absolute;
         bottom: 0.5em;;
         right: 50%;
         line-height: 1em;
       }
+
+      .new-task-btn {
+        line-height: 1em;
+      }
+
     }
     .details {
       background-color: $theme-color;
