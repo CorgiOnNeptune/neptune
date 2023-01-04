@@ -88,4 +88,49 @@ const createTask = (task) => {
     });
 };
 
-module.exports = { getAllTasks, createTask };
+/**
+ * Adds new task data to appropriate category database
+ * @param {{}} taskData An object containing all of the API obtained info.
+ * @param string A string of appropriate category, based on API call.
+ * @return {Promise<[{}]>} A promise to the tasks categories.
+ */
+const addTaskToCategory = (taskData, category) => {
+  // ! Using placeholder for 'films' category
+  // TODO: Will need to get the category values via API or other function call
+  const categoryValues = [
+    'task_id',
+    'title',
+    'release_date',
+    'cover_photo_url',
+    'more_info_url',
+    'rating',
+    'summary',
+    'genres',
+    'backdrop_photo_url',
+  ];
+
+  const insertValues = [];
+
+  categoryValues.forEach((val, index) => insertValues.push(`$${index + 1}`));
+
+  const queryString = `
+  INSERT INTO ${taskData.category}(${categoryValues.join(', ')})
+  VALUES(${insertValues.join(', ')})
+  RETURNING *;
+  `;
+
+  const values = categoryValues.map((val) => taskData[val]);
+
+  return db
+    .query(queryString, values)
+    .then((data) => {
+      console.log(data.rows);
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+module.exports = { getAllTasks, createTask, addTaskToCategory };
