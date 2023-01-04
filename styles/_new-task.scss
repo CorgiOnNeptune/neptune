@@ -2,7 +2,8 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: 300ms ease-in-out;
   border: 2px solid $font-color;;
   border-radius: 20px;
   z-index: 10;
@@ -28,8 +29,15 @@
   }
 }
 
+.new-task-editor.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+
 #overlay {
   position: fixed;
+  opacity: 0;
+  transition: 300ms ease-in-out;
   top: 0;
   left: 0;
   right: 0;
@@ -40,4 +48,5 @@
 
 #overlay.active {
   pointer-events: all;
+  opacity: 1;
 }
