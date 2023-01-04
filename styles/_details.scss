@@ -1,5 +1,7 @@
-.watch-details {
-  border-radius: 15px;
+.details {
+  border-top: 1.5px solid rgba($color: $font-color, $alpha: .5);
+  margin-top: 1em;
+  padding-top: 0.5em;
   display: flex;
   justify-content: space-evenly;
   height: 400px;
