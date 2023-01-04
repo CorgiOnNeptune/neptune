@@ -1,20 +1,26 @@
 const db = require('../connection');
-const checkValidCategory = require('../db-helpers');
+const dbHelpers = require('../db-helpers');
 
 /**
  * Get all tasks for user.
  * @param {object} queryParams Takes in a user_id {string}, category filter {string} defaulted to 'all', and completed filter {boolean} defaulted to false.
- * Valid categories include 'restaraunts', 'films', 'books', 'products', 'others', 'all'
+ * Valid categories include 'restaurants', 'films', 'books', 'products', 'others', 'all'
  * @return {Promise<[{}]>} A promise to the tasks.
  */
-const getAllTasks = ({ user_id, category: 'all', completed: false }) => {
+const getAllTasks = ({ user_id, category, completed }) => {
   // Default back to 'all' if given invalid category input
-  checkValidCategory(category);
+  dbHelpers.checkValidCategory(category);
 
-  const queryParams = [user_id, category];
-  const categorySpecified = category !== 'all';
+  const queryParams = [user_id];
   const showCompletedTasks = `WHERE tasks.complete = ${completed} `;
+  let categorySpecified;
 
+  if (category !== 'all') {
+    queryParams.push(`${category}`);
+    categorySpecified = true;
+  }
+
+  //TODO: Fix queryString. syntax error at $2 ???????
   let queryString = `
     SELECT tasks.id,
       tasks.category,
@@ -35,12 +41,12 @@ const getAllTasks = ({ user_id, category: 'all', completed: false }) => {
 
   queryString += `
   AND tasks.user_id = $1
-  ORDER BY tasks.due_date ASC;
-  `;
+  ORDER BY tasks.due_date ASC;`;
 
   return db
     .query(queryString, queryParams)
     .then((data) => {
+      console.log(data.rows);
       return data.rows;
     })
     .catch((err) => {

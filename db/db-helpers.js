@@ -5,7 +5,7 @@
  */
 const checkValidCategory = (category) => {
   const validCategories = [
-    'restaraunts',
+    'restaurants',
     'films',
     'books',
     'products',
@@ -16,4 +16,8 @@ const checkValidCategory = (category) => {
   }
 
   return category;
+};
+
+module.exports = {
+  checkValidCategory,
 };
