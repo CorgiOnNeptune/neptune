@@ -20,4 +20,8 @@ $(() => {
   </li>
   `;
   };
+
+  module.exports = {
+    createTaskElement,
+  };
 });
