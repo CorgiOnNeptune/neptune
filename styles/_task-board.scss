@@ -4,8 +4,10 @@
 
 #main-board {
   width: 80%;
-  height: 100vh;
-  background-image: linear-gradient(to bottom right, $font-color, $bg-color);
+  margin-left: 20%;
+  background: linear-gradient(to bottom right, $font-color, $bg-color);
+  background-attachment: fixed;
+  // bug: the color doesnt seem to start from top-left corner (which is the case before making it fixed), causing a color contrast with the logo backgrond
   .header {
     height: 100px;
     color: $secondary-font-color;
@@ -83,3 +85,24 @@
     }
   }
 }
+
+.watch-details {
+  border: 1px solid $font-color;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 50vh;
+  img {
+    width: 25%;
+  }
+  .info {
+    width: 50%;
+    border-right: 1px solid black;
+  }
+  .more {
+    width: 25%;
+    background-color: grey;
+  }
+
+
+  }
