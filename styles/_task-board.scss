@@ -46,11 +46,22 @@
       padding: 1em;
       position: relative;
 
+      .edit-delete-section {
+        position: absolute;
+        right: 5%;
+      }
+
+      .edit-delete {
+        button:hover {
+          color: $hover-color;
+        }
+      }
+
       .fa-circle-plus {
         font-size: 3em;
 
         &:hover {
-          color: #97b251;
+          color: $hover-color;
           cursor: pointer;
         }
       };
