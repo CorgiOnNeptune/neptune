@@ -25,18 +25,30 @@ router.get('/', (req, res) => {
 });
 
 /*
- * Get tasks filtered for category AND completion status
+ * Get all incomplete tasks at '/tasks'
  */
-router.get('/:filter/:completed', (req, res) => {
+router.get('/', (req, res) => {
   const queryParams = { user_id: req.session.user_id };
 
-  if (req.params.filter) {
-    queryParams.category = req.params.filter;
-  }
+  taskQueries
+    .getAllTasks(queryParams)
+    .then((tasks) => {
+      res.json({ tasks });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
 
-  if (req.params.completed === 'completed') {
-    queryParams.completed = true;
-  }
+/*
+ * Get completed tasks filtered by category
+ */
+router.get('/:filter/:completed', (req, res) => {
+  const queryParams = {
+    user_id: req.session.user_id,
+    category: req.params.filter,
+    completed: true,
+  };
 
   taskQueries
     .getAllTasks(queryParams)
