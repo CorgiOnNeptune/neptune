@@ -23,11 +23,15 @@ const checkValidCategory = (category) => {
  * @return false if falsy, else true.
  */
 const validateCompleted = (completed) => {
-  if (!completed) {
+  if (completed === true || completed === 'completed') {
+    return true;
+  }
+
+  if (completed === false || completed === 'incomplete') {
     return false;
   }
 
-  return true;
+  return null;
 };
 
 module.exports = {

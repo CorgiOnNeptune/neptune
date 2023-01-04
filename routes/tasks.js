@@ -25,10 +25,13 @@ router.get('/', (req, res) => {
 });
 
 /*
- * Get all incomplete tasks at '/tasks'
+ * Get all completed tasks
  */
-router.get('/', (req, res) => {
-  const queryParams = { user_id: req.session.user_id };
+router.get('/completed', (req, res) => {
+  const queryParams = {
+    user_id: req.session.user_id,
+    completed: true,
+  };
 
   taskQueries
     .getAllTasks(queryParams)
@@ -41,13 +44,33 @@ router.get('/', (req, res) => {
 });
 
 /*
- * Get completed tasks filtered by category
+ * Get incomplete tasks filtered by category
+ */
+router.get('/:filter', (req, res) => {
+  const queryParams = {
+    user_id: req.session.user_id,
+    category: req.params.filter,
+    completed: false,
+  };
+
+  taskQueries
+    .getAllTasks(queryParams)
+    .then((tasks) => {
+      res.json({ tasks });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+/*
+ * Get tasks filtered by category and completion status
  */
 router.get('/:filter/:completed', (req, res) => {
   const queryParams = {
     user_id: req.session.user_id,
     category: req.params.filter,
-    completed: true,
+    completed: req.params.completed,
   };
 
   taskQueries
