@@ -162,7 +162,7 @@
       .IMDB-rating {
         position: relative;
         img {
-          width: 40%;
+          max-width: 30%;
           margin-left: 15%;
         }
         span {
@@ -172,29 +172,43 @@
       .RT-rating {
         position: relative;
         img {
-          width: 30%;
+          max-width: 20%;
           margin-left: 20%;
         }
       }
       .MC-rating {
         position: relative;
         img {
-          width: 30%;
+          max-width: 20%;
           margin-left: 20%;
         }
       }
     }
 
     .streaming-guide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+
       .streaming {
         font-size: 1.2em;
         font-weight: 700;
       }
 
-      img {
-        width: 85%;
-        margin-top: 7%
+      a {
+        display: flex;
+        justify-content: center;
+        img {
+          align-self: center;
+          max-width: 75%;
+          margin-top: 7%;
+        }
       }
+    }
+  }
+}
     }
   }
 
