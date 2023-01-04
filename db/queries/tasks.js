@@ -9,11 +9,12 @@ const dbHelpers = require('../db-helpers');
  */
 const getAllTasks = (queryParams) => {
   const { user_id } = queryParams;
+  // Default category to 'all' and completed to false if invalid value
   let category = dbHelpers.checkValidCategory(queryParams.category);
   let completed = dbHelpers.validateCompleted(queryParams.completed);
 
-  // Default back to 'all' if given invalid category input
   const values = [user_id];
+
   const showCompletedTasks = `WHERE tasks.complete = ${completed} `;
   let categorySpecified;
 
