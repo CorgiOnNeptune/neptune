@@ -105,6 +105,37 @@
         </div>
       </div>
     </main>
+    <div class="new-task-editor" id="new-task-editor">
+      <div class="header">
+        <div class="title">New Task</div>
+        <button class="close-btn">&times;</button>
+      </div>
+
+      <div class="body">
+        <form action="" class="new-task-form">
+
+          <label for="">Task name</label><br>
+          <input type="text" id="task-name" name="task-name"><br>
+
+          <label for="category">Category</label>
+          <select name="category" id="category">
+            <option value="auto" selected="selected">Auto</option>
+            <option value="watch">Watch</option>
+            <option value="read">Read</option>
+            <option value="eat">Eat</option>
+            <option value="buy">Buy</option>
+            <option value="others">Others</option>
+          </select><br>
+
+          <label for="due-date">Due Date</label>
+          <input type="date" id="due-day"><br>
+
+          <button type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="overlay"></div>
 
     <!-- Bootstrap JS -->
     <script
