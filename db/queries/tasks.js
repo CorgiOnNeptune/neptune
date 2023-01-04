@@ -9,6 +9,7 @@ const dbHelpers = require('../db-helpers');
  */
 const getAllTasks = (queryParams) => {
   const { user_id } = queryParams;
+
   let category = dbHelpers.checkValidCategory(queryParams.category);
   let completed = dbHelpers.validateCompleted(queryParams.completed);
 
@@ -59,4 +60,32 @@ const getAllTasks = (queryParams) => {
     });
 };
 
-module.exports = { getAllTasks };
+/**
+ * Adds a new task to the database
+ * @param {{}} task An object containing all of the task details.
+ * @return {Promise<[{}]>} A promise to the tasks.
+ */
+const createTask = (task) => {
+  const taskValues = ['user_id', 'category', 'description', 'due_date'];
+
+  const queryString = `
+  INSERT INTO tasks(${taskValues.join(', ')})
+  VALUES($1, $2, $3, $4)
+  RETURNING *;
+  `;
+
+  const values = taskValues.map((value) => task[value]);
+
+  return db
+    .query(queryString, values)
+    .then((data) => {
+      console.log(data.rows);
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+module.exports = { getAllTasks, createTask };
