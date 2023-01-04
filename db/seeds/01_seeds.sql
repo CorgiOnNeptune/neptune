@@ -50,7 +50,7 @@ VALUES (
     'Shimizu',
     'https://placekitten.com/200/300',
     'https://www.yelp.ca/biz/shimizu-kitchen-calgary',
-    4.5,
+    '4.5',
     '+1 403-455-3380',
     ARRAY [
       '1918 37 Street SW',
@@ -78,7 +78,7 @@ VALUES (
     '1980-05-23',
     'https://placekitten.com/200/300',
     'https://www.themoviedb.org/movie/694-the-shining?language=en-CA',
-    8.2,
+    '8.2',
     'Jack Torrance accepts a caretaker job at the Overlook Hotel, WHERE he, along WITH his wife Wendy AND their son Danny, must live isolated FROM the rest of the world FOR the winter. But they aren''t prepared for the madness that lurks within.',
     ARRAY [
       'Horror',
@@ -124,6 +124,6 @@ VALUES (
     'Purina ® Friskies ® Ocean Delights Cat Food Variety Pack 24 - 156g Cans',
     'https://placekitten.com/200/300',
     'https://www.amazon.ca/dp/B079NHK95Y',
-    4.6,
+    '4.6',
     '$18.97'
   );

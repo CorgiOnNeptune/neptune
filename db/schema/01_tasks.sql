@@ -21,7 +21,7 @@ CREATE TABLE restaurants(
   title VARCHAR(255) NOT NULL,
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
-  rating SMALLINT DEFAULT 0,
+  rating VARCHAR(255),
   phone_number VARCHAR(30),
   address VARCHAR(255) [],
   cuisine_type VARCHAR(255),
@@ -36,7 +36,7 @@ CREATE TABLE films(
   release_date DATE,
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
-  rating SMALLINT DEFAULT 0,
+  rating VARCHAR(255),
   summary TEXT,
   genres VARCHAR(255) [],
   backdrop_photo_url VARCHAR(255)
@@ -60,6 +60,6 @@ CREATE TABLE products(
   title VARCHAR(255) NOT NULL,
   cover_photo_url VARCHAR(255),
   more_info_url VARCHAR(255),
-  rating SMALLINT DEFAULT 0,
+  rating VARCHAR(255),
   price VARCHAR(255)
 );
