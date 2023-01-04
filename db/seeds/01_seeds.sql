@@ -10,14 +10,14 @@ VALUES (
     'restaurants',
     'Eat at Shimizu',
     '2023-01-06',
-    FALSE
+    TRUE
   ),
   (
     1,
     'films',
     'Watch The Shining',
     '2023-01-06',
-    FALSE
+    TRUE
   ),
   (
     1,
