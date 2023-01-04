@@ -82,7 +82,7 @@
             <li>
               <input type="checkbox" />Watch Avatar 2
               <button
-                class="collpase-btn"
+                class="collapse-btn"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#collapseExample"
@@ -90,26 +90,103 @@
                 aria-controls="collapseExample">
                 <i class="fa-solid fa-angles-down"></i>
               </button>
-              <div class="collapse details" id="collapseExample">
-                movie detail <br />
-                movie details <br />
-                movie details
+              <div class="watch-details" id="collapseExample">
+                <div class="poster-container"><img src="https://www.themoviedb.org/t/p/original/1AnfXMG9PPMVjwXcHW6JLSJUbPo.jpg" alt=""></div>
+                <div class="info">
+                  <div class="info-header">
+                    <div class="title">Arrival</div>
+                    <div class="genres">
+                      <span class="genre">Sci-fi</span>
+                      <span class="genre">Drama</span>
+                      <span class="genre">Mystery</span>
+                    </div>
+                  </div>
+                  <div class="description">A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.</div>
+                  <div class="director">
+                    <div class="director-title">Director</div>
+                    <div class="director-name">Denis Villeneuve</div>
+                  </div>
+                  <div class="cast">
+                    <div class="cast-title">Cast</div>
+                    <div class="cast-names">Amy Adams Jeremy Renner Forest Whitaker</div>
+                  </div>
+
+                </div>
+
+                <div class="more">
+                  <div class="ratings">
+                    <div class="IMDB-rating">
+                      <img src="images/IMDB-logo.png" alt="">
+                      <span>7.9/10</span>
+                    </div>
+                    <div class="RT-rating">
+                      <img src="images/RT-logo.png" alt="">
+                      <span>97%</span>
+                    </div>
+                    <div class="MC-rating">
+                      <img src="images/metacritic-logo.png" alt="">
+                      <span>80</span>
+                    </div>
+                    <div class="Meta-rating"></div>
+                  </div>
+
+                  <div class="streaming-guide">
+                    <div class="streaming">Streaming Guide</div>
+                  <a href="https://www.justwatch.com/us/movie/arrival-2016">
+                    <img src="images/just-watch-logo.png" alt="justwatch">
+                  </a>
+                  </div>
+                </div>
               </div>
             </li>
 
             <li><input type="checkbox" />read A Hundred Years of Solitude</li>
             <li><input type="checkbox" />eat at Laila Laila Hot Pot</li>
             <li><input type="checkbox" />buy a dishwasher</li>
-            <li class="new-task"><i class="fa-solid fa-circle-plus"></i></li>
+            <li class="new-task">
+              <button data-modal-target="#new-task-editor" class="new-task-btn"><i class="fa-solid fa-circle-plus"></i></button>
+            </li>
           </ul>
         </div>
       </div>
     </main>
+    <div class="new-task-editor" id="new-task-editor">
+      <div class="header">
+        <div class="title">New Task</div>
+        <button data-close-button class="close-btn">&times;</button>
+      </div>
+
+      <div class="body">
+        <form action="" class="new-task-form">
+
+          <label for="">Task name</label><br>
+          <input type="text" id="task-name" name="task-name"><br>
+
+          <label for="category">Category</label>
+          <select name="category" id="category">
+            <option value="auto" selected="selected">Auto</option>
+            <option value="watch">Watch</option>
+            <option value="read">Read</option>
+            <option value="eat">Eat</option>
+            <option value="buy">Buy</option>
+            <option value="others">Others</option>
+          </select><br>
+
+          <label for="due-date">Due Date</label>
+          <input type="date" id="due-day"><br>
+
+          <button type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="overlay"></div>
 
     <!-- Bootstrap JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"></script>
+    <script src="./scripts/new-task.js"></script>
   </body>
 </html>

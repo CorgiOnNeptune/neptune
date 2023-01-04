@@ -9,7 +9,7 @@
   font-family: $main-font, sans-serif;
   font-weight: 700;
   color: $font-color;
-
+  position: fixed;
   .header {
     margin-bottom: 1.5rem;
 
@@ -37,6 +37,11 @@
     margin-left: 0;
     text-align: left;
     padding: 0;
+    &:hover {
+      transition: 0.5s all;
+        color: #97b251;
+        cursor: pointer;
+    }
   }
 
   li {

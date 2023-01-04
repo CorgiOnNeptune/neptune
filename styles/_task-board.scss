@@ -4,8 +4,11 @@
 
 #main-board {
   width: 80%;
-  height: 100vh;
-  background-image: linear-gradient(to bottom right, $font-color, $bg-color);
+  margin-left: 20%;
+  font-family: $main-font;
+  font-weight: 400;
+  background: linear-gradient(to bottom right, $font-color 20%, $bg-color 100%);
+  background-attachment: fixed;
   .header {
     height: 100px;
     color: $secondary-font-color;
@@ -37,7 +40,7 @@
     li {
       margin-top: 2em;
       border-radius: 10px 10px;
-      line-height: 3rem;
+      line-height: 2em;
       background-color: $theme-color;
       color: $font-color;
       padding: 1em;
@@ -53,18 +56,26 @@
       };
 
       &:hover {
-        box-shadow: 10px 10px $secondary-font-color;
+        box-shadow: 10px 10px $font-color;
       }
 
       button {
         border: none;
         background-color: transparent;
         color: $font-color;
+      }
+
+      .collapse-btn {
         position: absolute;
         bottom: 0.5em;;
         right: 50%;
         line-height: 1em;
       }
+
+      .new-task-btn {
+        line-height: 1em;
+      }
+
     }
     .details {
       background-color: $theme-color;
