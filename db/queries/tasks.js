@@ -97,6 +97,7 @@ const createTask = (task) => {
 const addTaskToCategory = (taskData, category) => {
   // ! Using placeholder for 'films' category
   // TODO: Will need to get the category values via API or other function call
+  // ! NEED to add 'ARRAY' before array values in the query
   const categoryValues = [
     'task_id',
     'title',
