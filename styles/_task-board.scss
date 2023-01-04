@@ -146,6 +146,56 @@
   }
   .more {
     width: 25%;
+    .ratings {
+      height: 65%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      border-bottom: 1.5px solid rgba($color: $font-color, $alpha: .5);
+      span {
+        font-weight: 700;
+        font-size: 1.6em;
+        position: absolute;
+        left: 65%;
+        top: 30%;
+      }
+      .IMDB-rating {
+        position: relative;
+        img {
+          width: 40%;
+          margin-left: 15%;
+        }
+        span {
+          top: 20%;
+        }
+      }
+      .RT-rating {
+        position: relative;
+        img {
+          width: 30%;
+          margin-left: 20%;
+        }
+      }
+      .MC-rating {
+        position: relative;
+        img {
+          width: 30%;
+          margin-left: 20%;
+        }
+      }
+    }
+
+    .streaming-guide {
+      .streaming {
+        font-size: 1.2em;
+        font-weight: 700;
+      }
+
+      img {
+        width: 85%;
+        margin-top: 7%
+      }
+    }
   }
 
 
