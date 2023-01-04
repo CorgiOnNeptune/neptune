@@ -6,6 +6,7 @@ SELECT tasks.id,
   restaurants.*
 FROM tasks
   JOIN restaurants ON task_id = tasks.id
-WHERE tasks.complete = TRUE
+WHERE tasks.complete = FALSE
   AND tasks.category = 'restaurants'
+  AND tasks.user_id = 1
 ORDER BY tasks.due_date ASC;

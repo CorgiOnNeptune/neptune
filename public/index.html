@@ -40,10 +40,11 @@
         </div>
         <div class="body">
           <ul>
-            <form method="GET" action="/">
+            <!-- TODO: Have button change to '/logout' if req.session.user_id, when we move to jQuery -->
+            <form method="GET" action="/login/1">
               <button type="submit" id="login-btn">
                 <li>
-                  <a href=""><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+                  <i class="fa-solid fa-right-to-bracket"></i> Login</a>
                 </li>
               </button>
             </form>

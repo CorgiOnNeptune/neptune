@@ -1,32 +1,39 @@
 const db = require('../connection');
-const checkValidCategory = require('../db-helpers');
+const dbHelpers = require('../db-helpers');
 
 /**
  * Get all tasks for user.
- * @param {string} user_id The id of the user.
- * @param {string} category Filter tasks in this category, defaults to 'all'.
- * Other valid entries include 'restaraunts', 'films', 'books', 'products', 'others'
- * @param {boolean} completed Filter tasks by completed, defaults to false.
+ * @param {{user_id: number, category: string, completed: boolean}} queryParams
+ * Valid categories include 'restaurants', 'films', 'books', 'products', 'others', 'all'
  * @return {Promise<[{}]>} A promise to the tasks.
  */
-const getAllTasks = (user_id, category = 'all', completed = false) => {
-  // Default back to 'all' if given invalid category input
-  checkValidCategory(category);
+const getAllTasks = (queryParams) => {
+  const { user_id } = queryParams;
+  // Default category to 'all' and completed to false if invalid value
+  let category = dbHelpers.checkValidCategory(queryParams.category);
+  let completed = dbHelpers.validateCompleted(queryParams.completed);
 
-  const queryParams = [user_id, category];
-  const categorySpecified = category !== 'all';
+  const values = [user_id];
+
   const showCompletedTasks = `WHERE tasks.complete = ${completed} `;
+  let categorySpecified;
+
+  if (category !== 'all') {
+    values.push(category);
+    categorySpecified = true;
+  }
 
   let queryString = `
-    SELECT tasks.id,
+  SELECT tasks.id,
       tasks.category,
       tasks.description AS task_name,
       tasks.due_date,
-      tasks.complete${categorySpecified ? `, $2.* ` : ` `}
+      tasks.complete${categorySpecified ? `, ${category}.* ` : ` `}
       FROM tasks `;
 
+  //TODO: Can't use variables ($2) in SELECT or JOIN statements
   if (categorySpecified) {
-    queryString += `JOIN $2 ON task_id = tasks.id `;
+    queryString += `JOIN ${category} ON task_id = tasks.id `;
   }
 
   queryString += showCompletedTasks;
@@ -37,12 +44,14 @@ const getAllTasks = (user_id, category = 'all', completed = false) => {
 
   queryString += `
   AND tasks.user_id = $1
-  ORDER BY tasks.due_date ASC;
-  `;
+  ORDER BY tasks.due_date ASC;`;
+
+  console.log(queryString);
 
   return db
-    .query(queryString, queryParams)
+    .query(queryString, values)
     .then((data) => {
+      console.log(data.rows);
       return data.rows;
     })
     .catch((err) => {
