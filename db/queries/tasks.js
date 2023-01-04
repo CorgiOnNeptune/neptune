@@ -3,34 +3,36 @@ const dbHelpers = require('../db-helpers');
 
 /**
  * Get all tasks for user.
- * @param {object} queryParams Takes in a user_id {string}, category filter {string} defaulted to 'all', and completed filter {boolean} defaulted to false.
+ * @param {{user_id: number, category: string, completed: boolean}} queryParams
  * Valid categories include 'restaurants', 'films', 'books', 'products', 'others', 'all'
  * @return {Promise<[{}]>} A promise to the tasks.
  */
-const getAllTasks = ({ user_id, category, completed }) => {
-  // Default back to 'all' if given invalid category input
-  dbHelpers.checkValidCategory(category);
+const getAllTasks = (queryParams) => {
+  const { user_id } = queryParams;
+  let category = dbHelpers.checkValidCategory(queryParams.category);
+  let completed = dbHelpers.validateCompleted(queryParams.completed);
 
-  const queryParams = [user_id];
+  // Default back to 'all' if given invalid category input
+  const values = [user_id];
   const showCompletedTasks = `WHERE tasks.complete = ${completed} `;
   let categorySpecified;
 
   if (category !== 'all') {
-    queryParams.push(`${category}`);
+    values.push(category);
     categorySpecified = true;
   }
 
-  //TODO: Fix queryString. syntax error at $2 ???????
   let queryString = `
-    SELECT tasks.id,
+  SELECT tasks.id,
       tasks.category,
       tasks.description AS task_name,
       tasks.due_date,
-      tasks.complete${categorySpecified ? `, $2.* ` : ` `}
+      tasks.complete${categorySpecified ? `, ${category}.* ` : ` `}
       FROM tasks `;
 
+  //TODO: Can't use variables ($2) in SELECT or JOIN statements
   if (categorySpecified) {
-    queryString += `JOIN $2 ON task_id = tasks.id `;
+    queryString += `JOIN ${category} ON task_id = tasks.id `;
   }
 
   queryString += showCompletedTasks;
@@ -43,8 +45,10 @@ const getAllTasks = ({ user_id, category, completed }) => {
   AND tasks.user_id = $1
   ORDER BY tasks.due_date ASC;`;
 
+  console.log(queryString);
+
   return db
-    .query(queryString, queryParams)
+    .query(queryString, values)
     .then((data) => {
       console.log(data.rows);
       return data.rows;
