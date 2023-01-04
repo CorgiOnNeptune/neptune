@@ -1,4 +1,6 @@
-// See: https://sass-lang.com/
+/*
+ * Global layout stylings
+ */
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -20,6 +22,7 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -43,13 +46,6 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-$bg-color: #bec6a9;
-$theme-color: #f2f1f0;
-$main-font: 'Lato';
-$font-color: #0B4141;
-$secondary-font-color: #051622;
 
 main {
   display: flex;
