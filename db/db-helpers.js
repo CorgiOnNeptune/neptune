@@ -20,7 +20,7 @@ const checkValidCategory = (category) => {
 
 /**
  * @param {boolean} completed Input to check presence of completed bool.
- * @return false if falsy, else true.
+ * @return returns boolean of the input, else null.
  */
 const validateCompleted = (completed) => {
   if (completed === true || completed === 'completed') {
