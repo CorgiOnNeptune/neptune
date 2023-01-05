@@ -89,7 +89,6 @@ router.get('/:filter', (req, res) => {
   const queryParams = {
     user_id: req.session.user_id,
     category: req.params.filter,
-    completed: false,
   };
 
   database
