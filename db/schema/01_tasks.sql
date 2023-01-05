@@ -35,11 +35,13 @@ CREATE TABLE films(
   title VARCHAR(255) NOT NULL,
   release_date DATE,
   cover_photo_url VARCHAR(255),
-  more_info_url VARCHAR(255),
-  rating VARCHAR(255),
+  imdb_rating VARCHAR(255),
+  rt_rating VARCHAR(255),
+  mc_rating VARCHAR(255),
   summary TEXT,
   genres VARCHAR(255) [],
-  backdrop_photo_url VARCHAR(255)
+  director VARCHAR(255),
+  actors VARCHAR(255) []
 );
 
 CREATE TABLE books(

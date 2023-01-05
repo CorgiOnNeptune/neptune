@@ -17,7 +17,7 @@ VALUES (
     'films',
     'Watch The Shining',
     '2023-01-06',
-    TRUE
+    FALSE
   ),
   (
     1,
@@ -66,25 +66,32 @@ INSERT INTO films(
     title,
     release_date,
     cover_photo_url,
-    more_info_url,
-    rating,
+    imdb_rating,
+    rt_rating,
+    mc_rating,
     summary,
     genres,
-    backdrop_photo_url
+    director,
+    actors
   )
 VALUES (
     2,
     'The Shining',
     '1980-05-23',
     'https://placekitten.com/200/300',
-    'https://www.themoviedb.org/movie/694-the-shining?language=en-CA',
-    '8.2',
+    '8.4',
+    '82%',
+    '66',
     'Jack Torrance accepts a caretaker job at the Overlook Hotel, WHERE he, along WITH his wife Wendy AND their son Danny, must live isolated FROM the rest of the world FOR the winter. But they aren''t prepared for the madness that lurks within.',
     ARRAY [
       'Horror',
       'Thriller'
     ],
-    'https://placekitten.com/800/350'
+    'Stanley Kubrick',
+    ARRAY [
+      'Jack Nicholson',
+      'Shelley Duvall'
+    ]
   );
 
 INSERT INTO books(
