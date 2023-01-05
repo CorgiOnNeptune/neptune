@@ -34,7 +34,17 @@ const validateCompleted = (completed) => {
   return null;
 };
 
+/**
+ * @param {string} str Takes in string to check condition.
+ * @param {string} word Word to check for in string.
+ * @return boolean if the word is in the string.
+ */
+const wordInString = (str, word) => {
+  return new RegExp('\\b' + word + '\\b', 'i').test(str);
+};
+
 module.exports = {
   checkValidCategory,
   validateCompleted,
+  wordInString,
 };
