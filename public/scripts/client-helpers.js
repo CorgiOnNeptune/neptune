@@ -34,10 +34,19 @@ const escape = function(str) {
 };
 
 const createTaskElement = (task) => {
+  let completeStatus;
+  let iconSrc;
+  if (task.complete === true) {
+    completeStatus = "completed";
+    iconSrc = "images/completed.png";
+  } else {
+    completeStatus = "not-completed";
+    iconSrc = "images/not-completed.png";
+  }
   const $task = $(`
-  <li>
+  <li id="task_id_${task.id}">
     <div class="task-content">
-                  <img src="images/not-completed.png" alt="" class="complete-status not-completed">
+                  <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
                 <i class="fa-solid fa-video category-icon"></i>
                 <span>${escape(task.task_name)}</span>
                 <span class="edit-delete-section">
