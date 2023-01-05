@@ -49,13 +49,13 @@ const getAllTasks = (queryParams) => {
 
   if (completed === null && !categorySpecified) {
     queryString += `
-  WHERE tasks.user_id = $1
-  ORDER BY tasks.due_date ASC;`;
+  WHERE tasks.user_id = $1 `;
   } else {
     queryString += `
-    AND tasks.user_id = $1
-    ORDER BY tasks.due_date ASC;`;
+    AND tasks.user_id = $1 `
   }
+
+  queryString += `ORDER BY tasks.complete DESC, tasks.due_date DESC;`;
 
   console.log(queryString);
 
