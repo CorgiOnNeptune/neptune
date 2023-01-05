@@ -47,22 +47,14 @@
   li {
     font-size: 18px;
     line-height: 3rem;
+    &:hover {
+      transition: 0.5s all;
+      color: $hover-color;
+      cursor: pointer;
+    }
 
     i {
       margin-right: 1rem;
-    }
-
-    a {
-      text-decoration: none;
-      display: block;
-      color: inherit;
-      position: relative;
-
-      &:hover {
-        transition: 0.5s all;
-        color: $hover-color;
-        cursor: pointer;
-      }
     }
   }
 

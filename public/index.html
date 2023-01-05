@@ -51,27 +51,38 @@
                 </li>
               </button>
             </form>
-            <li>
-              <a href=""><i class="fa-solid fa-clipboard-list"></i> All</a>
+            <li class="menu-category all-tasks">
+              <i class="fa-solid fa-clipboard-list"></i> All
             </li>
-            <li>
-              <a href=""><i class="fa-solid fa-clipboard-check"></i> Completed</a>
+
+            <li class="menu-category incomplete-tasks">
+              <i class="fa-solid fa-clipboard"></i> Incomplete
             </li>
-            <li>
-              <a href=""><i class="fa-solid fa-video"></i>Watch</a>
+
+            <li class="menu-category completed-tasks">
+              <i class="fa-solid fa-clipboard-check"></i> Completed
             </li>
-            <li>
-              <a href=""><i class="fa-solid fa-book-open"></i>Read</a>
+
+            <li class="menu-category watch-tasks">
+              <i class="fa-solid fa-video"></i>Watch
             </li>
-            <li>
-              <a href=""><i class="fa-solid fa-utensils"></i> Eat</a>
+
+            <li class="menu-category read-tasks">
+              <i class="fa-solid fa-book-open"></i>Read
             </li>
-            <li>
-              <a href=""><i class="fa-solid fa-cart-shopping"></i>Buy</a>
+
+            <li class="menu-category eat-tasks">
+              <i class="fa-solid fa-utensils"></i> Eat
             </li>
-            <li>
-              <a href=""><i class="fa-solid fa-clipboard-question"></i>Others</a>
+
+            <li class="menu-category shop-tasks">
+              <i class="fa-solid fa-cart-shopping"></i>Shop
             </li>
+
+            <li class="menu-category others-tasks">
+              <i class="fa-solid fa-clipboard-question"></i>Others
+            </li>
+
           </ul>
         </div>
       </div>
@@ -81,7 +92,7 @@
           <p>Task List</p>
         </div>
         <div id="tasks-container">
-          <ul>
+          <ul id="tasks-ul">
             <li>
               <div class="task-content">
                   <img src="images/not-completed.png" alt="" class="complete-status not-completed">
@@ -151,9 +162,8 @@
               </div>
             </li>
 
-            <li><input type="checkbox" />read A Hundred Years of Solitude</li>
-            <li><input type="checkbox" />eat at Laila Laila Hot Pot</li>
-            <li><input type="checkbox" />buy a dishwasher</li>
+          </ul>
+          <ul class="new-task-ul">
             <li class="new-task">
               <button data-modal-target="#new-task-editor" class="new-task-btn"><i class="fa-solid fa-circle-plus"></i></button>
             </li>
