@@ -8,7 +8,6 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-// const apiFuncs = require('../db/api-calls');
 
 router.get('/omdb/:query', (req, res, next) => {
   const query = req.params.query;
