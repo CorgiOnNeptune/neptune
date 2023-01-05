@@ -20,7 +20,7 @@ const renderTasks = (tasks) => {
     const $details = getTaskDetails(task);
 
     $('.task-details').append($details);
-    $taskContainer.append($task);
+    $taskContainer.prepend($task);
   }
 };
 
