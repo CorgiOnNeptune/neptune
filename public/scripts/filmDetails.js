@@ -6,7 +6,7 @@ const getTaskID = (task) => {};
 /**
  * @param {{}} film takes in film object to parse data.
  */
-const loadFilmTaskDetails = (film, task_id) => {
+const loadFilmTaskDetails = (film) => {
   return `
     <div class="poster-container"><img src="${
       film.cover_photo_url
@@ -15,7 +15,7 @@ const loadFilmTaskDetails = (film, task_id) => {
       <div class="info-header">
         <div class="title">${film.title}</div>
         <div class="genres">
-          ${getGenresHTML(film)}
+          <span class="genre">${'spooky'}</span>
         </div>
       </div>
       <div class="description">
@@ -27,7 +27,7 @@ const loadFilmTaskDetails = (film, task_id) => {
       </div>
       <div class="cast">
         <div class="cast-title">Cast</div>
-        <div class="cast-names">${film.cast.join(', ')}</div>
+        <div class="cast-names">${film.actors.join(', ')}</div>
       </div>
     </div>
 

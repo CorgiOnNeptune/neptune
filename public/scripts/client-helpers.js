@@ -2,7 +2,7 @@
 const loadTasks = () => {
   $.get('/tasks')
     .then((data) => {
-      console.log(data.tasks);
+      // console.log(data.tasks);
       renderTasks(data.tasks);
     })
     .fail((err) => {
@@ -16,7 +16,7 @@ const renderTasks = (tasks) => {
   $taskContainer.empty();
 
   for (const task of tasks) {
-    console.log(task);
+    // console.log(task);
 
     const $task = createTaskElement(task);
     const $details = getTaskDetails(task);
@@ -26,22 +26,25 @@ const renderTasks = (tasks) => {
   }
 };
 
-const getTaskDetails = (task) => {
-  $.get(`/tasks/${task.category}`)
+const getTaskDetails = (taskInfo) => {
+  console.log(taskInfo.category);
+
+  $.get(`/tasks/${taskInfo.category}`)
     .then((data) => {
-      console.log(data.tasks);
-      data.tasks.forEach((val) => {
-        if (val.task_id === task.id) {
-          return data;
-        }
-      });
+      if (data.tasks[0].task_id === taskInfo.id) {
+        console.log(data);
+        return data;
+      }
     })
-    .then((data) => {
-      switch (task.category) {
+    .then((data2) => {
+      const categoryData = data2.tasks[0];
+      switch (categoryData.category) {
         // case 'restaurants':
         // case 'books':
         case 'films':
-          return loadFilmTaskDetails(task.id);
+          console.log('holy poo');
+          console.log(categoryData);
+          return loadFilmTaskDetails(categoryData);
           break;
         // case 'products':
         // case 'others':
