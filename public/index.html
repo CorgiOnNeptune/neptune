@@ -28,6 +28,7 @@
     <link href="./images/favicon-dark.png" rel="icon" media="(prefers-color-scheme: dark)" />
 
     <title>Neptune</title>
+
   </head>
 
   <body>
@@ -78,75 +79,7 @@
           <p>Task List</p>
         </div>
         <div id="to-do-entries">
-          <ul>
-            <li>
-              <input type="checkbox" />Watch Avatar 2
-              <button
-                class="collapse-btn"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseExample"
-                aria-expanded="false"
-                aria-controls="collapseExample">
-                <i class="fa-solid fa-angles-down"></i>
-              </button>
-              <div class="watch-details" id="collapseExample">
-                <div class="poster-container"><img src="https://www.themoviedb.org/t/p/original/1AnfXMG9PPMVjwXcHW6JLSJUbPo.jpg" alt=""></div>
-                <div class="info">
-                  <div class="info-header">
-                    <div class="title">Arrival</div>
-                    <div class="genres">
-                      <span class="genre">Sci-fi</span>
-                      <span class="genre">Drama</span>
-                      <span class="genre">Mystery</span>
-                    </div>
-                  </div>
-                  <div class="description">A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.</div>
-                  <div class="director">
-                    <div class="director-title">Director</div>
-                    <div class="director-name">Denis Villeneuve</div>
-                  </div>
-                  <div class="cast">
-                    <div class="cast-title">Cast</div>
-                    <div class="cast-names">Amy Adams Jeremy Renner Forest Whitaker</div>
-                  </div>
-
-                </div>
-
-                <div class="more">
-                  <div class="ratings">
-                    <div class="IMDB-rating">
-                      <img src="images/IMDB-logo.png" alt="">
-                      <span>7.9/10</span>
-                    </div>
-                    <div class="RT-rating">
-                      <img src="images/RT-logo.png" alt="">
-                      <span>97%</span>
-                    </div>
-                    <div class="MC-rating">
-                      <img src="images/metacritic-logo.png" alt="">
-                      <span>80</span>
-                    </div>
-                    <div class="Meta-rating"></div>
-                  </div>
-
-                  <div class="streaming-guide">
-                    <div class="streaming">Streaming Guide</div>
-                  <a href="https://www.justwatch.com/us/movie/arrival-2016">
-                    <img src="images/just-watch-logo.png" alt="justwatch">
-                  </a>
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li><input type="checkbox" />read A Hundred Years of Solitude</li>
-            <li><input type="checkbox" />eat at Laila Laila Hot Pot</li>
-            <li><input type="checkbox" />buy a dishwasher</li>
-            <li class="new-task">
-              <button data-modal-target="#new-task-editor" class="new-task-btn"><i class="fa-solid fa-circle-plus"></i></button>
-            </li>
-          </ul>
+          <ul id="tasks-container"></ul>
         </div>
       </div>
     </main>
@@ -182,11 +115,31 @@
 
     <div id="overlay"></div>
 
+    <!-- jQuery/Ajax JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"
+      integrity="sha512-SVDh1zH5N9ChofSlNAK43lcNS7lWze6DTVx1JCXH1Tmno+0/1jMpdbR8YDgDUfcUrPp1xyE53G42GFrcM0CMVg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
     <!-- Bootstrap JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"></script>
+
+    <!-- Components -->
+    <script src="./scripts/components/component-helpers.js"></script>
+    <script src="./scripts/components/createTaskElement.js"></script>
+    <script src="./scripts/components/filmDetails.js"></script>
+
+    <!-- App JS -->
+    <script src="./scripts/client-helpers.js"></script>
     <script src="./scripts/new-task.js"></script>
+    <script src="./scripts/client.js"></script>
+
   </body>
+
 </html>

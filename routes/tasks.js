@@ -12,7 +12,7 @@ const taskQueries = require('../db/queries/tasks');
  * Get all incomplete tasks at '/tasks'
  */
 router.get('/', (req, res) => {
-  const queryParams = { user_id: req.session.user_id };
+  const queryParams = { user_id: req.session.user_id, completed: false };
 
   taskQueries
     .getAllTasks(queryParams)
