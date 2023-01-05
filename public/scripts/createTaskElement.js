@@ -2,9 +2,8 @@
  * Takes in task object to parse data for task element.
  * @param {{}} task
  */
-$(() => {
-  function createTaskElement(task) {
-    return `
+const createTaskElement = (task) => {
+  return `
   <li>
     <div class="task-content">
       <input type="checkbox"/>
@@ -26,5 +25,4 @@ $(() => {
     </div>
   </li>
   `;
-  }
-});
+};

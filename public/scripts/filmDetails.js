@@ -1,9 +1,13 @@
 /**
+ * @param {{}} task the related
+ */
+const getTaskID = (task) => {};
+
+/**
  * @param {{}} film takes in film object to parse data.
  */
-$(() => {
-  function loadFilmTaskDetails(film) {
-    return `
+const loadFilmTaskDetails = (film, task_id) => {
+  return `
     <div class="poster-container"><img src="${
       film.cover_photo_url
     }" alt="" /></div>
@@ -11,7 +15,7 @@ $(() => {
       <div class="info-header">
         <div class="title">${film.title}</div>
         <div class="genres">
-          ${compHelpers.getGenresHTML(film)}
+          ${getGenresHTML(film)}
         </div>
       </div>
       <div class="description">
@@ -46,9 +50,8 @@ $(() => {
 
       <div class="streaming-guide">
         <div class="streaming">Streaming Guide</div>
-        <a href="${compHelpers.getJustWatchURL(film)}">
+        <a href="${getJustWatchURL(film)}">
           <img src="images/just-watch-logo.png" alt="justwatch" />
         </a>
         `;
-  }
-});
+};

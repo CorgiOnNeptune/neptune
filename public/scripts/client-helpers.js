@@ -16,6 +16,8 @@ const renderTasks = (tasks) => {
   $taskContainer.empty();
 
   for (const task of tasks) {
+    console.log(task);
+
     const $task = createTaskElement(task);
     const $details = getTaskDetails(task);
 
@@ -25,15 +27,29 @@ const renderTasks = (tasks) => {
 };
 
 const getTaskDetails = (task) => {
-  switch (task.category) {
-    // case 'restaurants':
-    // case 'books':
-    case 'films':
-      return loadFilmTaskDetails(task);
-      break;
-    // case 'products':
-    // case 'others':
-    default:
-      return null;
-  }
+  $.get(`/tasks/${task.category}`)
+    .then((data) => {
+      console.log(data.tasks);
+      data.tasks.forEach((val) => {
+        if (val.task_id === task.id) {
+          return data;
+        }
+      });
+    })
+    .then((data) => {
+      switch (task.category) {
+        // case 'restaurants':
+        // case 'books':
+        case 'films':
+          return loadFilmTaskDetails(task.id);
+          break;
+        // case 'products':
+        // case 'others':
+        default:
+          return null;
+      }
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
 };
