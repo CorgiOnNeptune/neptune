@@ -43,6 +43,7 @@ const createTaskElement = (task) => {
     completeStatus = "not-completed";
     iconSrc = "images/not-completed.png";
   }
+  const dueDate = task.due_date.slice(0, 10);
   const $task = $(`
   <li id="task_id_${task.id}">
     <div class="task-content">
@@ -50,7 +51,7 @@ const createTaskElement = (task) => {
                 <i class="fa-solid fa-video category-icon"></i>
                 <span>${escape(task.task_name)}</span>
                 <span class="edit-delete-section">
-                  <span class="due-date">Due Jan 9 2023</span>
+                  <span class="due-date">Due ${dueDate}</span>
                   <span class="edit-delete"><button data-modal-target="#old-task-editor"><i class="fa-solid fa-pen-to-square"></i></button></span>
                   <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
                 </span>
