@@ -49,6 +49,9 @@
 
       .complete-status {
         width: 2.2em;
+        &:hover {
+          cursor: pointer;
+        }
       }
 
       .category-icon {
