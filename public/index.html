@@ -80,7 +80,7 @@
         <div id="tasks-container">
           <ul>
             <li>
-              <div>
+              <div class="task-content">
                 <input type="checkbox"/>
                 <span>Watch Arrival</span>
                 <span class="edit-delete-section">
@@ -96,7 +96,7 @@
                 aria-controls="collapseExample">
                 <i class="fa-solid fa-angles-down"></i>
               </button>
-              <div class="watch-details" id="collapseExample">
+              <div class="details" id="collapseExample">
                 <div class="poster-container"><img src="https://www.themoviedb.org/t/p/original/1AnfXMG9PPMVjwXcHW6JLSJUbPo.jpg" alt=""></div>
                 <div class="info">
                   <div class="info-header">
@@ -156,32 +156,36 @@
         </div>
       </div>
     </main>
+
     <div class="new-task-editor" id="new-task-editor">
-      <div class="header">
-        <div class="title">New Task</div>
+      <div class="editor-header">
+        <div class="editor-title">New Task</div>
         <button data-close-button class="close-btn">&times;</button>
       </div>
-
-      <div class="body">
+      <div class="editor-body">
         <form action="" class="new-task-form">
 
-          <label for="">Task name</label><br>
-          <input type="text" id="task-name" name="task-name"><br>
+          <div class="task-name-label">Task Name</div>
+          <textarea name="task-name" id="task-name" cols="30" rows="2"></textarea><br>
 
-          <label for="category">Category</label>
-          <select name="category" id="category">
-            <option value="auto" selected="selected">Auto</option>
-            <option value="watch">Watch</option>
-            <option value="read">Read</option>
-            <option value="eat">Eat</option>
-            <option value="buy">Buy</option>
-            <option value="others">Others</option>
-          </select><br>
+          <div class="category-div">
+            <label for="category">Category</label>
+            <select name="category" id="category">
+              <option value="auto" selected="selected">Auto</option>
+              <option value="watch">Watch</option>
+              <option value="read">Read</option>
+              <option value="eat">Eat</option>
+              <option value="buy">Buy</option>
+              <option value="others">Others</option>
+            </select><br>
+          </div>
 
-          <label for="due-date">Due Date</label>
-          <input type="date" id="due-day"><br>
+          <div class="due-date-div">
+            <label for="due-date">Due Date</label>
+            <input type="date" id="due-date"><br>
+          </div>
 
-          <button type="submit">Create</button>
+          <button class="submit-btn" type="submit">Create</button>
         </form>
       </div>
     </div>
