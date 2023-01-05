@@ -1,15 +1,18 @@
-const { wordInString } = require('./db-helpers');
+const { matchCategoryKeyword } = require('./db-helpers');
 
 const determineCategory = (task) => {
-  const keywords = ['Eat', 'Watch', 'Read', 'Buy'];
+  let category = matchCategoryKeyword(task.description) || undefined;
+  if (category) {
+    return category;
+  }
 
-  keywords.forEach((val) => {
-    if (wordInString(task.description, val)) {
 
-    }
-  })
+
+
 
 };
+
+console.log(determineCategory({ description: 'Gremlins' }));
 
 const makeAPIRequest = (request) => {
 
