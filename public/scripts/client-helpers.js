@@ -54,7 +54,7 @@ const createTaskElement = (task) => {
     completeStatus = "not-completed";
     iconSrc = "images/not-completed.png";
   }
-  const dueDate = task.due_date.slice(0, 10);
+  const dueDate = formatDate(task.due_date.slice(0, 10));
   let iconType = `<i class="fa-solid fa-clipboard category-icon"></i>`;
   if (task.category === "films") {
     iconType = `<i class="fa-solid fa-video category-icon"></i>`;
@@ -75,14 +75,14 @@ const createTaskElement = (task) => {
   const $task = $(`
   <li id="task_id_${task.id}">
     <div class="task-content">
-                  <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
-                ${iconType}
-                <span>${escape(task.task_name)}</span>
-                <span class="edit-delete-section">
-                  <span class="due-date">Due ${dueDate}</span>
-                  <span class="edit-delete"><button data-modal-target="#old-task-editor"><i class="fa-solid fa-pen-to-square"></i></button></span>
-                  <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
-                </span>
+      <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
+      ${iconType}
+      <span>${escape(task.task_name)}</span>
+      <span class="edit-delete-section">
+        <span class="due-date">Due ${dueDate}</span>
+        <span class="edit-delete"><button data-modal-target="#old-task-editor"><i class="fa-solid fa-pen-to-square"></i></button></span>
+        <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
+      </span>
     </div>
   </li>
   `);
@@ -153,3 +153,24 @@ const loadTasksByCategory = function () {
     }
   });
 };
+
+/**
+ * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
+ * @param {string} date
+ */
+
+const formatDate = (date) => {
+  if (!date) return;
+
+  const dateArr = date.split('-');
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  let month = dateArr[1];
+
+  months.forEach((val, index) => {
+    if (index + 1 === Number(month)) {
+      month = months[index];
+    }
+  })
+
+  return `${month} ${dateArr[2]}, ${dateArr[0]}`;
+}
