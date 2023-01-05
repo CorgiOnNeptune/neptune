@@ -51,7 +51,7 @@
     .task-name-label {
       margin: 2% 0;
     }
-    #task-name {
+    #task_name {
       width: 100%;
       border: 1.5px solid rgba($color: $font-color, $alpha: .5);
       resize: none;
@@ -70,7 +70,7 @@
     }
 
     select,
-    #due-date {
+    #due_date {
       background-color: transparent;
       border: 1.5px solid rgba($color: $font-color, $alpha: .5);
       border-radius: 5px;
