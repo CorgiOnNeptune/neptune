@@ -1,4 +1,4 @@
-.new-task-editor {
+.editor {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -99,7 +99,7 @@
   }
 }
 
-.new-task-editor.active {
+.editor.active {
   transform: translate(-50%, -50%) scale(1);
 }
 
