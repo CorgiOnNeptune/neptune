@@ -3,7 +3,7 @@
  * @param {string} word Word to check for in string.
  * @return boolean if the word is in the string.
  */
-const wordInString = (str, word) => {
+const findWordInString = (str, word) => {
   return new RegExp('\\b' + word + '\\b', 'i').test(str);
 };
 
@@ -17,7 +17,7 @@ const matchCategoryKeyword = (string) => {
   const keywords = ['eat', 'watch', 'read', 'buy'];
 
   keywords.some((val, index) => {
-    if (wordInString(string, val)) {
+    if (findWordInString(string, val)) {
       category = categories[index];
     }
   })
@@ -34,4 +34,7 @@ const determineCategory = (task) => {
   if (newCategory) {
     return newCategory;
   }
+
+  // // If match not found, ask APIs.
+  // return makeAPIRequests(task.description);
 };
