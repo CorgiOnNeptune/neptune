@@ -23,7 +23,7 @@ openEditorButtons.forEach(button => {
 
 closeEditorButtons.forEach(button => {
   button.addEventListener('click', () => {
-    const editor = button.closest('.new-task-editor');
+    const editor = button.closest('.editor');
     closeEditor(editor);
   });
 });
