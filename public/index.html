@@ -82,9 +82,10 @@
             <li>
               <div class="task-content">
                 <input type="checkbox"/>
-                <span>Watch Arrival</span>
+                <span><i class="fa-solid fa-video category-icon"></i>Watch Arrival</span>
                 <span class="edit-delete-section">
-                  <span class="edit-delete"><button><i class="fa-solid fa-pen-to-square"></i></button></span>
+                  <span class="due-date">Due Jan 9 2023</span>
+                  <span class="edit-delete"><button data-modal-target="#old-task-editor"><i class="fa-solid fa-pen-to-square"></i></button></span>
                   <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
                 </span></div>
               <button
@@ -157,7 +158,7 @@
       </div>
     </main>
 
-    <div class="new-task-editor" id="new-task-editor">
+    <div class="editor" id="new-task-editor">
       <div class="editor-header">
         <div class="editor-title">New Task</div>
         <button data-close-button class="close-btn">&times;</button>
@@ -186,6 +187,39 @@
           </div>
 
           <button class="submit-btn" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="editor" id="old-task-editor">
+      <div class="editor-header">
+        <div class="editor-title">Edit Task</div>
+        <button data-close-button class="close-btn">&times;</button>
+      </div>
+      <div class="editor-body">
+        <form action="" class="new-task-form">
+
+          <div class="task-name-label">Task Name</div>
+          <textarea name="task-name" id="task-name" cols="30" rows="2"></textarea><br>
+
+          <div class="category-div">
+            <label for="category">Category</label>
+            <select name="category" id="category">
+              <option value="auto" selected="selected">Auto</option>
+              <option value="watch">Watch</option>
+              <option value="read">Read</option>
+              <option value="eat">Eat</option>
+              <option value="buy">Buy</option>
+              <option value="others">Others</option>
+            </select><br>
+          </div>
+
+          <div class="due-date-div">
+            <label for="due-date">Due Date</label>
+            <input type="date" id="due-date"><br>
+          </div>
+
+          <button class="submit-btn" type="submit">Edit</button>
         </form>
       </div>
     </div>
