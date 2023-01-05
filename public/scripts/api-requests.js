@@ -1,40 +1,44 @@
-const determineCategory = (task) => {
-  if (task.category && task.category !== 'auto') {
-    return task.category;
-  }
-
-  let newCategory = matchCategoryKeyword(task.description) || undefined;
-  if (newCategory) {
-    return newCategory;
-  }
-
-  // makeAPIRequests(task.description)
-  //   .then((query) => {
-  //     omdbRequest(query)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.message);
-  //   })
-
-};
-
 const makeAPIRequests = (query) => {
-  return new Promise((resolve, reject) => {
-    if (query) {
-      resolve('Stuff worked!');
-    }
-    if (!query) {
-      reject(Error('Failed query :('));
-    }
-  });
+
+
 };
 
-// const omdbRequest = (query) => {
-//   const apiKey = process.env.OMDB_API_KEY;
+const omdbRequest = (query) => {
+  $.get((`/api/omdb/${query}`))
+    .then((data) => {
 
-//   $.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${query}`, (data) => {
-//     return data;
-//   });
-// };
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
+}
 
-console.log(determineCategory({ description: 'Watch Gremlins' }));
+// const yelpRequest = (query) => {
+//   $.get((`/api/yelp/${query}`))
+//     .then((data) => {
+
+//     })
+//     .fail((err) => {
+//       console.log(err.message);
+//     });
+// }
+
+// const gbooksRequest = (query) => {
+//   $.get((`/api/gbooks/${query}`))
+//     .then((data) => {
+
+//     })
+//     .fail((err) => {
+//       console.log(err.message);
+//     });
+// }
+
+// const amznRequest = (query) => {
+//   $.get((`/api/amazonprice/${query}`))
+//     .then((data) => {
+
+//     })
+//     .fail((err) => {
+//       console.log(err.message);
+//     });
+// }
