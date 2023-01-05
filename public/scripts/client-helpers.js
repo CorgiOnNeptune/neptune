@@ -12,8 +12,8 @@ const submitNewTask = (element) => {
 };
 
 const completeStatusAnimation = function() {
-  $(".complete-status").click(() => {
-    $(".complete-status").fadeOut(250, function() {
+  $(".complete-status").click(function() {
+    $(this).fadeOut(250, function() {
       if ($(this).attr("src") === "images/not-completed.png") {
         $(this).attr("src", "images/completed.png");
         $(this).removeClass("not-completed");
@@ -74,6 +74,9 @@ const loadTasks = function() {
   })
     .then((tasks) => {
       renderTasks(tasks.tasks);
+      // re-register the click event for newly emerged tasks
+      completeStatusAnimation();
+
     })
     .catch((error) => {
       console.log(error);

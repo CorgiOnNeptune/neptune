@@ -8,8 +8,5 @@ $(() => {
     submitNewTask(this);
   });
 
-  completeStatusAnimation();
-
   loadTasks();
-
 });
