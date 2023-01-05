@@ -39,7 +39,7 @@
     padding: 0;
     &:hover {
       transition: 0.5s all;
-        color: #97b251;
+        color: $hover-color;
         cursor: pointer;
     }
   }
@@ -60,7 +60,7 @@
 
       &:hover {
         transition: 0.5s all;
-        color: #97b251;
+        color: $hover-color;
         cursor: pointer;
       }
     }
