@@ -1,5 +1,6 @@
 const db = require('../connection');
 const dbHelpers = require('../db-helpers');
+const apiCalls = require('../api-calls');
 
 /**
  * Get all tasks for user.
@@ -67,6 +68,10 @@ const getAllTasks = (queryParams) => {
  */
 const createTask = (task) => {
   const taskValues = ['user_id', 'category', 'description', 'due_date'];
+
+  if (task.category === 'auto') {
+    task.category = apiCalls.determineCategory(task);
+  }
 
   const queryString = `
   INSERT INTO tasks(${taskValues.join(', ')})
