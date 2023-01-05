@@ -16,13 +16,13 @@ const renderTasks = (tasks) => {
   $taskContainer.empty();
 
   for (const task of tasks) {
-    // console.log(task);
+    console.log(task);
 
     const $task = createTaskElement(task);
-    const $details = getTaskDetails(task);
+    // const $details = getTaskDetails(task);
 
-    $('.task-details').append($details);
-    $taskContainer.prepend($task);
+    // $('.task-details').append($details);
+    $taskContainer.append($task);
   }
 };
 
