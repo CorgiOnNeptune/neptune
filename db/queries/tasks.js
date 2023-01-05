@@ -15,7 +15,7 @@ const getAllTasks = (queryParams) => {
 
   const values = [user_id];
 
-  const showCompletedTasks = `WHERE tasks.complete = ${completed} `;
+  const restrictCompleteStatus = `WHERE tasks.complete = ${completed} `;
   let categorySpecified;
 
   if (category !== 'all') {
@@ -35,16 +35,27 @@ const getAllTasks = (queryParams) => {
   if (categorySpecified) {
     queryString += `JOIN ${category} ON task_id = tasks.id `;
   }
-
-  queryString += showCompletedTasks;
-
-  if (categorySpecified) {
-    queryString += `AND tasks.category = $2 `;
+  if (completed !== null) {
+    queryString += restrictCompleteStatus;
   }
 
-  queryString += `
-  AND tasks.user_id = $1
+  if (categorySpecified) {
+    if (completed === null) {
+      queryString += `WHERE tasks.category = $2 `;
+    } else {
+      queryString += `AND tasks.category = $2 `;
+    }
+  }
+
+  if (completed === null && !categorySpecified) {
+    queryString += `
+  WHERE tasks.user_id = $1
   ORDER BY tasks.due_date ASC;`;
+  } else {
+    queryString += `
+    AND tasks.user_id = $1
+    ORDER BY tasks.due_date ASC;`;
+  }
 
   console.log(queryString);
 
@@ -80,6 +91,7 @@ const createTask = (task) => {
     .query(queryString, values)
     .then((data) => {
       console.log(data.rows);
+      console.log(queryString);
       return data.rows[0];
     })
     .catch((err) => {
