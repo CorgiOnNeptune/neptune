@@ -4,6 +4,7 @@
 
 #main-board {
   width: 80%;
+  min-height: 100vh;
   margin-left: 20%;
   font-family: $main-font;
   font-weight: 400;
@@ -25,7 +26,7 @@
     }
   }
 
-  #to-do-entries {
+  #tasks-container {
     width: 90%;
     margin: 0 auto;
 
@@ -46,11 +47,32 @@
       padding: 1em;
       position: relative;
 
+      .category-icon {
+        margin-right: 1em;
+      }
+
+      .edit-delete-section {
+        position: absolute;
+        right: 5%;
+      }
+
+      .due-date {
+        opacity: 0.6;
+      }
+
+      .edit-delete {
+        font-size: 1.25em;
+        button:hover {
+          color: $hover-color;
+        }
+        margin-left: 1em;
+      }
+
       .fa-circle-plus {
         font-size: 3em;
 
         &:hover {
-          color: #97b251;
+          color: $hover-color;
           cursor: pointer;
         }
       };
