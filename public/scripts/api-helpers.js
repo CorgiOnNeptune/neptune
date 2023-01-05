@@ -24,3 +24,14 @@ const matchCategoryKeyword = (string) => {
 
   return category;
 }
+
+const determineCategory = (task) => {
+  if (task.category && task.category !== 'auto') {
+    return task.category;
+  }
+
+  let newCategory = matchCategoryKeyword(task.description) || undefined;
+  if (newCategory) {
+    return newCategory;
+  }
+};
