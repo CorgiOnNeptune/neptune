@@ -47,9 +47,17 @@
       padding: 1em;
       position: relative;
 
+      .category-icon {
+        margin-right: 1em;
+      }
+
       .edit-delete-section {
         position: absolute;
         right: 5%;
+      }
+
+      .due-date {
+        opacity: 0.6;
       }
 
       .edit-delete {
