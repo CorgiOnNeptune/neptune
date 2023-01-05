@@ -42,7 +42,6 @@ const getTaskDetails = (taskInfo) => {
         // case 'restaurants':
         // case 'books':
         case 'films':
-          console.log('holy poo');
           console.log(categoryData);
           return loadFilmTaskDetails(categoryData);
           break;
