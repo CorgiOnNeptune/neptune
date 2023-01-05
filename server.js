@@ -38,8 +38,6 @@ const loginRoutes = require('./routes/login');
 const logoutRoutes = require('./routes/logout');
 const tasksRoutes = require('./routes/tasks');
 
-const userApiRoutes = require('./routes/users-api');
-const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
 
 // Mount all resource routes
@@ -48,7 +46,6 @@ app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
 app.use('/tasks', tasksRoutes);
 
-app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 
 // Home page

@@ -10,10 +10,11 @@
     width: 25%;
     display: flex;
     align-items: center;
-  }
-  img {
-    max-width: 100%;
-    margin: auto;
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      margin: auto;
+    }
   }
   .info {
     width: 45%;

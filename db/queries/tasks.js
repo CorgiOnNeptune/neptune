@@ -60,4 +60,78 @@ const getAllTasks = (queryParams) => {
     });
 };
 
-module.exports = { getAllTasks };
+/**
+ * Adds a new task to the database
+ * @param {{}} task An object containing all of the task details.
+ * @return {Promise<[{}]>} A promise to the tasks.
+ */
+const createTask = (task) => {
+  const taskValues = ['user_id', 'category', 'description', 'due_date'];
+
+  const queryString = `
+  INSERT INTO tasks(${taskValues.join(', ')})
+  VALUES($1, $2, $3, $4)
+  RETURNING *;
+  `;
+
+  const values = taskValues.map((value) => task[value]);
+
+  return db
+    .query(queryString, values)
+    .then((data) => {
+      console.log(data.rows);
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+/**
+ * Adds new task data to appropriate category database
+ * @param {{}} taskData An object containing all of the API obtained info.
+ * @param string A string of appropriate category, based on API call.
+ * @return {Promise<[{}]>} A promise to the tasks categories.
+ */
+const addTaskToCategory = (taskData, category) => {
+  // ! Using placeholder for 'films' category
+  // TODO: Will need to get the category values via API or other function call
+  // ! NEED to add 'ARRAY' before array values in the query
+  const categoryValues = [
+    'task_id',
+    'title',
+    'release_date',
+    'cover_photo_url',
+    'more_info_url',
+    'rating',
+    'summary',
+    'genres',
+    'backdrop_photo_url',
+  ];
+
+  const insertValues = [];
+
+  categoryValues.forEach((val, index) => insertValues.push(`$${index + 1}`));
+
+  const queryString = `
+  INSERT INTO ${taskData.category}(${categoryValues.join(', ')})
+  VALUES(${insertValues.join(', ')})
+  RETURNING *;
+  `;
+
+  const values = categoryValues.map((val) => taskData[val]);
+
+  return db
+    .query(queryString, values)
+    .then((data) => {
+      console.log(data.rows);
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+module.exports = { getAllTasks, createTask, addTaskToCategory };

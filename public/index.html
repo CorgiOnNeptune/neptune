@@ -23,6 +23,9 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous" />
 
+    <!-- jQuery/Ajax JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Favicon -->
     <link href="./images/favicon-light.png" rel="icon" media="(prefers-color-scheme: light)" />
     <link href="./images/favicon-dark.png" rel="icon" media="(prefers-color-scheme: dark)" />
@@ -165,10 +168,10 @@
         <button data-close-button class="close-btn">&times;</button>
       </div>
       <div class="editor-body">
-        <form action="" class="new-task-form">
+        <form action="/tasks" method="POST" class="new-task-form">
 
           <div class="task-name-label">Task Name</div>
-          <textarea name="task-name" id="task-name" cols="30" rows="2"></textarea><br>
+          <textarea name="task_name" id="task_name" cols="30" rows="2"></textarea><br>
 
           <div class="category-div">
             <label for="category">Category</label>
@@ -183,8 +186,8 @@
           </div>
 
           <div class="due-date-div">
-            <label for="due-date">Due Date</label>
-            <input type="date" id="due-date"><br>
+            <label for="due_date">Due Date</label>
+            <input name="due_date" type="date" id="due_date"><br>
           </div>
 
           <button class="submit-btn" type="submit">Create</button>
@@ -201,7 +204,7 @@
         <form action="" class="new-task-form">
 
           <div class="task-name-label">Task Name</div>
-          <textarea name="task-name" id="task-name" cols="30" rows="2"></textarea><br>
+          <textarea name="task_name" id="task_name" cols="30" rows="2"></textarea><br>
 
           <div class="category-div">
             <label for="category">Category</label>
@@ -216,8 +219,8 @@
           </div>
 
           <div class="due-date-div">
-            <label for="due-date">Due Date</label>
-            <input type="date" id="due-date"><br>
+            <label for="due_date">Due Date</label>
+            <input type="date" id="due_date"><br>
           </div>
 
           <button class="submit-btn" type="submit">Edit</button>
@@ -232,9 +235,12 @@
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-      crossorigin="anonymous">
-    </script>
+      crossorigin="anonymous"></script>
+
+    <!-- App JS -->
     <script src="./scripts/new-task.js"></script>
+    <script src="./scripts/client-helpers.js"></script>
+    <script src="./scripts/client.js"></script>
     <script src="./scripts/task-content.js"></script>
   </body>
 </html>

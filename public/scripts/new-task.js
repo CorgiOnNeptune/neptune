@@ -1,17 +1,17 @@
 const openEditorButtons = document.querySelectorAll('[data-modal-target]');
-const closeEditorButtons = document.querySelectorAll('[data-close-button]');
-const overlay = document.getElementById('overlay');
+const closeEditorButton = $('.close-btn');
+const overlay = $('#overlay');
 
-const openEditor = function(editor) {
+const openEditor = function (editor) {
   if (!editor) return;
   editor.classList.add('active');
-  overlay.classList.add('active');
+  overlay.addClass('active');
 };
 
-const closeEditor = function(editor) {
+const closeEditor = function (editor) {
   if (!editor) return;
-  editor.classList.remove('active');
-  overlay.classList.remove('active');
+  editor.removeClass('active');
+  overlay.removeClass('active');
 };
 
 openEditorButtons.forEach(button => {
@@ -21,9 +21,7 @@ openEditorButtons.forEach(button => {
   });
 });
 
-closeEditorButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const editor = button.closest('.editor');
-    closeEditor(editor);
-  });
+closeEditorButton.on('click', () => {
+  const editor = $('.editor');
+  closeEditor(editor);
 });
