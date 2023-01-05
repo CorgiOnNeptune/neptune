@@ -3,12 +3,12 @@
  */
 
 $(() => {
-
   $('.new-task-form').on('submit', function (event) {
     event.preventDefault();
     submitNewTask(this);
   });
 
-  completeStatusAnimation();
+  loadTasks();
 
+  loadTasksByCategory();
 });

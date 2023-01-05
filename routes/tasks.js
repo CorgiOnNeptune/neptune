@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 
   const queryParams = {
     user_id: req.session.user_id,
-    completed: false,
+    // completed: false,
   };
 
   database
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
-    });
+    }); // this is rnot returning completed tasks for some reason
 });
 
 /*
@@ -56,6 +56,27 @@ router.get('/completed', (req, res) => {
     });
 });
 
+router.get('/incomplete', (req, res) => {
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to view tasks.');
+    return;
+  }
+
+  const queryParams = {
+    user_id: req.session.user_id,
+    completed: false,
+  };
+
+  database
+    .getAllTasks(queryParams)
+    .then((tasks) => {
+      res.json({ tasks });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 /*
  * Get incomplete tasks filtered by category
  */
@@ -68,7 +89,6 @@ router.get('/:filter', (req, res) => {
   const queryParams = {
     user_id: req.session.user_id,
     category: req.params.filter,
-    completed: false,
   };
 
   database
