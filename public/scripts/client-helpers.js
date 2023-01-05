@@ -44,11 +44,28 @@ const createTaskElement = (task) => {
     iconSrc = "images/not-completed.png";
   }
   const dueDate = task.due_date.slice(0, 10);
+  let iconType = `<i class="fa-solid fa-clipboard category-icon"></i>`;
+  if (task.category === "films") {
+    iconType = `<i class="fa-solid fa-video category-icon"></i>`;
+  }
+  if (task.category === "books") {
+    iconType = `<i class="fa-solid fa-book-open category-icon"></i>`;
+  }
+  if (task.category === "restaurants") {
+    iconType = `<i class="fa-solid fa-utensils category-icon"></i>`;
+  }
+  if (task.category === "products") {
+    iconType = `<i class="fa-solid fa-cart-shopping category-icon"></i>`;
+  }
+  if (task.category === "others") {
+    iconType = `<i class="fa-solid fa-clipboard-question category-icon"></i>`;
+  }
+
   const $task = $(`
   <li id="task_id_${task.id}">
     <div class="task-content">
                   <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
-                <i class="fa-solid fa-video category-icon"></i>
+                ${iconType}
                 <span>${escape(task.task_name)}</span>
                 <span class="edit-delete-section">
                   <span class="due-date">Due ${dueDate}</span>
