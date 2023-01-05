@@ -56,6 +56,27 @@ router.get('/completed', (req, res) => {
     });
 });
 
+router.get('/incomplete', (req, res) => {
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to view tasks.');
+    return;
+  }
+
+  const queryParams = {
+    user_id: req.session.user_id,
+    completed: false,
+  };
+
+  database
+    .getAllTasks(queryParams)
+    .then((tasks) => {
+      res.json({ tasks });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 /*
  * Get incomplete tasks filtered by category
  */
