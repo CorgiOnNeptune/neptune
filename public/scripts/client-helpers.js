@@ -1,8 +1,19 @@
 const submitNewTask = (element) => {
   const $form = $(element);
+  const formArray = $form.serializeArray();
 
-  $.post('/tasks', $form.serialize())
+  const task = {
+    description: formArray[0].value,
+    category: formArray[1].value,
+    due_date: formArray[2].value
+  };
+
+  task.category = determineCategory(task);
+
+  $.post('/tasks', task)
     .then(() => {
+      $("#tasks-ul").empty();
+      loadTasks('incomplete');
       $form[0].reset();
       closeEditor($('.editor'));
     })
@@ -11,9 +22,9 @@ const submitNewTask = (element) => {
     });
 };
 
-const completeStatusAnimation = function() {
-  $(".complete-status").click(function() {
-    $(this).fadeOut(250, function() {
+const completeStatusAnimation = function () {
+  $(".complete-status").click(function () {
+    $(this).fadeOut(250, function () {
       if ($(this).attr("src") === "images/not-completed.png") {
         $(this).attr("src", "images/completed.png");
         $(this).removeClass("not-completed");
@@ -27,7 +38,7 @@ const completeStatusAnimation = function() {
   });
 };
 
-const escape = function(str) {
+const escape = function (str) {
   let div = document.createElement("div");
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
@@ -78,14 +89,14 @@ const createTaskElement = (task) => {
   return $task;
 };
 
-const renderTasks = function(tasks) {
+const renderTasks = function (tasks) {
   for (let task of tasks) {
     const $task = createTaskElement(task);
     $('#tasks-ul').prepend($task);
   }
 };
 
-const loadTasks = function(category) {
+const loadTasks = function (category) {
   let url = "/tasks";
   if (category) {
     url += `/${category}`;
@@ -105,8 +116,8 @@ const loadTasks = function(category) {
     });
 };
 
-const loadTasksByCategory = function() {
-  $(".menu-category").click(function() {
+const loadTasksByCategory = function () {
+  $(".menu-category").click(function () {
     $("#tasks-ul").empty();
 
     if ($(this).hasClass("all-tasks")) {
