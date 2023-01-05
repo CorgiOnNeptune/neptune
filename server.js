@@ -38,7 +38,7 @@ const loginRoutes = require('./routes/login');
 const logoutRoutes = require('./routes/logout');
 const tasksRoutes = require('./routes/tasks');
 
-const usersRoutes = require('./routes/users');
+const apiRoutes = require('./routes/api-routes');
 
 // Mount all resource routes
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
@@ -46,7 +46,7 @@ app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
 app.use('/tasks', tasksRoutes);
 
-app.use('/users', usersRoutes);
+app.use('/api', apiRoutes);
 
 // Home page
 app.get('/', (req, res) => {
