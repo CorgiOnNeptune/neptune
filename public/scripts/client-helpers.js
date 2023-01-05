@@ -91,6 +91,10 @@ const loadTasksByCategory = function() {
   $(".menu-category").click(function() {
     $("#tasks-ul").empty();
 
+    if ($(this).hasClass("all-tasks")) {
+      loadTasks();
+    }
+
     if ($(this).hasClass("incomplete-tasks")) {
       loadTasks("incomplete");
     }
