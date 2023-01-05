@@ -8,7 +8,7 @@ $(() => {
     submitNewTask(this);
   });
 
-  loadTasks();
+  loadTasks("incomplete");
 
   loadTasksByCategory();
 });
