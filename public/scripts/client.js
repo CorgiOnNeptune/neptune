@@ -9,4 +9,6 @@ $(() => {
   });
 
   loadTasks();
+
+  loadTasksByCategory();
 });

@@ -67,9 +67,13 @@ const renderTasks = function(tasks) {
   }
 };
 
-const loadTasks = function() {
+const loadTasks = function(category) {
+  let url = "/tasks";
+  if (category) {
+    url += `/${category}`;
+  }
   $.ajax({
-    url: "/tasks",
+    url: url,
     method: "GET"
   })
     .then((tasks) => {
@@ -81,4 +85,19 @@ const loadTasks = function() {
     .catch((error) => {
       console.log(error);
     });
+};
+
+const loadTasksByCategory = function() {
+  $(".menu-category").click(function() {
+    $("#tasks-ul").empty();
+
+    if ($(this).hasClass("incomplete-tasks")) {
+      loadTasks("incomplete");
+    }
+
+    if ($(this).hasClass("completed-tasks")) {
+      loadTasks("completed");
+    }
+  });
+
 };
