@@ -20,18 +20,14 @@ const checkValidCategory = (category) => {
 
 /**
  * @param {boolean} completed Input to check presence of completed bool.
- * @return returns boolean of the input, else null.
+ * @return returns true for true or 'completed', else false.
  */
 const validateCompleted = (completed) => {
   if (completed === true || completed === 'completed') {
     return true;
   }
 
-  if (completed === false || completed === 'incomplete') {
-    return false;
-  }
-
-  return null;
+  return false;
 };
 
 module.exports = {
