@@ -6,7 +6,13 @@ $(() => {
   function createTaskElement(task) {
     return `
   <li>
-    <input type="checkbox" />${task.description}
+    <div class="task-content">
+      <input type="checkbox"/>
+      <span>${task.description}</span>
+      <span class="edit-delete-section">
+        <span class="edit-delete"><button><i class="fa-solid fa-pen-to-square"></i></button></span>
+        <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
+      </span></div>
     <button
       class="collapse-btn"
       type="button"
