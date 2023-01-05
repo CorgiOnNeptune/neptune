@@ -17,6 +17,8 @@ $(() => {
       aria-controls="collapseExample">
       <i class="fa-solid fa-angles-down"></i>
     </button>
+    <div class="task-details" id="collapseExample">
+    </div>
   </li>
   `;
   };

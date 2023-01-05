@@ -27,8 +27,3 @@ closeEditorButtons.forEach((button) => {
     closeEditor(editor);
   });
 });
-
-module.exports = {
-  openEditor,
-  closeEditor,
-};

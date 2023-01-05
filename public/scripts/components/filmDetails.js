@@ -7,7 +7,6 @@ const compHelpers = require('./component-helpers.js');
 $(() => {
   const loadFilmTaskDetails = function(film) => {
     return `
-  <div class="watch-details" id="collapseExample">
     <div class="poster-container"><img src="${
       film.cover_photo_url
     }" alt="" /></div>
@@ -53,7 +52,7 @@ $(() => {
         <a href="${compHelpers.getJustWatchURL(film)}">
           <img src="images/just-watch-logo.png" alt="justwatch" />
         </a>
-      </div>`;
+        `;
     };
 
   module.exports = {
