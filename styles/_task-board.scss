@@ -47,8 +47,16 @@
       padding: 1em;
       position: relative;
 
+      .complete-status {
+        width: 2.2em;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
       .category-icon {
-        margin-right: 1em;
+        margin-right: 0.5em;
+        margin-left: 1em;
       }
 
       .edit-delete-section {

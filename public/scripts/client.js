@@ -9,4 +9,6 @@ $(() => {
     submitNewTask(this);
   });
 
+  completeStatusAnimation();
+
 });
