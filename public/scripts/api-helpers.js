@@ -30,11 +30,17 @@ const determineCategory = (task) => {
     return task.category;
   }
 
-  let newCategory = matchCategoryKeyword(task.description) || undefined;
-  if (newCategory) {
-    return newCategory;
+  let autoCategory = matchCategoryKeyword(task.description) || undefined;
+  if (autoCategory) {
+    return autoCategory;
   }
 
-  // // If match not found, ask APIs.
-  // return makeAPIRequests(task.description);
+  // If match not found, ask APIs.
+  const apiCategory = makeAPIRequests(task.description);
+
+  if (apiCategory) {
+    return apiCategory;
+  }
+
+  return 'others';
 };
