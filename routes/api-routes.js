@@ -14,7 +14,11 @@ router.get('/omdb/:query', (req, res, next) => {
   const apiKey = process.env.OMDB_API_KEY;
 
   axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${query}`)
-    .then(data => res.json(data))
+    .then(data => {
+      console.log('OMDB Request Complete');
+      console.log(data.status);
+      return data;
+    })
     .catch(err => next(err));
 });
 

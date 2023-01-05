@@ -137,7 +137,7 @@ router.post('/', (req, res) => {
 
   const newTask = {
     user_id: req.session.user_id,
-    description: req.body.task_name,
+    description: req.body.description,
     category: req.body.category,
     due_date: req.body.due_date,
   };
