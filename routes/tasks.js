@@ -109,7 +109,6 @@ router.get('/:filter/:completed', (req, res) => {
 /*
  * Post to create new task
  */
-// TODO: NOT IMPLEMENTED AT ALL. DOESN'T WORK.
 router.post('/', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to create tasks.');
