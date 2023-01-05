@@ -98,6 +98,25 @@ const loadTasksByCategory = function() {
     if ($(this).hasClass("completed-tasks")) {
       loadTasks("completed");
     }
-  });
 
+    if ($(this).hasClass("watch-tasks")) {
+      loadTasks("films");
+    }
+
+    if ($(this).hasClass("read-tasks")) {
+      loadTasks("books");
+    }
+
+    if ($(this).hasClass("eat-tasks")) {
+      loadTasks("restaurants");
+    }
+
+    if ($(this).hasClass("shop-tasks")) {
+      loadTasks("products");
+    }
+
+    if ($(this).hasClass("others-tasks")) {
+      loadTasks("others");
+    }
+  });
 };
