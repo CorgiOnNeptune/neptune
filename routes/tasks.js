@@ -110,28 +110,23 @@ router.get('/:filter/:completed', (req, res) => {
  * Post to create new task
  */
 // TODO: NOT IMPLEMENTED AT ALL. DOESN'T WORK.
-router.post('/new', (req, res) => {
-  // if (!req.session.user_id) {
-  //   throw new Error('Must be logged in to create tasks.');
-  //   return;
-  // }
+router.post('/', (req, res) => {
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to create tasks.');
+    return;
+  }
 
-  const user_id = req.session.user_id;
-
-  const task = req.body;
-  console.log('task', task);
-
-  const queryParams = {
-    user_id,
-    description,
-    category,
-    due_date,
+  const newTask = {
+    user_id: req.session.user_id,
+    description: req.body.task_name,
+    category: req.body.category,
+    due_date: req.body.due_date,
   };
 
   database
-    .createTask(queryParams)
-    .then((tasks) => {
-      res.json({ tasks });
+    .createTask(newTask)
+    .then((task) => {
+      res.json({ task });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
