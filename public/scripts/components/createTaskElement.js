@@ -1,10 +1,9 @@
 /**
  * Takes in task object to parse data for task element.
  * @param {{}} task
- * TODO: Initialize in client.js
  */
 $(() => {
-  const createTaskElement = function(task) => {
+  function createTaskElement(task) {
     return `
   <li>
     <input type="checkbox" />${task.description}
@@ -21,9 +20,5 @@ $(() => {
     </div>
   </li>
   `;
-  };
-
-  module.exports = {
-    createTaskElement,
-  };
+  }
 });

@@ -1,11 +1,8 @@
-const compHelpers = require('./component-helpers.js');
-
 /**
  * @param {{}} film takes in film object to parse data.
- * TODO: Append to task element
  */
 $(() => {
-  const loadFilmTaskDetails = function(film) => {
+  function loadFilmTaskDetails(film) {
     return `
     <div class="poster-container"><img src="${
       film.cover_photo_url
@@ -53,9 +50,5 @@ $(() => {
           <img src="images/just-watch-logo.png" alt="justwatch" />
         </a>
         `;
-    };
-
-  module.exports = {
-    loadFilmTaskDetails,
-    };
+  }
 });
