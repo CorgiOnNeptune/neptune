@@ -113,34 +113,43 @@ const loadTasksByCategory = function () {
 
     if ($(this).hasClass("all-tasks")) {
       loadTasks();
+      $("#header-text").text("All");
+
     }
 
     if ($(this).hasClass("incomplete-tasks")) {
       loadTasks("incomplete");
+      $("#header-text").text("Incomplete");
     }
 
     if ($(this).hasClass("completed-tasks")) {
       loadTasks("completed");
+      $("#header-text").text("Completed");
     }
 
     if ($(this).hasClass("watch-tasks")) {
       loadTasks("films");
+      $("#header-text").text("Watch");
     }
 
     if ($(this).hasClass("read-tasks")) {
       loadTasks("books");
+      $("#header-text").text("Read");
     }
 
     if ($(this).hasClass("eat-tasks")) {
       loadTasks("restaurants");
+      $("#header-text").text("Eat");
     }
 
     if ($(this).hasClass("shop-tasks")) {
       loadTasks("products");
+      $("#header-text").text("Shop");
     }
 
     if ($(this).hasClass("others-tasks")) {
       loadTasks("others");
+      $("#header-text").text("Others");
     }
   });
 };
