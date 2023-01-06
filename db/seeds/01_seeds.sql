@@ -94,11 +94,11 @@ INSERT INTO books(
     task_id,
     title,
     author,
-    release_date,
-    cover_photo_url,
-    more_info_url,
-    summary,
-    genres
+    publishedDate,
+    thumbnail,
+    previewLink,
+    description,
+    categories
   )
 VALUES (
     3,
