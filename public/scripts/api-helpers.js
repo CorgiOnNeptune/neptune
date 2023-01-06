@@ -26,30 +26,43 @@ const matchCategoryKeyword = (string) => {
 }
 
 const determineCategory = (task) => {
-  if (task.category && task.category !== 'auto') {
-    return task.category;
-  }
-
   let autoCategory = matchCategoryKeyword(task.description) || undefined;
   if (autoCategory) {
-    return autoCategory;
+    task.category = autoCategory;
+    return task;
   }
 
   return makeAPIRequests(task.description)
     .then((data) => {
+      if (!data) {
+        task.category = 'others';
+        return task;
+      }
+
       if (data.Director) {
-        return 'films';
+        task.category = 'films';
+        task.data = data;
+        return task;
       }
+
       if (data.kind === 'books#volume') {
-        return 'books';
+        task.category = 'books';
+        task.data = data;
+        return task;
       }
+
       if (data.businesses) {
-        return 'restaurants';
+        task.category = 'restaurants';
+        task.data = data;
+        return task;
       }
+
       if (data.ASIN) {
-        return 'products';
+        task.category = 'products';
+        task.data = data;
+        return task;
       }
-      return 'others';
+
     })
     .catch((err) => {
       console.log(err.message);

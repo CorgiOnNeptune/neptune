@@ -14,7 +14,7 @@ const closeEditor = function (editor) {
   overlay.removeClass('active');
 };
 
-const addEditorEvents = function() {
+const addEditorEvents = function () {
   openEditorButtons = document.querySelectorAll('[data-modal-target]');
   closeEditorButton = $('.close-btn');
   overlay = $('#overlay');
@@ -36,13 +36,18 @@ const submitNewTask = async (element) => {
   const $form = $(element);
   const formArray = $form.serializeArray();
 
-  const task = {
+  let task = {
     description: formArray[0].value,
     category: formArray[1].value,
-    due_date: formArray[2].value
+    due_date: formArray[2].value,
+    data: {}
   };
 
-  task.category = await determineCategory(task);
+  if (!task.category || task.category === 'auto') {
+    task = await determineCategory(task);
+  } else {
+    await callAPIByCategory(task);
+  }
 
   $.post('/tasks', task)
     .then(() => {
@@ -55,6 +60,32 @@ const submitNewTask = async (element) => {
       console.log(err.message);
     });
 };
+
+
+const callAPIByCategory = async (task) => {
+  const query = task.description;
+
+  switch (task.category) {
+    case 'films':
+      task.data = await makeOMDBRequest(query);
+      return task;
+      break;
+    case 'books':
+      task.data = await makeGBooksRequest(query);
+      return task;
+      break;
+    case 'restaurants':
+      task.data = await makeYelpRequest(query);
+      return task;
+      break;
+    case 'products':
+      task.data = await makeAMZNRequest(query);
+      return task;
+      break;
+    default:
+      return task;
+  }
+}
 
 
 const completeStatusAnimation = function () {
