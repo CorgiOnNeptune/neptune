@@ -22,6 +22,29 @@ const submitNewTask = (element) => {
     });
 };
 
+
+
+const waitForCategory = new Promise((resolve, reject) => {
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const completeStatusAnimation = function () {
   $(".complete-status").click(function () {
     $(this).fadeOut(250, function () {

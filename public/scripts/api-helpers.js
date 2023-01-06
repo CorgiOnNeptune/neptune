@@ -25,6 +25,15 @@ const matchCategoryKeyword = (string) => {
   return category;
 }
 
+
+
+
+
+
+
+
+
+
 const determineCategory = (task) => {
   if (task.category && task.category !== 'auto') {
     return task.category;
@@ -35,12 +44,35 @@ const determineCategory = (task) => {
     return autoCategory;
   }
 
-  // If match not found, ask APIs.
-  const apiCategory = makeAPIRequests(task.description);
+  callAPIs(task.description)
+    .then((data) => {
+      if (data) {
+        return data;
+      }
+      return 'others';
+    })
+    .catch((err) => {
+      console.log(err.message)
+    });
 
-  if (apiCategory) {
-    return apiCategory;
-  }
+  // // If match not found, ask APIs.
+  // const apiCategory = makeAPIRequests(task.description);
 
-  return 'others';
+  // if (apiCategory) {
+  //   return apiCategory;
+  // }
+
+  // return 'others';
+};
+
+const callAPIs = (query) => {
+  return new Promise((resolve, reject) => {
+    makeAPIRequests(query);
+    if (query) {
+      resolve('wowee!');
+    }
+    if (!query) {
+      reject('uh oh');
+    }
+  })
 };

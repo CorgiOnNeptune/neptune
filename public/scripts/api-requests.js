@@ -35,16 +35,26 @@ const makeAPIRequests = (query) => {
 const omdbRequest = (query) => {
   $.get((`/api/omdb/${query}`))
     .then((data) => {
-      console.log('data.status ➡️ ', `${data.status}`);
-      if (data.status === 200) {
-        return true;
-      }
+      // console.log('data.status ➡️ ', `${data.status}`);
+      // if (data.status === 200) {
+      //   return true;
+      // }
       return data;
     })
     .fail((err) => {
       console.log(err.message);
     });
 }
+
+
+
+
+
+
+
+
+
+
 
 // const yelpRequest = (query) => {
 //   $.get((`/api/yelp/${query}`))

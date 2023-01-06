@@ -9,6 +9,9 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
+
+
+
 router.get('/omdb/:query', (req, res, next) => {
   const query = req.params.query;
   const apiKey = process.env.OMDB_API_KEY;
@@ -21,6 +24,12 @@ router.get('/omdb/:query', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+
+
+
+
+
 
 // router.get('/yelp/:query', (req, res, next) => {
 //   const query = req.params.query;
