@@ -18,13 +18,13 @@ complete BOOL DEFAULT FALSE NOT NULL
 CREATE TABLE restaurants(
   id SERIAL PRIMARY KEY NOT NULL,
   task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
-  title VARCHAR(255) NOT NULL,
-  cover_photo_url VARCHAR(255),
-  more_info_url VARCHAR(255),
+  name VARCHAR(255) NOT NULL,
+  image_url VARCHAR(255),
+  url VARCHAR(255),
   rating VARCHAR(255),
-  phone_number VARCHAR(30),
-  address VARCHAR(255) [],
-  cuisine_type VARCHAR(255),
+  display_phone VARCHAR(30),
+  location VARCHAR(255) [],
+  categories VARCHAR(255) [],
   is_closed BOOL DEFAULT FALSE
 );
 

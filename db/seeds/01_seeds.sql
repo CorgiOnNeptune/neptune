@@ -36,13 +36,13 @@ VALUES (
 
 INSERT INTO restaurants(
     task_id,
-    title,
-    cover_photo_url,
-    more_info_url,
+    name,
+    image_url,
+    url,
     rating,
-    phone_number,
-    address,
-    cuisine_type,
+    display_phone,
+    location,
+    categories,
     is_closed
   )
 VALUES (
@@ -57,7 +57,9 @@ VALUES (
       'Calgary, AB T3E 3A3',
       'Canada'
     ],
-    'Ramen',
+    ARRAY [
+      'Ramen'
+    ],
     FALSE
   );
 
