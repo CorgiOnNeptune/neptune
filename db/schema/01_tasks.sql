@@ -39,7 +39,7 @@ CREATE TABLE films(
   Plot TEXT,
   Genre VARCHAR(255),
   Director VARCHAR(255),
-  Writer VARCHER(255),
+  Writer VARCHAR(255),
   Actors VARCHAR(255),
   imdbRating VARCHAR(255)
 );
