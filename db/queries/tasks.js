@@ -108,9 +108,6 @@ const createTask = (task) => {
  * @return {Promise<[{}]>} A promise to the tasks categories.
  */
 const addTaskToCategory = async (task_id, category, taskData) => {
-  // ! Using placeholder for 'films' category
-  // TODO: Will need to get the category values via API or other function call
-  // ! NEED to add 'ARRAY' before array values in the query
 
   taskData.task_id = task_id;
   const columns = await dbHelpers.getDataColumns(category);
