@@ -1,34 +1,23 @@
-const submitNewTask = (element) => {
-  const $form = $(element);
+let openEditorButtons = document.querySelectorAll('[data-modal-target]');
+let closeEditorButton = $('.close-btn');
+let overlay = $('#overlay');
 
-  $.post('/tasks', $form.serialize())
-    .then(() => {
-      $("#tasks-ul").empty();
-      loadTasks('incomplete');
-      $form[0].reset();
-      closeEditor($('.editor'));
-    })
-    .fail((err) => {
-      console.log(err.message);
-    });
+const openEditor = function (editor) {
+  if (!editor) return;
+  editor.classList.add('active');
+  overlay.addClass('active');
 };
 
-const openEditor = function() {
-  const openEditorButtons = document.querySelectorAll('[data-modal-target]');
-  const closeEditorButton = $('.close-btn');
-  const overlay = $('#overlay');
+const closeEditor = function (editor) {
+  if (!editor) return;
+  editor.removeClass('active');
+  overlay.removeClass('active');
+};
 
-  const openEditor = function (editor) {
-    if (!editor) return;
-    editor.classList.add('active');
-    overlay.addClass('active');
-  };
-
-  const closeEditor = function (editor) {
-    if (!editor) return;
-    editor.removeClass('active');
-    overlay.removeClass('active');
-  };
+const addEditorEvents = function() {
+  openEditorButtons = document.querySelectorAll('[data-modal-target]');
+  closeEditorButton = $('.close-btn');
+  overlay = $('#overlay');
 
   openEditorButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -41,6 +30,20 @@ const openEditor = function() {
     const editor = $('.editor');
     closeEditor(editor);
   });
+};
+
+const submitNewTask = (element) => {
+  const $form = $(element);
+  $.post('/tasks', $form.serialize())
+    .then(() => {
+      $("#tasks-ul").empty();
+      loadTasks('incomplete');
+      $form[0].reset();
+      closeEditor($('.editor'));
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
 };
 
 const completeStatusAnimation = function () {
@@ -130,7 +133,7 @@ const loadTasks = function (category) {
       renderTasks(tasks.tasks);
       // re-register the click events
       completeStatusAnimation();
-      openEditor();
+      addEditorEvents();
 
     })
     .catch((error) => {
