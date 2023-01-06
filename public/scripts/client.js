@@ -10,8 +10,8 @@ $(() => {
 
   $('.edit-button').on('submit', function (event) {
     event.preventDefault();
-    const taskID = $(this).attr('data-value');
-    console.log('taskID ➡️ ', `${taskID}`);
+    // const taskID = $(this).attr('data-value');
+    const taskID = $(this).closest('li').attr('id').slice(8);
     editTask(this, taskID);
   });
 

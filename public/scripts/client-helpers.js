@@ -163,7 +163,7 @@ const createTaskElement = (task) => {
       <span class="task-title">${escape(task.task_name)}</span>
       <span class="edit-delete-section">
         <span class="due-date">Due ${dueDate}</span>
-        <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button" onclick="editTask(${task.id})"><i class="fa-solid fa-pen-to-square"></i></button></span>
+        <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button"><i class="fa-solid fa-pen-to-square"></i></button></span>
         <span class="edit-delete"><button class="delete-btn" onclick="deleteTask(${task.id})"><i class="fa-sharp fa-solid fa-trash"></i></button></span>
       </span>
     </div>

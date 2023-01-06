@@ -184,14 +184,14 @@ router.post('/:task_id', (req, res) => {
     return;
   }
 
-  const editTask = {
+  const data = {
     category: req.body.category,
     description: req.body.description,
     due_date: req.body.due_date,
     task_id: req.session.task_id
   };
 
-  database.editTask(data)
+  database.editTaskData(data)
     .then((task) => {
       res.json({ task });
     })

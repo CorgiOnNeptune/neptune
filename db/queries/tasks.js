@@ -225,5 +225,5 @@ module.exports = {
   addTaskToCategory,
   changeTaskStatus,
   deleteTaskData,
-  editTask
+  editTaskData
 };
