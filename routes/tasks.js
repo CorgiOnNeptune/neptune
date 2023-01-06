@@ -157,4 +157,23 @@ router.post('/', (req, res) => {
     });
 });
 
+router.post('/:task_id/status', (req, res) => {
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to change task status');
+    return;
+  }
+  const data = {
+    id: req.body.id,
+    status: req.body.status
+  };
+  database
+    .changeTaskStatus(data)
+    .then((task) => {
+      res.json({ task });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 module.exports = router;

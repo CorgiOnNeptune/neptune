@@ -20,10 +20,10 @@ const matchCategoryKeyword = (string) => {
     if (findWordInString(string, val)) {
       category = categories[index];
     }
-  })
+  });
 
   return category;
-}
+};
 
 const determineCategory = (task) => {
   let autoCategory = matchCategoryKeyword(task.description) || undefined;
@@ -65,6 +65,7 @@ const determineCategory = (task) => {
 
     })
     .catch((err) => {
+      console.log(err.message);
       console.log(err.message);
     });
 };
