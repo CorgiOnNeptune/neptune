@@ -138,7 +138,7 @@ const createTaskElement = (task) => {
       <span class="edit-delete-section">
         <span class="due-date">Due ${dueDate}</span>
         <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button"><i class="fa-solid fa-pen-to-square"></i></button></span>
-        <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
+        <span class="edit-delete"><button class="delete-btn" onclick="deleteTask(${task.id})"><i class="fa-sharp fa-solid fa-trash"></i></button></span>
       </span>
     </div>
   </li>
@@ -225,7 +225,7 @@ const loadTasksByCategory = function () {
 
 const deleteTask = (taskID) => {
   $.ajax({
-    url: `/tasks/${taskID}`,
+    url: `/tasks/${taskID}/delete`,
     method: 'POST',
     data: { id: taskID, status: status }
   })

@@ -8,11 +8,10 @@ $(() => {
     submitNewTask(this);
   });
 
-  $('#delete-btn').on('submit', function (event) {
+  $('.delete-btn').on('click', function (event) {
     event.preventDefault();
     const taskID = $(this).closest('li').attr('id').slice(8);
     deleteTask(taskID);
-
   });
 
   loadTasks("incomplete");

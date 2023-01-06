@@ -142,7 +142,7 @@ const deleteTaskData = (task) => {
   const values = [task.id, task.user_id]
 
   return db
-    .query(queryString, task.id)
+    .query(queryString, values)
     .then((data) => {
       console.log(data.rows);
       console.log(queryString);
