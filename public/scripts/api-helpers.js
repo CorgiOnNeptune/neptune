@@ -46,6 +46,9 @@ const determineCategory = (task) => {
       if (data.businesses) {
         return 'restaurants';
       }
+      if (data.ASIN) {
+        return 'products';
+      }
       return 'others';
     })
     .catch((err) => {

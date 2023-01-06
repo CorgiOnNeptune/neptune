@@ -90,21 +90,33 @@ router.get('/ipapi', (req, res, next) => {
 });
 
 
+router.get('/amazonprice/:query', (req, res, next) => {
+  const query = req.params.query;
+  const apiKey = process.env.AMZNPRICE_API_KEY;
 
+  const options = {
+    method: 'GET',
+    url: 'https://amazon-price1.p.rapidapi.com/search',
+    params: {
+      marketplace: 'CA', keywords: query
+    },
+    headers: {
+      'X-RapidAPI-Key': apiKey,
+      'X-RapidAPI-Host': 'amazon-price1.p.rapidapi.com'
+    }
+  };
 
+  axios.request(options)
+    .then(data => {
+      console.log('Amazon Price Request Complete');
+      // console.log(data);
 
-// router.get('/amazonprice/:query', (req, res, next) => {
-//   const query = req.params.query;
-//   const apiKey = process.env.AMZNPRICE_API_KEY;
-
-//   axios.get(`https://`)
-//     .then(data => {
-// console.log('Amazon Price Request Complete');
-// console.log(data);
-//       res.send(data);
-//     })
-//     .catch(err => next(err));
-// });
+      if (data.data.length) {
+        res.send(data.data[0]);
+      }
+    })
+    .catch(err => next(err));
+});
 
 
 
