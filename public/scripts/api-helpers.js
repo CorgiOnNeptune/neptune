@@ -38,14 +38,15 @@ const determineCategory = (task) => {
   return makeAPIRequests(task.description)
     .then((data) => {
       if (data.Director) {
-        return 'films';
+        data.category = "films";
       }
       if (data.kind === 'books#volume') {
-        return 'books';
+        data.category = "books";
       }
-      return 'others';
+      data.category = "others";
+      return data;
     })
     .catch((err) => {
-      console.log(err.message)
+      console.log(err.message);
     });
 };
