@@ -68,7 +68,7 @@ const determineCategory = (task) => {
         return task;
       }
 
-      if (data.kind === 'books#volume') {
+      if (data.authors) {
         task.category = 'books';
         task.data = data;
         return task;

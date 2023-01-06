@@ -134,10 +134,10 @@ const createTaskElement = (task) => {
     <div class="task-content">
       <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
       ${iconType}
-      <span>${escape(task.task_name)}</span>
+      <span class="task-title">${escape(task.task_name)}</span>
       <span class="edit-delete-section">
         <span class="due-date">Due ${dueDate}</span>
-        <span class="edit-delete"><button data-modal-target="#old-task-editor"><i class="fa-solid fa-pen-to-square"></i></button></span>
+        <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button"><i class="fa-solid fa-pen-to-square"></i></button></span>
         <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
       </span>
     </div>
@@ -167,6 +167,8 @@ const loadTasks = function (category) {
       // re-register the click events
       completeStatusAnimation();
       addEditorEvents();
+      setDefaultDate();
+      setDefaultValue();
 
     })
     .catch((error) => {
@@ -258,4 +260,55 @@ const setDefaultDate = function () {
 
   const today = year + "-" + month + "-" + day;
   $("#due_date").attr("value", today);
+};
+
+const convertDate = function(date) {
+  let newDate = "";
+  let month;
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  for (let i in months) {
+    if (date.slice(0, 3) === months[i]) {
+      month = Number(i) + 1;
+    }
+  }
+  if (month < 10) {
+    month = "0" + month;
+  }
+  newDate += `${date.slice(8)}-${month}-${date.slice(4, 6)}`;
+  return newDate;
+};
+
+
+const setDefaultValue = function() {
+  $(".edit-button").click(function() {
+    const li = $(this).closest("li");
+    const taskTitle = li.find(".task-title").text();
+    const dueDate = li.find(".due-date").text().slice(4);
+    const icon = li.find(".category-icon");
+    let category = "others";
+    if (icon.hasClass("fa-video")) {
+      category = "films";
+    }
+    if (icon.hasClass("fa-book-open")) {
+      category = "books";
+    }
+    if (icon.hasClass("fa-utensils")) {
+      category = "restaurants";
+    }
+    if (icon.hasClass("fa-cart-shopping")) {
+      category = "products";
+    }
+
+    $("#old-task-editor").find("#task_name").text(taskTitle);
+    $("#old-task-editor").find("option").each(function() {
+      if ($(this).attr("selected") === "selected") {
+        $(this).removeAttr("selected");
+      }
+      if ($(this).attr("value") === category) {
+        $(this).attr("selected", "selected");
+      }
+    });
+    $("#old-task-editor").find("#due_date").attr("value", convertDate(dueDate));
+
+  });
 };

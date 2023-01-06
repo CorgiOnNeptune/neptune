@@ -99,6 +99,18 @@ const cleanAPIData = (task, category) => {
     }
   }
 
+  if (category === 'books') {
+    // Get thumbnail image
+    if (task.imagelinks) {
+      task.thumbnail = task.imagelinks.thumbnail;
+    }
+
+    // Get just main author
+    if (task.authors) {
+      task.author = task.authors[0];
+    }
+  }
+
   return task;
 };
 
