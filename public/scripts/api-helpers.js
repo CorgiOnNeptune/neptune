@@ -8,7 +8,7 @@ const findWordInString = (str, word) => {
 };
 
 /**
- * @param {string} str Takes in string to check for keyword.
+ * @param {string} string Takes in string to check for keyword.
  * @return appropriate category if value match found.
  */
 const matchCategoryKeyword = (string) => {
@@ -25,11 +25,32 @@ const matchCategoryKeyword = (string) => {
   return category;
 };
 
+const filterKeywords = (string) => {
+  const keywords = ['eat', 'watch', 'read', 'buy'];
+  let newString = '';
+
+  keywords.some((val, index) => {
+    if (findWordInString(string, val)) {
+      newString = string.replace(val, '').trim();
+    }
+  });
+
+  return newString;
+}
+
 const determineCategory = (task) => {
-  let autoCategory = matchCategoryKeyword(task.description) || undefined;
+  let autoCategory = matchCategoryKeyword(task.description);
+
   if (autoCategory) {
     task.category = autoCategory;
-    return task;
+    return callAPIByCategory(task)
+      .then(task => {
+        console.log(task);
+        return task;
+      })
+      .catch(err => {
+        console.log(err.message);
+      })
   }
 
   return makeAPIRequests(task.description)
@@ -72,23 +93,24 @@ const determineCategory = (task) => {
 
 
 const callAPIByCategory = async (task) => {
-  const query = task.description;
+  const query = filterKeywords(task.description);
+  const encodedQuery = encodeURIComponent(query);
 
   switch (task.category) {
     case 'films':
-      task.data = await makeOMDBRequest(query);
+      task.data = await makeOMDBRequest(encodedQuery);
       return task;
       break;
     case 'books':
-      task.data = await makeGBooksRequest(query);
+      task.data = await makeGBooksRequest(encodedQuery);
       return task;
       break;
     case 'restaurants':
-      task.data = await makeYelpRequest(query);
+      task.data = await makeYelpRequest(encodedQuery);
       return task;
       break;
     case 'products':
-      task.data = await makeAMZNRequest(query);
+      task.data = await makeAMZNRequest(encodedQuery);
       return task;
       break;
     default:
