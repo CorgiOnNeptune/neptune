@@ -2,6 +2,12 @@ let openEditorButtons = document.querySelectorAll('[data-modal-target]');
 let closeEditorButton = $('.close-btn');
 let overlay = $('#overlay');
 
+const escape = function (str) {
+  let div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
 const openEditor = function (editor) {
   if (!editor) return;
   editor.classList.add('active');
@@ -56,27 +62,38 @@ const submitNewTask = async (element) => {
     });
 };
 
-
 const completeStatusAnimation = function () {
   $(".complete-status").click(function () {
     $(this).fadeOut(180, function () {
+      let taskId;
+      let status;
       if ($(this).attr("src") === "images/not-completed.png") {
         $(this).attr("src", "images/completed.png");
         $(this).removeClass("not-completed");
         $(this).addClass("completed");
+        taskId = $(this).closest("li").attr("id").slice(8);
+        status = true;
       } else {
         $(this).attr("src", "images/not-completed.png");
         $(this).removeClass("completed");
         $(this).addClass("not-completed");
+        taskId = $(this).closest("li").attr("id").slice(8);
+        status = false;
       }
+      $.ajax({
+        url: `/tasks/${taskId}/status`,
+        method: "POST",
+        data: { id: taskId, status: status }
+      })
+        .then(() => {
+          console.log(`Comeplete status changed: ${taskId}: ${status}`);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
     }).fadeIn(180);
   });
-};
-
-const escape = function (str) {
-  let div = document.createElement("div");
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
 };
 
 const createTaskElement = (task) => {
