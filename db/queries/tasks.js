@@ -128,6 +128,35 @@ const changeTaskStatus = (data) => {
 };
 
 /**
+ * Adds a new task to the database
+ * @param {{}} task An object containing a task id and the status to change to
+ * @return {Promise<[{}]>} A promise to the tasks.
+ */
+const deleteTaskData = (task) => {
+  const queryString = `
+  DELETE FROM tasks
+  WHERE tasks.id = $1
+  AND tasks.user_id = $2
+  `;
+
+  const values = [task.id, task.user_id]
+
+  return db
+    .query(queryString, values)
+    .then((data) => {
+      console.log(data.rows);
+      console.log(queryString);
+      console.log(`successfully deleted task ${task.id}`)
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+
+/**
  * Adds new task data to appropriate category database
  * @param {{}} taskData An object containing all of the API obtained info.
  * @param string A string of appropriate category, based on API call.
@@ -142,7 +171,7 @@ const addTaskToCategory = async (task_id, category, taskData) => {
   const taskDataClean = dbHelpers.cleanAPIData(taskDataLower, category);
   const insertValues = [];
 
-  // console.log(taskDataClean);
+  console.log(taskDataClean);
 
   columns.forEach((val, index) => insertValues.push(`$${index + 1}`));
 
@@ -155,6 +184,7 @@ const addTaskToCategory = async (task_id, category, taskData) => {
   const values = columns.map((val) => taskDataClean[val]);
 
   // console.log(values);
+  console.log(queryString);
 
   return db
     .query(queryString, values)
@@ -168,4 +198,10 @@ const addTaskToCategory = async (task_id, category, taskData) => {
     });
 };
 
-module.exports = { getAllTasks, createTask, addTaskToCategory, changeTaskStatus};
+module.exports = {
+  getAllTasks,
+  createTask,
+  addTaskToCategory,
+  changeTaskStatus,
+  deleteTaskData
+};

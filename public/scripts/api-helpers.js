@@ -45,7 +45,6 @@ const determineCategory = (task) => {
     task.category = autoCategory;
     return callAPIByCategory(task)
       .then(task => {
-        console.log('hi mom');
         console.log(task);
         return task;
       })

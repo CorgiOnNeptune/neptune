@@ -162,6 +162,7 @@ router.post('/:task_id/status', (req, res) => {
     throw new Error('Must be logged in to change task status');
     return;
   }
+
   const data = {
     id: req.body.id,
     status: req.body.status
@@ -175,5 +176,20 @@ router.post('/:task_id/status', (req, res) => {
       res.status(500).json({ error: err.message });
     });
 });
+
+
+router.post('/:task_id/delete', (req, res) => {
+  if (!req.session.user_id) {
+    throw new Error('Must be logged in to change task status');
+    return;
+  }
+
+  const data = {
+    id: req.body.id,
+    user_id: req.session.user_id
+  }
+
+  database.deleteTaskData(data);
+})
 
 module.exports = router;
