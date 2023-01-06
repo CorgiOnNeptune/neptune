@@ -72,7 +72,9 @@ INSERT INTO films(
     Plot,
     Genre,
     Director,
-    Actors
+    Writer,
+    Actors,
+    imdbRating
   )
 VALUES(
     2,
@@ -86,7 +88,9 @@ VALUES(
     'A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.',
     'Drama, Mystery, Sci-Fi',
     'Denis Villeneuve',
-    'Amy Adams, Jeremy Renner, Forest Whitaker'
+    'Eric Heisserer',
+    'Amy Adams, Jeremy Renner, Forest Whitaker',
+    '7.9/10'
   )
 RETURNING *;
 

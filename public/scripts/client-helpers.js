@@ -365,7 +365,7 @@ const formatDate = (date) => {
   return `${month} ${dateArr[2]}, ${dateArr[0]}`;
 };
 
-const setDefaultDate = function() {
+const setDefaultDate = function () {
   const date = new Date();
 
   let day = date.getDate();
@@ -383,7 +383,7 @@ const setDefaultDate = function() {
   $("#due_date").attr("value", today);
 };
 
-const convertDate = function(date) {
+const convertDate = function (date) {
   let newDate = "";
   let month;
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -400,8 +400,8 @@ const convertDate = function(date) {
 };
 
 
-const setDefaultValue = function() {
-  $(".edit-button").click(function() {
+const setDefaultValue = function () {
+  $(".edit-button").click(function () {
     const li = $(this).closest("li");
     const taskTitle = li.find(".task-title").text();
     const dueDate = li.find(".due-date").text().slice(4);
@@ -421,7 +421,7 @@ const setDefaultValue = function() {
     }
 
     $("#old-task-editor").find("#task_name").text(taskTitle);
-    $("#old-task-editor").find("option").each(function() {
+    $("#old-task-editor").find("option").each(function () {
       if ($(this).attr("selected") === "selected") {
         $(this).removeAttr("selected");
       }
