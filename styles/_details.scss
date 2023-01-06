@@ -31,6 +31,10 @@
         font-weight: 400;
       }
 
+      .genres {
+        margin-top: 0.3em;
+      }
+
       .genre {
         background-color: $font-color;
         color: $theme-color;
@@ -41,6 +45,8 @@
 
     .description {
       border-bottom: 1.5px solid rgba($color: $font-color, $alpha: .5);
+      padding-top: .5em;
+      padding-bottom: .5em;
     }
 
     .director {
@@ -49,6 +55,8 @@
         font-weight: 900;
         margin-right: 1em;
       }
+      padding-top: .5em;
+      padding-bottom: .5em;
       border-bottom: 1.5px solid rgba($color: $font-color, $alpha: .5);
     }
 
