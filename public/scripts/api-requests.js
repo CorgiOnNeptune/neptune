@@ -2,8 +2,8 @@ const makeAPIRequests = (query) => {
   const encodedQuery = encodeURIComponent(query);
   console.log('encodedQuery ➡️ ', `${encodedQuery}`);
 
-  // TODO: Adjust priority as GBooks always pulls back lots of results;
   const requests = [
+    yelpRequest(encodedQuery),
     omdbRequest(encodedQuery),
     gBooksRequest(encodedQuery)
   ];
@@ -49,22 +49,31 @@ const gBooksRequest = (query) => {
 
 
 
+const yelpRequest = (query) => {
+  return $.get((`/api/ipapi/`))
+    .then(location => {
+      // console.log('in IP Request');
+      // console.log(location);
 
+      const latitude = location.latitude;
+      const longitude = location.longitude;
 
+      return $.get((`/api/yelp/${query}/${latitude}/${longitude}`))
+        .then((data) => {
+          console.log('in yelpRequest');
+          console.log(data);
 
+          return data;
+        })
+        .fail((err) => {
+          console.log(err.message);
+        })
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
+}
 
-
-
-
-// const yelpRequest = (query) => {
-//   return $.get((`/api/yelp/${query}`))
-//     .then((data) => {
-
-//     })
-//     .fail((err) => {
-//       console.log(err.message);
-//     });
-// }
 
 
 // const amznRequest = (query) => {

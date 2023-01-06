@@ -43,9 +43,12 @@ const determineCategory = (task) => {
       if (data.kind === 'books#volume') {
         return 'books';
       }
+      if (data.businesses) {
+        return 'restaurants';
+      }
       return 'others';
     })
     .catch((err) => {
-      console.log(err.message)
+      console.log(err.message);
     });
 };

@@ -32,7 +32,7 @@ router.get('/gbooks/:query', (req, res, next) => {
   axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}+filter=full+startIndex=0+maxResults=5`)
     .then(data => {
       console.log('GBooks Request Complete');
-      console.log(data);
+      // console.log(data);
       if (data.data.totalItems > 0) {
         res.send(data.data.items['0']);
       }
@@ -41,20 +41,53 @@ router.get('/gbooks/:query', (req, res, next) => {
 });
 
 
+router.get('/yelp/:query/:latitude/:longitude', (req, res, next) => {
+  const query = req.params.query;
+  const apiKey = process.env.YELP_API_KEY;
+  // Would use req.ip if this was a live product.
+  const userIP = '50.99.179.236';
+
+  const options = {
+    method: 'GET',
+    url: `https://api.yelp.com/v3/businesses/search?latitude=${req.params.latitude}&longitude=${req.params.longitude}&term=${req.params.query}&sort_by=best_match&limit=5`,
+    headers: {
+      accept: 'application/json',
+      Authorization: apiKey
+    }
+  };
+
+  axios.request(options)
+    .then(data => {
+      console.log('Yelp Request Complete');
+      // console.log(data);
+
+      if (data.data.total > 0) {
+        res.send(data.data);
+      }
+    })
+    .catch(err => next(err));
+});
 
 
+router.get('/ipapi', (req, res, next) => {
+  const query = req.params.query;
+  const userIP = '50.99.179.236';
+  const info = { query, latitude: '', longitude: '' }
 
-// router.get('/yelp/:query', (req, res, next) => {
-//   const query = req.params.query;
-//   const apiKey = process.env.YELP_API_KEY;
+  axios.get(`https://ipapi.co/${userIP}/json/`)
+    .then(data => {
+      console.log('IP Request Complete');
+      // console.log(data)
 
-//   axios.get(`http://`)
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => next(err));
-// });
+      info.latitude = data.data.latitude;
+      info.longitude = data.data.longitude;
 
+      res.send(info);
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
+});
 
 
 
@@ -64,8 +97,10 @@ router.get('/gbooks/:query', (req, res, next) => {
 //   const query = req.params.query;
 //   const apiKey = process.env.AMZNPRICE_API_KEY;
 
-//   axios.get(`http://`)
+//   axios.get(`https://`)
 //     .then(data => {
+// console.log('Amazon Price Request Complete');
+// console.log(data);
 //       res.send(data);
 //     })
 //     .catch(err => next(err));
