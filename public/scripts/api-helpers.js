@@ -20,10 +20,10 @@ const matchCategoryKeyword = (string) => {
     if (findWordInString(string, val)) {
       category = categories[index];
     }
-  })
+  });
 
   return category;
-}
+};
 
 const filterKeywords = (string) => {
   const keywords = ['eat', 'watch', 'read', 'buy'];
@@ -89,6 +89,32 @@ const determineCategory = (task) => {
     })
     .catch((err) => {
       console.log(err.message);
+      console.log(err.message);
     });
 };
 
+
+const callAPIByCategory = async (task) => {
+  const query = task.description;
+
+  switch (task.category) {
+    case 'films':
+      task.data = await makeOMDBRequest(query);
+      return task;
+      break;
+    case 'books':
+      task.data = await makeGBooksRequest(query);
+      return task;
+      break;
+    case 'restaurants':
+      task.data = await makeYelpRequest(query);
+      return task;
+      break;
+    case 'products':
+      task.data = await makeAMZNRequest(query);
+      return task;
+      break;
+    default:
+      return task;
+  }
+}

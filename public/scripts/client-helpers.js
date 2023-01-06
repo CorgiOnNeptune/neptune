@@ -2,6 +2,12 @@ let openEditorButtons = document.querySelectorAll('[data-modal-target]');
 let closeEditorButton = $('.close-btn');
 let overlay = $('#overlay');
 
+const escape = function (str) {
+  let div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
 const openEditor = function (editor) {
   if (!editor) return;
   editor.classList.add('active');
@@ -61,53 +67,38 @@ const submitNewTask = async (element) => {
     });
 };
 
-
-const callAPIByCategory = async (task) => {
-  const query = filterKeywords(task.description);
-
-  switch (task.category) {
-    case 'films':
-      task.data = await makeOMDBRequest(query);
-      return task;
-      break;
-    case 'books':
-      task.data = await makeGBooksRequest(query);
-      return task;
-      break;
-    case 'restaurants':
-      task.data = await makeYelpRequest(query);
-      return task;
-      break;
-    case 'products':
-      task.data = await makeAMZNRequest(query);
-      return task;
-      break;
-    default:
-      return task;
-  }
-}
-
-
 const completeStatusAnimation = function () {
   $(".complete-status").click(function () {
     $(this).fadeOut(180, function () {
+      let taskId;
+      let status;
       if ($(this).attr("src") === "images/not-completed.png") {
         $(this).attr("src", "images/completed.png");
         $(this).removeClass("not-completed");
         $(this).addClass("completed");
+        taskId = $(this).closest("li").attr("id").slice(8);
+        status = true;
       } else {
         $(this).attr("src", "images/not-completed.png");
         $(this).removeClass("completed");
         $(this).addClass("not-completed");
+        taskId = $(this).closest("li").attr("id").slice(8);
+        status = false;
       }
+      $.ajax({
+        url: `/tasks/${taskId}/status`,
+        method: "POST",
+        data: { id: taskId, status: status }
+      })
+        .then(() => {
+          console.log(`Comeplete status changed: ${taskId}: ${status}`);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
     }).fadeIn(180);
   });
-};
-
-const escape = function (str) {
-  let div = document.createElement("div");
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
 };
 
 const createTaskElement = (task) => {
@@ -230,11 +221,11 @@ const loadTasksByCategory = function () {
   });
 };
 
+
 /**
  * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
  * @param {string} date
  */
-
 const formatDate = (date) => {
   if (!date) return;
 
@@ -249,4 +240,22 @@ const formatDate = (date) => {
   });
 
   return `${month} ${dateArr[2]}, ${dateArr[0]}`;
+};
+
+const setDefaultDate = function () {
+  const date = new Date();
+
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  if (month < 10) {
+    month = "0" + month;
+  }
+  if (day < 10) {
+    day = "0" + day;
+  }
+
+  const today = year + "-" + month + "-" + day;
+  $("#due_date").attr("value", today);
 };

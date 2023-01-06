@@ -101,6 +101,33 @@ const createTask = (task) => {
 };
 
 /**
+ * Adds a new task to the database
+ * @param {{}} task An object containing a task id and the status to change to
+ * @return {Promise<[{}]>} A promise to the tasks.
+ */
+const changeTaskStatus = (data) => {
+  const queryString = `
+  UPDATE tasks
+  SET complete = $2
+  WHERE id = $1
+  RETURNING *;
+  `;
+  const values = [data.id, data.status];
+
+  return db
+    .query(queryString, values)
+    .then((data) => {
+      console.log(data.rows);
+      console.log(queryString);
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+/**
  * Adds new task data to appropriate category database
  * @param {{}} taskData An object containing all of the API obtained info.
  * @param string A string of appropriate category, based on API call.
@@ -146,4 +173,4 @@ const addTaskToCategory = (taskData, category) => {
     });
 };
 
-module.exports = { getAllTasks, createTask, addTaskToCategory };
+module.exports = { getAllTasks, createTask, addTaskToCategory, changeTaskStatus};
