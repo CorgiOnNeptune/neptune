@@ -20,10 +20,10 @@ const matchCategoryKeyword = (string) => {
     if (findWordInString(string, val)) {
       category = categories[index];
     }
-  })
+  });
 
   return category;
-}
+};
 
 const determineCategory = (task) => {
   if (task.category && task.category !== 'auto') {
@@ -39,17 +39,23 @@ const determineCategory = (task) => {
     .then((data) => {
       if (data.Director) {
         data.category = "films";
+        return data;
       }
       if (data.kind === 'books#volume') {
         data.category = "books";
+        return data;
       }
       if (data.businesses) {
-        return 'restaurants';
+        data.category = "restaurants";
+        return data;
       }
       if (data.ASIN) {
-        return 'products';
+        data.category = "products";
+        return data;
       }
-      return 'others';
+      setTimeout(() => {
+        return { category: "others"};
+      }, "5000");
     })
     .catch((err) => {
       console.log(err.message);
