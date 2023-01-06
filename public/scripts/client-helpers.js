@@ -91,7 +91,7 @@ const completeStatusAnimation = function () {
         data: { id: taskId, status: status }
       })
         .then(() => {
-          console.log(`Comeplete status changed: ${taskId}: ${status}`);
+          console.log(`Complete status changed: ${taskId}: ${status}`);
         })
         .catch((error) => {
           console.log(error);
@@ -221,6 +221,19 @@ const loadTasksByCategory = function () {
   });
 };
 
+const deleteTask = (taskID) => {
+  $.ajax({
+    url: `/tasks/${taskID}`,
+    method: 'POST',
+    data: { id: taskID, status: status }
+  })
+    .then(() => {
+      console.log('Task deleted successfully');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 /**
  * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
@@ -242,7 +255,7 @@ const formatDate = (date) => {
   return `${month} ${dateArr[2]}, ${dateArr[0]}`;
 };
 
-const setDefaultDate = function() {
+const setDefaultDate = function () {
   const date = new Date();
 
   let day = date.getDate();
