@@ -1,7 +1,16 @@
-const submitNewTask = (element) => {
+const submitNewTask = async (element) => {
   const $form = $(element);
+  const formArray = $form.serializeArray();
 
-  $.post('/tasks', $form.serialize())
+  const task = {
+    description: formArray[0].value,
+    category: formArray[1].value,
+    due_date: formArray[2].value
+  };
+
+  task.category = await determineCategory(task);
+
+  $.post('/tasks', task)
     .then(() => {
       $("#tasks-ul").empty();
       loadTasks('incomplete');
@@ -12,6 +21,7 @@ const submitNewTask = (element) => {
       console.log(err.message);
     });
 };
+
 
 const completeStatusAnimation = function () {
   $(".complete-status").click(function () {
