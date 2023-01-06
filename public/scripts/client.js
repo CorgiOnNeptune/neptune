@@ -11,6 +11,4 @@ $(() => {
   loadTasks("incomplete");
 
   loadTasksByCategory();
-
-  setDefaultDate();
 });
