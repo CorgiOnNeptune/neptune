@@ -17,7 +17,7 @@ router.get('/omdb/:query', (req, res, next) => {
   axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&t=${query}`)
     .then(data => {
       console.log('OMDB Request Complete');
-      console.log(data);
+      // console.log(data);
       if (!data.data.Error) {
         res.send(data.data);
       }
@@ -32,8 +32,8 @@ router.get('/gbooks/:query', (req, res, next) => {
   axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
     .then(data => {
       console.log('GBooks Request Complete');
-      console.log(data);
-      if (data.totalItems > 10) {
+      // console.log(data);
+      if (data.data.totalItems > 10) {
         res.send(data.data.items['0']);
       }
     })
