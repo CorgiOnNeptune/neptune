@@ -1,3 +1,5 @@
+const db = require("./connection");
+
 /**
  * Helper function to determine valid category entries
  * @param {string} category Input to check validity
@@ -34,7 +36,53 @@ const validateCompleted = (completed) => {
   return null;
 };
 
+
+const getDataColumns = (category) => {
+  const queryString = `
+  SELECT *
+  FROM ${category}
+  WHERE false;
+  `
+
+  return db.query(queryString)
+    .then((data) => {
+      const columns = [];
+      // console.log(data.fields);
+
+      data.fields.forEach((field) => {
+        if (field.name !== 'id') {
+          columns.push(field.name);
+        }
+
+        // if (field.dataTypeID === 1015) // array
+      })
+
+      console.log('columns ➡️ ', `${columns}`);
+
+      return columns;
+    })
+    .catch(err => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+const lowercaseKeys = (object) => {
+  const newObj = object;
+  Object.keys(newObj).map(key => {
+    if (key.toLowerCase() != key) {
+      newObj[key.toLowerCase()] = newObj[key];
+      delete newObj[key];
+    }
+  });
+
+  return newObj;
+};
+
+
 module.exports = {
   checkValidCategory,
   validateCompleted,
+  getDataColumns,
+  lowercaseKeys
 };
