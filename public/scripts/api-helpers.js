@@ -8,7 +8,7 @@ const findWordInString = (str, word) => {
 };
 
 /**
- * @param {string} str Takes in string to check for keyword.
+ * @param {string} string Takes in string to check for keyword.
  * @return appropriate category if value match found.
  */
 const matchCategoryKeyword = (string) => {
@@ -25,11 +25,34 @@ const matchCategoryKeyword = (string) => {
   return category;
 }
 
+const filterKeywords = (string) => {
+  const keywords = ['eat', 'watch', 'read', 'buy'];
+
+  keywords.some((val, index) => {
+    if (findWordInString(string, val)) {
+      console.log(string);
+      console.log(val);
+      console.log(string.replace(val, ''));
+      return string.replace(val, '');
+    }
+  })
+
+}
+
 const determineCategory = (task) => {
   let autoCategory = matchCategoryKeyword(task.description) || undefined;
   if (autoCategory) {
     task.category = autoCategory;
-    return task;
+    callAPIByCategory(task)
+      .then(task => {
+        console.log('hi mom');
+        console.log(task);
+        return task;
+      })
+      .catch(err => {
+        console.log(err.message);
+      })
+    // return task = callAPIByCategory(task);
   }
 
   return makeAPIRequests(task.description)
@@ -68,3 +91,4 @@ const determineCategory = (task) => {
       console.log(err.message);
     });
 };
+

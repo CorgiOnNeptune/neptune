@@ -63,7 +63,7 @@ const submitNewTask = async (element) => {
 
 
 const callAPIByCategory = async (task) => {
-  const query = task.description;
+  const query = filterKeywords(task.description);
 
   switch (task.category) {
     case 'films':
