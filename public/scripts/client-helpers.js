@@ -129,8 +129,18 @@ const createTaskElement = (task) => {
     iconType = `<i class="fa-solid fa-clipboard-question category-icon"></i>`;
   }
 
-  const $task = $(`
-  <li id="task_id_${task.id}">
+  let $task;
+  const header = $("#header-text").text();
+  let id;
+  if (header === "Watch" || header === "Read" || header === "Eat" || header === "Shop") {
+    id = task.task_id;
+  } else {
+    id = task.id;
+
+  }
+  if (task.category === "others") {
+    $task = $(`
+    <li id="task_id_${id}">
     <div class="task-content">
       <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
       ${iconType}
@@ -141,7 +151,81 @@ const createTaskElement = (task) => {
         <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
       </span>
     </div>
-  </li>
+    </li>
+    `);
+    return $task;
+  }
+
+  $task = $(`
+  <li id="task_id_${id}">
+    <div class="task-content">
+      <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
+      ${iconType}
+      <span class="task-title">${escape(task.task_name)}</span>
+      <span class="edit-delete-section">
+        <span class="due-date">Due ${dueDate}</span>
+        <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button"><i class="fa-solid fa-pen-to-square"></i></button></span>
+        <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
+      </span>
+    </div>
+    <button
+    class="collapse-btn"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#collapseExample"
+    aria-expanded="false"
+    aria-controls="collapseExample">
+    <i class="fa-solid fa-angles-down"></i>
+  </button>
+  <div class="details" id="collapseExample">
+    <div class="poster-container"><img src="https://www.themoviedb.org/t/p/original/1AnfXMG9PPMVjwXcHW6JLSJUbPo.jpg" alt="poster" id="poster"></div>
+    <div class="info">
+      <div class="info-header">
+        <div class="title">Arrival</div>
+        <div class="genres">
+          <span class="genre">Sci-fi</span>
+          <span class="genre">Drama</span>
+          <span class="genre">Mystery</span>
+        </div>
+      </div>
+      <div class="description">A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.</div>
+      <div class="director">
+        <div class="director-title">Director</div>
+        <div class="director-name">Denis Villeneuve</div>
+      </div>
+      <div class="cast">
+        <div class="cast-title">Cast</div>
+        <div class="cast-names">Amy Adams Jeremy Renner Forest Whitaker</div>
+      </div>
+
+    </div>
+
+    <div class="more">
+      <div class="ratings">
+        <div class="IMDB-rating">
+          <img src="images/IMDB-logo.png" alt="">
+          <span>7.9/10</span>
+        </div>
+        <div class="RT-rating">
+          <img src="images/RT-logo.png" alt="">
+          <span>97%</span>
+        </div>
+        <div class="MC-rating">
+          <img src="images/metacritic-logo.png" alt="">
+          <span>80</span>
+        </div>
+        <div class="Meta-rating"></div>
+      </div>
+
+      <div class="streaming-guide">
+        <div class="streaming">Streaming Guide</div>
+      <a href="https://www.justwatch.com/us/movie/arrival-2016">
+        <img src="images/just-watch-logo.png" alt="justwatch">
+      </a>
+      </div>
+    </div>
+  </div>
+    </li>
   `);
   return $task;
 };
@@ -169,11 +253,48 @@ const loadTasks = function (category) {
       addEditorEvents();
       setDefaultDate();
       setDefaultValue();
+      renderDetails(category);
 
     })
     .catch((error) => {
       console.log(error);
     });
+};
+
+const renderDetails = function(category) {
+
+  if (!category || category === "films" || category === "completed" || category === "incomplete") {
+    let url = `/tasks/films`;
+    $.ajax({
+      url: url,
+      method: "GET"
+    })
+      .then((data) => {
+        const tasks = data.tasks;
+        tasks.forEach(function(task) {
+          const id = `task_id_${task.task_id}`;
+          const taskElement = $('#' + id);
+          if (taskElement[0]) {
+            taskElement.find(".title").text(task.title);
+            taskElement.find("#poster").attr("src", `${task.poster}`);
+            taskElement.find(".description").text(task.plot);
+            if (task.director !== "N/A") {
+              taskElement.find(".director-name").text(task.director);
+            } else {
+              taskElement.find(".director-title").text("Writers");
+              taskElement.find(".drector-name").text(task.writer);
+            }
+            taskElement.find(".description").text(task.plot);
+          }
+
+        });
+
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };
 
 const loadTasksByCategory = function () {
@@ -187,38 +308,38 @@ const loadTasksByCategory = function () {
     }
 
     if ($(this).hasClass("incomplete-tasks")) {
-      loadTasks("incomplete");
       $("#header-text").text("Incomplete");
+      loadTasks("incomplete");
     }
 
     if ($(this).hasClass("completed-tasks")) {
-      loadTasks("completed");
       $("#header-text").text("Completed");
+      loadTasks("completed");
     }
 
     if ($(this).hasClass("watch-tasks")) {
-      loadTasks("films");
       $("#header-text").text("Watch");
+      loadTasks("films");
     }
 
     if ($(this).hasClass("read-tasks")) {
-      loadTasks("books");
       $("#header-text").text("Read");
+      loadTasks("books");
     }
 
     if ($(this).hasClass("eat-tasks")) {
-      loadTasks("restaurants");
       $("#header-text").text("Eat");
+      loadTasks("restaurants");
     }
 
     if ($(this).hasClass("shop-tasks")) {
-      loadTasks("products");
       $("#header-text").text("Shop");
+      loadTasks("products");
     }
 
     if ($(this).hasClass("others-tasks")) {
-      loadTasks("others");
       $("#header-text").text("Others");
+      loadTasks("others");
     }
   });
 };

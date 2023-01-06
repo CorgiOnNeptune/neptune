@@ -47,19 +47,19 @@ CREATE TABLE books(
   task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
   author VARCHAR(255),
-  publishedDate DATE,
-  thumbnail VARCHAR(255),
-  previewLink VARCHAR(255),
-  description TEXT,
-  categories VARCHAR(255) []
+  release_date DATE,
+  cover_photo_url VARCHAR(255),
+  more_info_url VARCHAR(255),
+  summary TEXT,
+  genres VARCHAR(255) []
 );
 
 CREATE TABLE products(
   id SERIAL PRIMARY KEY NOT NULL,
   task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
-  imageUrl VARCHAR(255),
-  detailPageURL VARCHAR(255),
+  cover_photo_url VARCHAR(255),
+  more_info_url VARCHAR(255),
   rating VARCHAR(255),
   price VARCHAR(255)
 );
