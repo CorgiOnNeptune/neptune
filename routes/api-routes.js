@@ -62,7 +62,7 @@ router.get('/yelp/:query/:latitude/:longitude', (req, res, next) => {
       // console.log(data);
 
       if (data.data.total > 0) {
-        res.send(data.data);
+        res.send(data.data.businesses['0']);
       }
     })
     .catch(err => next(err));

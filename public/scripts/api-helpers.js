@@ -51,7 +51,7 @@ const determineCategory = (task) => {
         return task;
       }
 
-      if (data.businesses) {
+      if (data.distance) {
         task.category = 'restaurants';
         task.data = data;
         return task;
