@@ -62,32 +62,6 @@ const submitNewTask = async (element) => {
 };
 
 
-const callAPIByCategory = async (task) => {
-  const query = task.description;
-
-  switch (task.category) {
-    case 'films':
-      task.data = await makeOMDBRequest(query);
-      return task;
-      break;
-    case 'books':
-      task.data = await makeGBooksRequest(query);
-      return task;
-      break;
-    case 'restaurants':
-      task.data = await makeYelpRequest(query);
-      return task;
-      break;
-    case 'products':
-      task.data = await makeAMZNRequest(query);
-      return task;
-      break;
-    default:
-      return task;
-  }
-}
-
-
 const completeStatusAnimation = function () {
   $(".complete-status").click(function () {
     $(this).fadeOut(180, function () {
@@ -230,11 +204,11 @@ const loadTasksByCategory = function () {
   });
 };
 
+
 /**
  * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
  * @param {string} date
  */
-
 const formatDate = (date) => {
   if (!date) return;
 
