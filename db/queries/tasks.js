@@ -90,8 +90,8 @@ const createTask = (task) => {
   return db
     .query(queryString, values)
     .then((data) => {
-      console.log(data.rows);
       console.log(queryString);
+      console.log(data.rows[0]);
       return data.rows[0];
     })
     .catch((err) => {
@@ -131,35 +131,30 @@ const changeTaskStatus = (data) => {
  * Adds new task data to appropriate category database
  * @param {{}} taskData An object containing all of the API obtained info.
  * @param string A string of appropriate category, based on API call.
+ * @param columns
  * @return {Promise<[{}]>} A promise to the tasks categories.
  */
-const addTaskToCategory = (taskData, category) => {
-  // ! Using placeholder for 'films' category
-  // TODO: Will need to get the category values via API or other function call
-  // ! NEED to add 'ARRAY' before array values in the query
-  const categoryValues = [
-    'task_id',
-    'title',
-    'release_date',
-    'cover_photo_url',
-    'more_info_url',
-    'rating',
-    'summary',
-    'genres',
-    'backdrop_photo_url',
-  ];
+const addTaskToCategory = async (task_id, category, taskData) => {
 
+  taskData.task_id = task_id;
+  const columns = await dbHelpers.getDataColumns(category);
+  const taskDataLower = dbHelpers.lowercaseKeys(taskData);
+  const taskDataClean = dbHelpers.cleanAPIData(taskDataLower, category);
   const insertValues = [];
 
-  categoryValues.forEach((val, index) => insertValues.push(`$${index + 1}`));
+  // console.log(taskDataClean);
+
+  columns.forEach((val, index) => insertValues.push(`$${index + 1}`));
 
   const queryString = `
-  INSERT INTO ${taskData.category}(${categoryValues.join(', ')})
+  INSERT INTO ${category}(${columns.join(', ')})
   VALUES(${insertValues.join(', ')})
   RETURNING *;
   `;
 
-  const values = categoryValues.map((val) => taskData[val]);
+  const values = columns.map((val) => taskDataClean[val]);
+
+  // console.log(values);
 
   return db
     .query(queryString, values)

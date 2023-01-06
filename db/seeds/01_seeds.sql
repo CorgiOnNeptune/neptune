@@ -36,13 +36,13 @@ VALUES (
 
 INSERT INTO restaurants(
     task_id,
-    title,
-    cover_photo_url,
-    more_info_url,
+    name,
+    image_url,
+    url,
     rating,
-    phone_number,
-    address,
-    cuisine_type,
+    display_phone,
+    location,
+    categories,
     is_closed
   )
 VALUES (
@@ -57,7 +57,9 @@ VALUES (
       'Calgary, AB T3E 3A3',
       'Canada'
     ],
-    'Ramen',
+    ARRAY [
+      'Ramen'
+    ],
     FALSE
   );
 
@@ -66,9 +68,7 @@ INSERT INTO films(
     Title,
     Year,
     Poster,
-    IMDB_rating,
-    RT_rating,
-    MS_rating,
+    Ratings,
     Plot,
     Genre,
     Director,
@@ -79,9 +79,10 @@ VALUES(
     'Arrival',
     '2016',
     'https://m.media-amazon.com/images/M/MV5BMTExMzU0ODcxNDheQTJeQWpwZ15BbWU4MDE1OTI4MzAy._V1_SX300.jpg',
-    '7.9/10',
+    ARRAY ['7.9/10',
     '95%',
-    '81/100',
+    '81/100'
+    ],
     'A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.',
     'Drama, Mystery, Sci-Fi',
     'Denis Villeneuve',

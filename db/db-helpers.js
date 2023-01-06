@@ -1,3 +1,5 @@
+const db = require("./connection");
+
 /**
  * Helper function to determine valid category entries
  * @param {string} category Input to check validity
@@ -34,7 +36,77 @@ const validateCompleted = (completed) => {
   return null;
 };
 
+
+const getDataColumns = (category) => {
+  const queryString = `
+  SELECT *
+  FROM ${category}
+  WHERE false;
+  `
+
+  return db.query(queryString)
+    .then((data) => {
+      const columns = [];
+
+      data.fields.forEach((field) => {
+        if (field.name !== 'id') {
+          columns.push(field.name);
+        }
+      })
+
+      return columns;
+    })
+    .catch(err => {
+      console.log(err.message);
+      return null;
+    });
+};
+
+const lowercaseKeys = (object) => {
+  const newObj = object;
+  Object.keys(newObj).map(key => {
+    if (key.toLowerCase() != key) {
+      newObj[key.toLowerCase()] = newObj[key];
+      delete newObj[key];
+    }
+  });
+
+  return newObj;
+};
+
+
+const cleanAPIData = (task, category) => {
+  if (category === 'films') {
+    // Remove extra JSON text from film ratings
+    if (task.ratings) {
+      task.ratings.forEach((rating, index) => {
+        task.ratings[index] = rating.Value;
+      });
+    }
+  }
+
+  if (category === 'restaurants') {
+    // Get restaurants category titles out of array
+    if (task.categories) {
+      task.categories.forEach((category, index) => {
+        task.categories[index] = category.title;
+      });
+    }
+
+    // Get display address for
+    if (task.location) {
+      task.location = task.location.display_address;
+    }
+  }
+
+  return task;
+};
+
+
 module.exports = {
   checkValidCategory,
   validateCompleted,
+  getDataColumns,
+  lowercaseKeys,
+  cleanAPIData
 };

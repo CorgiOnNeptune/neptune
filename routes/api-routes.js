@@ -29,7 +29,7 @@ router.get('/omdb/:query', (req, res, next) => {
 router.get('/gbooks/:query', (req, res, next) => {
   const query = req.params.query;
 
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}+filter=full+startIndex=0+maxResults=5`)
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}+intitle:${query}`)
     .then(data => {
       console.log('GBooks Request Complete');
       // console.log(data);
@@ -62,7 +62,7 @@ router.get('/yelp/:query/:latitude/:longitude', (req, res, next) => {
       // console.log(data);
 
       if (data.data.total > 0) {
-        res.send(data.data);
+        res.send(data.data.businesses['0']);
       }
     })
     .catch(err => next(err));
