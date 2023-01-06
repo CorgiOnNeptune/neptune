@@ -47,17 +47,12 @@ const getDataColumns = (category) => {
   return db.query(queryString)
     .then((data) => {
       const columns = [];
-      // console.log(data.fields);
 
       data.fields.forEach((field) => {
         if (field.name !== 'id') {
           columns.push(field.name);
         }
-
-        // if (field.dataTypeID === 1015) // array
       })
-
-      console.log('columns ➡️ ', `${columns}`);
 
       return columns;
     })
@@ -78,7 +73,6 @@ const lowercaseKeys = (object) => {
 
   return newObj;
 };
-
 
 module.exports = {
   checkValidCategory,
