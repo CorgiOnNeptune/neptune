@@ -90,8 +90,8 @@ const createTask = (task) => {
   return db
     .query(queryString, values)
     .then((data) => {
-      console.log(data.rows);
       console.log(queryString);
+      console.log(data.rows[0]);
       return data.rows[0];
     })
     .catch((err) => {
@@ -104,35 +104,50 @@ const createTask = (task) => {
  * Adds new task data to appropriate category database
  * @param {{}} taskData An object containing all of the API obtained info.
  * @param string A string of appropriate category, based on API call.
+ * @param columns
  * @return {Promise<[{}]>} A promise to the tasks categories.
  */
-const addTaskToCategory = (taskData, category) => {
+const addTaskToCategory = async (task_id, category, taskData) => {
   // ! Using placeholder for 'films' category
   // TODO: Will need to get the category values via API or other function call
   // ! NEED to add 'ARRAY' before array values in the query
-  const categoryValues = [
-    'task_id',
-    'title',
-    'release_date',
-    'cover_photo_url',
-    'more_info_url',
-    'rating',
-    'summary',
-    'genres',
-    'backdrop_photo_url',
-  ];
+
+  const columns = await dbHelpers.getDataColumns(category);
+  taskData.task_id = task_id;
+  const taskDataLower = dbHelpers.lowercaseKeys(taskData);
+
+  console.log(taskDataLower);
+
+  // Remove extra JSON text from film ratings
+  if (taskDataLower.ratings) {
+    taskDataLower.ratings.forEach((rating, index) => {
+      taskDataLower.ratings[index] = rating.Value;
+    });
+  }
+
+  if (taskDataLower.categories) {
+    taskDataLower.categories.forEach((category, index) => {
+      taskDataLower.categories[index] = category.title;
+    });
+  }
+
+  if (taskDataLower.location) {
+    taskDataLower.location = taskDataLower.location.display_address;
+  }
 
   const insertValues = [];
 
-  categoryValues.forEach((val, index) => insertValues.push(`$${index + 1}`));
+  columns.forEach((val, index) => insertValues.push(`$${index + 1}`));
 
   const queryString = `
-  INSERT INTO ${taskData.category}(${categoryValues.join(', ')})
+  INSERT INTO ${category}(${columns.join(', ')})
   VALUES(${insertValues.join(', ')})
   RETURNING *;
   `;
 
-  const values = categoryValues.map((val) => taskData[val]);
+  const values = columns.map((val) => taskData[val]);
+
+  console.log(values);
 
   return db
     .query(queryString, values)
