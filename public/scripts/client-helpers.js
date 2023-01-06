@@ -183,9 +183,6 @@ const createTaskElement = (task) => {
       <div class="info-header">
         <div class="title">Arrival</div>
         <div class="genres">
-          <span class="genre">Sci-fi</span>
-          <span class="genre">Drama</span>
-          <span class="genre">Mystery</span>
         </div>
       </div>
       <div class="description">A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.</div>
@@ -204,22 +201,22 @@ const createTaskElement = (task) => {
       <div class="ratings">
         <div class="IMDB-rating">
           <img src="images/IMDB-logo.png" alt="">
-          <span>7.9/10</span>
+          <span id="imdb">7.9/10</span>
         </div>
         <div class="RT-rating">
           <img src="images/RT-logo.png" alt="">
-          <span>97%</span>
+          <span id="RT">92%</span>
         </div>
         <div class="MC-rating">
           <img src="images/metacritic-logo.png" alt="">
-          <span>80</span>
+          <span id="meta">80</span>
         </div>
         <div class="Meta-rating"></div>
       </div>
 
       <div class="streaming-guide">
         <div class="streaming">Streaming Guide</div>
-      <a href="https://www.justwatch.com/us/movie/arrival-2016">
+      <a href="https://www.justwatch.com/us/movie/arrival-2016" id="just-watch-link">
         <img src="images/just-watch-logo.png" alt="justwatch">
       </a>
       </div>
@@ -282,10 +279,34 @@ const renderDetails = function(category) {
               taskElement.find(".director-name").text(task.director);
             } else {
               taskElement.find(".director-title").text("Writers");
-              taskElement.find(".drector-name").text(task.writer);
+              taskElement.find(".director-name").text(task.writer);
             }
             taskElement.find(".description").text(task.plot);
+            taskElement.find(".cast-names").text(task.actors);
+            console.log(typeof(task.genre));
+            const genres = task.genre.split(", ");
+            genres.forEach((genre) => {
+              taskElement.find(".genres").append(`
+              <span class="genre">${genre}</span>
+              `);
+            });
+            const ratings = task.ratings;
+            taskElement.find("#imdb").text(ratings[0]);
+            if (ratings.length === 3) {
+              taskElement.find("#rt").text(ratings[1]);
+              taskElement.find("#meta").text(ratings[2]);
+            }
+            let title = '';
+            for (let letter of task.title) {
+              if (letter !== " ") {
+                title += letter;
+              } else {
+                title += "-";
+              }
+            }
+            taskElement.find("#just-watch-link").attr("href", `https://www.justwatch.com/us/movie/${title}`);
           }
+
 
         });
 
