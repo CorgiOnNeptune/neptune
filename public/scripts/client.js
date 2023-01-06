@@ -8,9 +8,11 @@ $(() => {
     submitNewTask(this);
   });
 
-  $('.edit-task-form').on('submit', function (event) {
+  $('.edit-button').on('submit', function (event) {
     event.preventDefault();
-    editTask(this);
+    const taskID = $(this).attr('data-value');
+    console.log('taskID ➡️ ', `${taskID}`);
+    editTask(this, taskID);
   });
 
 
