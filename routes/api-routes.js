@@ -34,7 +34,7 @@ router.get('/gbooks/:query', (req, res, next) => {
       console.log('GBooks Request Complete');
       // console.log(data);
       if (data.data.totalItems > 0) {
-        res.send(data.data.items['0']);
+        res.send(data.data.items['0'].volumeInfo);
       }
     })
     .catch(err => next(err));
