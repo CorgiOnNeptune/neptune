@@ -32,14 +32,16 @@ CREATE TABLE restaurants(
 CREATE TABLE films(
   id SERIAL PRIMARY KEY NOT NULL,
   task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
-  title VARCHAR(255) NOT NULL,
-  release_date DATE,
-  cover_photo_url VARCHAR(255),
-  more_info_url VARCHAR(255),
-  rating VARCHAR(255),
-  summary TEXT,
-  genres VARCHAR(255) [],
-  backdrop_photo_url VARCHAR(255)
+  Title VARCHAR(255) NOT NULL,
+  Year VARCHAR(255),
+  Poster VARCHAR(255),
+  IMDB_rating VARCHAR(255),
+  RT_rating VARCHAR(255),
+  MS_rating VARCHAR(255),
+  Plot TEXT,
+  Genre VARCHAR(255),
+  Director VARCHAR(255),
+  Actors VARCHAR(255)
 );
 
 CREATE TABLE books(
