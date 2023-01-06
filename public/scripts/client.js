@@ -8,6 +8,12 @@ $(() => {
     submitNewTask(this);
   });
 
+  $('.edit-task-form').on('submit', function (event) {
+    event.preventDefault();
+    editTask(this);
+  });
+
+
   loadTasks("incomplete");
 
   loadTasksByCategory();

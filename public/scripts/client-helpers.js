@@ -91,7 +91,7 @@ const completeStatusAnimation = function () {
         data: { id: taskId, status: status }
       })
         .then(() => {
-          console.log(`Comeplete status changed: ${taskId}: ${status}`);
+          console.log(`Complete status changed: ${taskId}: ${status}`);
         })
         .catch((error) => {
           console.log(error);
@@ -100,6 +100,32 @@ const completeStatusAnimation = function () {
     }).fadeIn(180);
   });
 };
+
+
+const editTask = (element, taskID, complete = false) => {
+  const $form = $(element);
+  const formArray = $form.serializeArray();
+
+  let task = {
+    description: formArray[0].value,
+    category: formArray[1].value,
+    due_date: formArray[2].value,
+    task_id: taskID
+  };
+
+  $form.post(`/${taskID}`, task)
+    .then(() => {
+      $("#tasks-ul").empty();
+      loadTasks('incomplete');
+      $form[0].reset();
+      closeEditor($('.editor'));
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
+
+};
+
 
 const createTaskElement = (task) => {
   let completeStatus;
@@ -137,7 +163,7 @@ const createTaskElement = (task) => {
       <span class="task-title">${escape(task.task_name)}</span>
       <span class="edit-delete-section">
         <span class="due-date">Due ${dueDate}</span>
-        <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button"><i class="fa-solid fa-pen-to-square"></i></button></span>
+        <span class="edit-delete"><form action="/${task.id}" method="POST" id="edit-form"><button data-modal-target="#old-task-editor" class="edit-button" type="submit"><i class="fa-solid fa-pen-to-square"></i></button></span>
         <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
       </span>
     </div>
@@ -244,7 +270,7 @@ const formatDate = (date) => {
   return `${month} ${dateArr[2]}, ${dateArr[0]}`;
 };
 
-const setDefaultDate = function() {
+const setDefaultDate = function () {
   const date = new Date();
 
   let day = date.getDate();
@@ -262,7 +288,7 @@ const setDefaultDate = function() {
   $("#due_date").attr("value", today);
 };
 
-const convertDate = function(date) {
+const convertDate = function (date) {
   let newDate = "";
   let month;
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -279,8 +305,8 @@ const convertDate = function(date) {
 };
 
 
-const setDefaultValue = function() {
-  $(".edit-button").click(function() {
+const setDefaultValue = function () {
+  $(".edit-button").click(function () {
     const li = $(this).closest("li");
     const taskTitle = li.find(".task-title").text();
     const dueDate = li.find(".due-date").text().slice(4);
@@ -300,7 +326,7 @@ const setDefaultValue = function() {
     }
 
     $("#old-task-editor").find("#task_name").text(taskTitle);
-    $("#old-task-editor").find("option").each(function() {
+    $("#old-task-editor").find("option").each(function () {
       if ($(this).attr("selected") === "selected") {
         $(this).removeAttr("selected");
       }
@@ -309,6 +335,8 @@ const setDefaultValue = function() {
       }
     });
     $("#old-task-editor").find("#due_date").attr("value", convertDate(dueDate));
+    let taskId = $(this).closest("li").attr("id").slice(8);
+
 
   });
 };
