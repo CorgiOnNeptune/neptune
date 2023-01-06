@@ -258,7 +258,7 @@ const loadTasks = function (category) {
     });
 };
 
-const renderDetails = function(category) {
+const renderDetails = function (category) {
 
   if (!category || category === "films" || category === "completed" || category === "incomplete") {
     let url = `/tasks/films`;
@@ -268,7 +268,7 @@ const renderDetails = function(category) {
     })
       .then((data) => {
         const tasks = data.tasks;
-        tasks.forEach(function(task) {
+        tasks.forEach(function (task) {
           const id = `task_id_${task.task_id}`;
           const taskElement = $('#' + id);
           if (taskElement[0]) {
@@ -283,7 +283,7 @@ const renderDetails = function(category) {
             }
             taskElement.find(".description").text(task.plot);
             taskElement.find(".cast-names").text(task.actors);
-            console.log(typeof(task.genre));
+            console.log(typeof (task.genre));
             const genres = task.genre.split(", ");
             genres.forEach((genre) => {
               taskElement.find(".genres").append(`
@@ -296,18 +296,8 @@ const renderDetails = function(category) {
               taskElement.find("#rt").text(ratings[1]);
               taskElement.find("#meta").text(ratings[2]);
             }
-            let title = '';
-            for (let letter of task.title) {
-              if (letter !== " ") {
-                title += letter;
-              } else {
-                title += "-";
-              }
-            }
-            taskElement.find("#just-watch-link").attr("href", `https://www.justwatch.com/us/movie/${title}`);
+            taskElement.find("#just-watch-link").attr("href", `${getJustWatchURL(task)}`);
           }
-
-
         });
 
 
@@ -466,4 +456,17 @@ const setDefaultValue = function () {
     $("#old-task-editor").find("#due_date").attr("value", convertDate(dueDate));
 
   });
+};
+
+/**
+ * Takes in film object to return JustWatch URL
+ * @param {{}} film
+ */
+const getJustWatchURL = (film) => {
+  const regex = /[^A-Za-z0-9 \w]/g;
+  const filmTitle = film.title.replace(regex, '');
+  const titleArr = filmTitle.split(' ');
+  const urlTitle = titleArr.join('-');
+
+  return `https://www.justwatch.com/ca/movie/${urlTitle}`;
 };
