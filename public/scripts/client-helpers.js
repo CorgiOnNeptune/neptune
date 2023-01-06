@@ -1,4 +1,4 @@
-const submitNewTask = (element) => {
+const submitNewTask = async (element) => {
   const $form = $(element);
   const formArray = $form.serializeArray();
 
@@ -8,7 +8,7 @@ const submitNewTask = (element) => {
     due_date: formArray[2].value
   };
 
-  task.category = determineCategory(task);
+  task.category = await determineCategory(task);
 
   $.post('/tasks', task)
     .then(() => {
@@ -21,28 +21,6 @@ const submitNewTask = (element) => {
       console.log(err.message);
     });
 };
-
-
-
-const waitForCategory = new Promise((resolve, reject) => {
-
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 const completeStatusAnimation = function () {

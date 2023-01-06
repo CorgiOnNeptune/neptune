@@ -10,8 +10,6 @@ const axios = require('axios');
 const router = express.Router();
 
 
-
-
 router.get('/omdb/:query', (req, res, next) => {
   const query = req.params.query;
   const apiKey = process.env.OMDB_API_KEY;
@@ -19,8 +17,7 @@ router.get('/omdb/:query', (req, res, next) => {
   axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${query}`)
     .then(data => {
       console.log('OMDB Request Complete');
-      console.log(data.status);
-      return data;
+      res.send(data.data);
     })
     .catch(err => next(err));
 });
@@ -40,6 +37,8 @@ router.get('/omdb/:query', (req, res, next) => {
 //     .catch(err => next(err));
 // });
 
+
+
 // router.get('/gbooks/:query', (req, res, next) => {
 //   const query = req.params.query;
 //   const apiKey = process.env.AMZNPRICE_API_KEY;
@@ -49,6 +48,8 @@ router.get('/omdb/:query', (req, res, next) => {
 //     .catch(err => next(err));
 // });
 
+
+
 // router.get('/amazonprice/:query', (req, res, next) => {
 //   const query = req.params.query;
 //   const apiKey = process.env.AMZNPRICE_API_KEY;
@@ -57,5 +58,7 @@ router.get('/omdb/:query', (req, res, next) => {
 //     .then(data => res.json(data))
 //     .catch(err => next(err));
 // });
+
+
 
 module.exports = router;

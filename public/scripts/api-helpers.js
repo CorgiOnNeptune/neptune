@@ -25,15 +25,6 @@ const matchCategoryKeyword = (string) => {
   return category;
 }
 
-
-
-
-
-
-
-
-
-
 const determineCategory = (task) => {
   if (task.category && task.category !== 'auto') {
     return task.category;
@@ -44,35 +35,14 @@ const determineCategory = (task) => {
     return autoCategory;
   }
 
-  callAPIs(task.description)
+  return makeAPIRequests(task.description)
     .then((data) => {
-      if (data) {
-        return data;
+      if (data.Director) {
+        return 'films';
       }
       return 'others';
     })
     .catch((err) => {
       console.log(err.message)
     });
-
-  // // If match not found, ask APIs.
-  // const apiCategory = makeAPIRequests(task.description);
-
-  // if (apiCategory) {
-  //   return apiCategory;
-  // }
-
-  // return 'others';
-};
-
-const callAPIs = (query) => {
-  return new Promise((resolve, reject) => {
-    makeAPIRequests(query);
-    if (query) {
-      resolve('wowee!');
-    }
-    if (!query) {
-      reject('uh oh');
-    }
-  })
 };
