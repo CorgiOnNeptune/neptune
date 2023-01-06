@@ -117,8 +117,8 @@ VALUES (
 INSERT INTO products(
     task_id,
     title,
-    cover_photo_url,
-    more_info_url,
+    imageUrl,
+    detailPageURL,
     rating,
     price
   )

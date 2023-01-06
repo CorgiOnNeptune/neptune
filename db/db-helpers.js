@@ -99,6 +99,10 @@ const cleanAPIData = (task, category) => {
     }
   }
 
+  if (category === 'books') {
+
+  }
+
   return task;
 };
 
