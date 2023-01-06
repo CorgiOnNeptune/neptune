@@ -5,6 +5,7 @@
  */
 
 const express = require('express');
+const { getDataColumns } = require('../db/db-helpers');
 const router = express.Router();
 const database = require('../db/queries/tasks');
 
@@ -142,10 +143,14 @@ router.post('/', (req, res) => {
     due_date: req.body.due_date,
   };
 
-  database
-    .createTask(newTask)
+  console.log(req.body.data);
+
+  database.createTask(newTask)
     .then((task) => {
-      res.json({ task });
+      return database.addTaskToCategory(task.id, task.category, req.body.data);
+    })
+    .then((task) => {
+      return res.json({ task });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
