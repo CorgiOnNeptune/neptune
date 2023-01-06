@@ -38,10 +38,10 @@ const determineCategory = (task) => {
   return makeAPIRequests(task.description)
     .then((data) => {
       if (data.Director) {
-        return 'films';
+        data.category = "films";
       }
       if (data.kind === 'books#volume') {
-        return 'books';
+        data.category = "books";
       }
       if (data.businesses) {
         return 'restaurants';
@@ -52,6 +52,7 @@ const determineCategory = (task) => {
       return 'others';
     })
     .catch((err) => {
+      console.log(err.message);
       console.log(err.message);
     });
 };
