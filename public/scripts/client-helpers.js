@@ -59,7 +59,7 @@ const submitNewTask = async (element) => {
 
 const completeStatusAnimation = function () {
   $(".complete-status").click(function () {
-    $(this).fadeOut(250, function () {
+    $(this).fadeOut(180, function () {
       if ($(this).attr("src") === "images/not-completed.png") {
         $(this).attr("src", "images/completed.png");
         $(this).removeClass("not-completed");
@@ -69,7 +69,7 @@ const completeStatusAnimation = function () {
         $(this).removeClass("completed");
         $(this).addClass("not-completed");
       }
-    }).fadeIn(250);
+    }).fadeIn(180);
   });
 };
 
