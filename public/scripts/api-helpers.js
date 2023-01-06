@@ -27,23 +27,23 @@ const matchCategoryKeyword = (string) => {
 
 const filterKeywords = (string) => {
   const keywords = ['eat', 'watch', 'read', 'buy'];
+  let newString = '';
 
   keywords.some((val, index) => {
     if (findWordInString(string, val)) {
-      console.log(string);
-      console.log(val);
-      console.log(string.replace(val, ''));
-      return string.replace(val, '');
+      newString = string.replace(val, '').trim();
     }
-  })
+  });
 
+  return newString;
 }
 
 const determineCategory = (task) => {
-  let autoCategory = matchCategoryKeyword(task.description) || undefined;
+  let autoCategory = matchCategoryKeyword(task.description);
+
   if (autoCategory) {
     task.category = autoCategory;
-    callAPIByCategory(task)
+    return callAPIByCategory(task)
       .then(task => {
         console.log('hi mom');
         console.log(task);
@@ -52,7 +52,6 @@ const determineCategory = (task) => {
       .catch(err => {
         console.log(err.message);
       })
-    // return task = callAPIByCategory(task);
   }
 
   return makeAPIRequests(task.description)
@@ -95,23 +94,24 @@ const determineCategory = (task) => {
 
 
 const callAPIByCategory = async (task) => {
-  const query = task.description;
+  const query = filterKeywords(task.description);
+  const encodedQuery = encodeURIComponent(query);
 
   switch (task.category) {
     case 'films':
-      task.data = await makeOMDBRequest(query);
+      task.data = await makeOMDBRequest(encodedQuery);
       return task;
       break;
     case 'books':
-      task.data = await makeGBooksRequest(query);
+      task.data = await makeGBooksRequest(encodedQuery);
       return task;
       break;
     case 'restaurants':
-      task.data = await makeYelpRequest(query);
+      task.data = await makeYelpRequest(encodedQuery);
       return task;
       break;
     case 'products':
-      task.data = await makeAMZNRequest(query);
+      task.data = await makeAMZNRequest(encodedQuery);
       return task;
       break;
     default:
