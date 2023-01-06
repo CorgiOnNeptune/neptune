@@ -26,39 +26,72 @@ const matchCategoryKeyword = (string) => {
 };
 
 const determineCategory = (task) => {
-  if (task.category && task.category !== 'auto') {
-    return task.category;
-  }
-
   let autoCategory = matchCategoryKeyword(task.description) || undefined;
   if (autoCategory) {
-    return autoCategory;
+    task.category = autoCategory;
+    return task;
   }
 
   return makeAPIRequests(task.description)
     .then((data) => {
+      if (!data) {
+        task.category = 'others';
+        return task;
+      }
+
       if (data.Director) {
-        data.category = "films";
-        return data;
+        task.category = 'films';
+        task.data = data;
+        return task;
       }
+
       if (data.kind === 'books#volume') {
-        data.category = "books";
-        return data;
+        task.category = 'books';
+        task.data = data;
+        return task;
       }
+
       if (data.businesses) {
-        data.category = "restaurants";
-        return data;
+        task.category = 'restaurants';
+        task.data = data;
+        return task;
       }
+
       if (data.ASIN) {
-        data.category = "products";
-        return data;
+        task.category = 'products';
+        task.data = data;
+        return task;
       }
-      setTimeout(() => {
-        return { category: "others"};
-      }, "5000");
+
     })
     .catch((err) => {
       console.log(err.message);
       console.log(err.message);
     });
 };
+
+
+const callAPIByCategory = async (task) => {
+  const query = task.description;
+
+  switch (task.category) {
+    case 'films':
+      task.data = await makeOMDBRequest(query);
+      return task;
+      break;
+    case 'books':
+      task.data = await makeGBooksRequest(query);
+      return task;
+      break;
+    case 'restaurants':
+      task.data = await makeYelpRequest(query);
+      return task;
+      break;
+    case 'products':
+      task.data = await makeAMZNRequest(query);
+      return task;
+      break;
+    default:
+      return task;
+  }
+}

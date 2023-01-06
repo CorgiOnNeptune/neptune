@@ -20,7 +20,7 @@ const closeEditor = function (editor) {
   overlay.removeClass('active');
 };
 
-const addEditorEvents = function() {
+const addEditorEvents = function () {
   openEditorButtons = document.querySelectorAll('[data-modal-target]');
   closeEditorButton = $('.close-btn');
   overlay = $('#overlay');
@@ -42,13 +42,18 @@ const submitNewTask = async (element) => {
   const $form = $(element);
   const formArray = $form.serializeArray();
 
-  const task = {
+  let task = {
     description: formArray[0].value,
     category: formArray[1].value,
-    due_date: formArray[2].value
+    due_date: formArray[2].value,
+    data: {}
   };
 
-  task.category = await determineCategory(task);
+  if (!task.category || task.category === 'auto') {
+    task = await determineCategory(task);
+  } else {
+    await callAPIByCategory(task);
+  }
 
   $.post('/tasks', task)
     .then(() => {
@@ -216,11 +221,11 @@ const loadTasksByCategory = function () {
   });
 };
 
+
 /**
  * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
  * @param {string} date
  */
-
 const formatDate = (date) => {
   if (!date) return;
 

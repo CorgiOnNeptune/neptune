@@ -5,10 +5,10 @@ const makeAPIRequests = (query) => {
   // Amazon is commented for now because of the request limit
   // lmao
   const requests = [
-    yelpRequest(encodedQuery),
-    omdbRequest(encodedQuery),
-    gBooksRequest(encodedQuery)
-    // amznRequest(encodedQuery)
+    makeYelpRequest(encodedQuery),
+    makeOMDBRequest(encodedQuery),
+    makeGBooksRequest(encodedQuery)
+    // makeAMZNRequest(encodedQuery)
   ];
 
   return Promise.any(requests)
@@ -24,7 +24,7 @@ const makeAPIRequests = (query) => {
     });
 };
 
-const omdbRequest = (query) => {
+const makeOMDBRequest = (query) => {
   return $.get((`/api/omdb/${query}`))
     .then((data) => {
       // console.log('in omdbRequest');
@@ -37,7 +37,7 @@ const omdbRequest = (query) => {
     });
 }
 
-const gBooksRequest = (query) => {
+const makeGBooksRequest = (query) => {
   return $.get((`/api/gbooks/${query}`))
     .then((data) => {
       // console.log('in gBooksRequest');
@@ -51,8 +51,7 @@ const gBooksRequest = (query) => {
 }
 
 
-
-const yelpRequest = (query) => {
+const makeYelpRequest = (query) => {
   return $.get((`/api/ipapi/`))
     .then(location => {
       // console.log('in IP Request');
@@ -79,7 +78,7 @@ const yelpRequest = (query) => {
 
 
 
-const amznRequest = (query) => {
+const makeAMZNRequest = (query) => {
   return $.get((`/api/amazonprice/${query}`))
     .then((data) => {
       // console.log('in amazonReq');
