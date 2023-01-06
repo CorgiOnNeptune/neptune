@@ -1,3 +1,37 @@
+let openEditorButtons = document.querySelectorAll('[data-modal-target]');
+let closeEditorButton = $('.close-btn');
+let overlay = $('#overlay');
+
+const openEditor = function (editor) {
+  if (!editor) return;
+  editor.classList.add('active');
+  overlay.addClass('active');
+};
+
+const closeEditor = function (editor) {
+  if (!editor) return;
+  editor.removeClass('active');
+  overlay.removeClass('active');
+};
+
+const addEditorEvents = function() {
+  openEditorButtons = document.querySelectorAll('[data-modal-target]');
+  closeEditorButton = $('.close-btn');
+  overlay = $('#overlay');
+
+  openEditorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const editor = document.querySelector(button.dataset.modalTarget);
+      openEditor(editor);
+    });
+  });
+
+  closeEditorButton.on('click', () => {
+    const editor = $('.editor');
+    closeEditor(editor);
+  });
+};
+
 const submitNewTask = async (element) => {
   const $form = $(element);
   const formArray = $form.serializeArray();
@@ -108,8 +142,9 @@ const loadTasks = function (category) {
   })
     .then((tasks) => {
       renderTasks(tasks.tasks);
-      // re-register the click event for newly emerged tasks
+      // re-register the click events
       completeStatusAnimation();
+      addEditorEvents();
 
     })
     .catch((error) => {
@@ -123,34 +158,43 @@ const loadTasksByCategory = function () {
 
     if ($(this).hasClass("all-tasks")) {
       loadTasks();
+      $("#header-text").text("All");
+
     }
 
     if ($(this).hasClass("incomplete-tasks")) {
       loadTasks("incomplete");
+      $("#header-text").text("Incomplete");
     }
 
     if ($(this).hasClass("completed-tasks")) {
       loadTasks("completed");
+      $("#header-text").text("Completed");
     }
 
     if ($(this).hasClass("watch-tasks")) {
       loadTasks("films");
+      $("#header-text").text("Watch");
     }
 
     if ($(this).hasClass("read-tasks")) {
       loadTasks("books");
+      $("#header-text").text("Read");
     }
 
     if ($(this).hasClass("eat-tasks")) {
       loadTasks("restaurants");
+      $("#header-text").text("Eat");
     }
 
     if ($(this).hasClass("shop-tasks")) {
       loadTasks("products");
+      $("#header-text").text("Shop");
     }
 
     if ($(this).hasClass("others-tasks")) {
       loadTasks("others");
+      $("#header-text").text("Others");
     }
   });
 };
@@ -171,7 +215,7 @@ const formatDate = (date) => {
     if (index + 1 === Number(month)) {
       month = months[index];
     }
-  })
+  });
 
   return `${month} ${dateArr[2]}, ${dateArr[0]}`;
-}
+};

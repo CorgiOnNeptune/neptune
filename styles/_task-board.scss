@@ -11,17 +11,17 @@
   background: linear-gradient(to bottom right, $font-color 20%, $bg-color 100%);
   background-attachment: fixed;
   .header {
-    height: 100px;
     color: $secondary-font-color;
-    position: relative;
-    display: flex;
-    align-items: center;
+    height: 6rem;
+    line-height: 6rem;
+    margin-left: 5%;
+    //TODO: make the header fixed (with background color)
+
 
     p {
-      font-size: 2rem;
+      font-size: 1.7rem;
+      font-weight: 700;
       font-family: $main-font, sans-serif;
-      position: absolute;
-      left: 5%;
       color: $theme-color;
     }
   }
@@ -39,7 +39,7 @@
     }
 
     li {
-      margin-top: 2em;
+      margin-bottom: 2rem;
       border-radius: 10px 10px;
       line-height: 2em;
       background-color: $theme-color;
