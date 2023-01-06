@@ -163,8 +163,8 @@ const createTaskElement = (task) => {
       <span class="task-title">${escape(task.task_name)}</span>
       <span class="edit-delete-section">
         <span class="due-date">Due ${dueDate}</span>
-        <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button" data-value="${task.id}" type="submit"><i class="fa-solid fa-pen-to-square"></i></button></span>
-        <span class="edit-delete"><button><i class="fa-sharp fa-solid fa-trash"></i></button></span>
+        <span class="edit-delete"><button data-modal-target="#old-task-editor" class="edit-button" onclick="editTask(${task.id})"><i class="fa-solid fa-pen-to-square"></i></button></span>
+        <span class="edit-delete"><button class="delete-btn" onclick="deleteTask(${task.id})"><i class="fa-sharp fa-solid fa-trash"></i></button></span>
       </span>
     </div>
   </li>
@@ -249,6 +249,19 @@ const loadTasksByCategory = function () {
   });
 };
 
+const deleteTask = (taskID) => {
+  $.ajax({
+    url: `/tasks/${taskID}/delete`,
+    method: 'POST',
+    data: { id: taskID, status: status }
+  })
+    .then(() => {
+      console.log('Task deleted successfully');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 /**
  * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
