@@ -29,11 +29,11 @@ router.get('/omdb/:query', (req, res, next) => {
 router.get('/gbooks/:query', (req, res, next) => {
   const query = req.params.query;
 
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}+filter=full+startIndex=0+maxResults=5`)
     .then(data => {
       console.log('GBooks Request Complete');
-      // console.log(data);
-      if (data.data.totalItems > 10) {
+      console.log(data);
+      if (data.data.totalItems > 0) {
         res.send(data.data.items['0']);
       }
     })
