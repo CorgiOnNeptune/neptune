@@ -127,6 +127,27 @@ const changeTaskStatus = (data) => {
     });
 };
 
+const editTask = (data) => {
+  const queryString = `
+  UPDATE tasks
+  SET category = '$1', description = '$2', due_date = '$3'
+  WHERE tasks.id = $4
+  RETURNING *;`
+
+  const values = [data.category, data.description, data.due_date, data.task_id];
+
+  return db.query(queryString, values)
+    .then((data) => {
+      console.log(data.rows);
+      console.log(queryString);
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return null;
+    });
+};
+
 /**
  * Adds new task data to appropriate category database
  * @param {{}} taskData An object containing all of the API obtained info.
@@ -168,4 +189,4 @@ const addTaskToCategory = async (task_id, category, taskData) => {
     });
 };
 
-module.exports = { getAllTasks, createTask, addTaskToCategory, changeTaskStatus};
+module.exports = { getAllTasks, createTask, addTaskToCategory, changeTaskStatus, editTask };
