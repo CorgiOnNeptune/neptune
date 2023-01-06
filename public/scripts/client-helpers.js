@@ -161,7 +161,7 @@ const formatDate = (date) => {
     if (index + 1 === Number(month)) {
       month = months[index];
     }
-  })
+  });
 
   return `${month} ${dateArr[2]}, ${dateArr[0]}`;
-}
+};
