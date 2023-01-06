@@ -74,9 +74,39 @@ const lowercaseKeys = (object) => {
   return newObj;
 };
 
+
+const cleanAPIData = (task, category) => {
+  if (category === 'films') {
+    // Remove extra JSON text from film ratings
+    if (task.ratings) {
+      task.ratings.forEach((rating, index) => {
+        task.ratings[index] = rating.Value;
+      });
+    }
+  }
+
+  if (category === 'restaurants') {
+    // Get restaurants category titles out of array
+    if (task.categories) {
+      task.categories.forEach((category, index) => {
+        task.categories[index] = category.title;
+      });
+    }
+
+    // Get display address for
+    if (task.location) {
+      task.location = task.location.display_address;
+    }
+  }
+
+  return task;
+};
+
+
 module.exports = {
   checkValidCategory,
   validateCompleted,
   getDataColumns,
-  lowercaseKeys
+  lowercaseKeys,
+  cleanAPIData
 };

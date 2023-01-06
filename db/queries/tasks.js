@@ -112,30 +112,13 @@ const addTaskToCategory = async (task_id, category, taskData) => {
   // TODO: Will need to get the category values via API or other function call
   // ! NEED to add 'ARRAY' before array values in the query
 
-  const columns = await dbHelpers.getDataColumns(category);
   taskData.task_id = task_id;
+  const columns = await dbHelpers.getDataColumns(category);
   const taskDataLower = dbHelpers.lowercaseKeys(taskData);
-
-  console.log(taskDataLower);
-
-  // Remove extra JSON text from film ratings
-  if (taskDataLower.ratings) {
-    taskDataLower.ratings.forEach((rating, index) => {
-      taskDataLower.ratings[index] = rating.Value;
-    });
-  }
-
-  if (taskDataLower.categories) {
-    taskDataLower.categories.forEach((category, index) => {
-      taskDataLower.categories[index] = category.title;
-    });
-  }
-
-  if (taskDataLower.location) {
-    taskDataLower.location = taskDataLower.location.display_address;
-  }
-
+  const taskDataClean = dbHelpers.cleanAPIData(taskDataLower, category);
   const insertValues = [];
+
+  // console.log(taskDataClean);
 
   columns.forEach((val, index) => insertValues.push(`$${index + 1}`));
 
@@ -145,9 +128,9 @@ const addTaskToCategory = async (task_id, category, taskData) => {
   RETURNING *;
   `;
 
-  const values = columns.map((val) => taskData[val]);
+  const values = columns.map((val) => taskDataClean[val]);
 
-  console.log(values);
+  // console.log(values);
 
   return db
     .query(queryString, values)
