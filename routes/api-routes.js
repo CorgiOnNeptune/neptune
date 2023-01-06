@@ -14,15 +14,31 @@ router.get('/omdb/:query', (req, res, next) => {
   const query = req.params.query;
   const apiKey = process.env.OMDB_API_KEY;
 
-  axios.get(`http://www.omdbapi.com/?apikey=${apiKey}&t=${query}`)
+  axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&t=${query}`)
     .then(data => {
       console.log('OMDB Request Complete');
-      res.send(data.data);
+      console.log(data);
+      if (!data.data.Error) {
+        res.send(data.data);
+      }
     })
     .catch(err => next(err));
 });
 
 
+router.get('/gbooks/:query', (req, res, next) => {
+  const query = req.params.query;
+
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
+    .then(data => {
+      console.log('GBooks Request Complete');
+      console.log(data);
+      if (data.totalItems > 10) {
+        res.send(data.data.items['0']);
+      }
+    })
+    .catch(err => next(err));
+});
 
 
 
@@ -33,20 +49,14 @@ router.get('/omdb/:query', (req, res, next) => {
 //   const apiKey = process.env.YELP_API_KEY;
 
 //   axios.get(`http://`)
-//     .then(data => res.json(data))
+//     .then(data => {
+//       res.send(data);
+//     })
 //     .catch(err => next(err));
 // });
 
 
 
-// router.get('/gbooks/:query', (req, res, next) => {
-//   const query = req.params.query;
-//   const apiKey = process.env.AMZNPRICE_API_KEY;
-
-//   axios.get(`http://`)
-//     .then(data => res.json(data))
-//     .catch(err => next(err));
-// });
 
 
 
@@ -55,7 +65,9 @@ router.get('/omdb/:query', (req, res, next) => {
 //   const apiKey = process.env.AMZNPRICE_API_KEY;
 
 //   axios.get(`http://`)
-//     .then(data => res.json(data))
+//     .then(data => {
+//       res.send(data);
+//     })
 //     .catch(err => next(err));
 // });
 

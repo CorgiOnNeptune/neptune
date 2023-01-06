@@ -40,6 +40,9 @@ const determineCategory = (task) => {
       if (data.Director) {
         return 'films';
       }
+      if (data.kind === 'books#volume') {
+        return 'books';
+      }
       return 'others';
     })
     .catch((err) => {

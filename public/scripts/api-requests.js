@@ -2,13 +2,17 @@ const makeAPIRequests = (query) => {
   const encodedQuery = encodeURIComponent(query);
   console.log('encodedQuery ➡️ ', `${encodedQuery}`);
 
-  const requests = [omdbRequest(encodedQuery)];
+  // TODO: Adjust priority as GBooks always pulls back lots of results;
+  const requests = [
+    omdbRequest(encodedQuery),
+    gBooksRequest(encodedQuery)
+  ];
 
   return Promise.any(requests)
     .then((data) => {
-      // console.log('data in promise');
-      // console.log(data);
-      // console.log('in the promise');
+      console.log('data in promise');
+      console.log(data);
+      console.log('in the promise');
 
       return data;
     })
@@ -22,6 +26,20 @@ const omdbRequest = (query) => {
     .then((data) => {
       // console.log('in omdbRequest');
       // console.log(data);
+
+      return data;
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
+}
+
+const gBooksRequest = (query) => {
+  return $.get((`/api/gbooks/${query}`))
+    .then((data) => {
+      // console.log('in gBooksRequest');
+      // console.log(data);
+
       return data;
     })
     .fail((err) => {
@@ -38,9 +56,8 @@ const omdbRequest = (query) => {
 
 
 
-
 // const yelpRequest = (query) => {
-//   $.get((`/api/yelp/${query}`))
+//   return $.get((`/api/yelp/${query}`))
 //     .then((data) => {
 
 //     })
@@ -49,18 +66,9 @@ const omdbRequest = (query) => {
 //     });
 // }
 
-// const gbooksRequest = (query) => {
-//   $.get((`/api/gbooks/${query}`))
-//     .then((data) => {
-
-//     })
-//     .fail((err) => {
-//       console.log(err.message);
-//     });
-// }
 
 // const amznRequest = (query) => {
-//   $.get((`/api/amazonprice/${query}`))
+//   return $.get((`/api/amazonprice/${query}`))
 //     .then((data) => {
 
 //     })
