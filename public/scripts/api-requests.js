@@ -2,10 +2,13 @@ const makeAPIRequests = (query) => {
   const encodedQuery = encodeURIComponent(query);
   console.log('encodedQuery ➡️ ', `${encodedQuery}`);
 
+  // Amazon is commented for now because of the request limit
+  // lmao
   const requests = [
     yelpRequest(encodedQuery),
     omdbRequest(encodedQuery),
     gBooksRequest(encodedQuery)
+    // amznRequest(encodedQuery)
   ];
 
   return Promise.any(requests)
@@ -60,8 +63,8 @@ const yelpRequest = (query) => {
 
       return $.get((`/api/yelp/${query}/${latitude}/${longitude}`))
         .then((data) => {
-          console.log('in yelpRequest');
-          console.log(data);
+          // console.log('in yelpRequest');
+          // console.log(data);
 
           return data;
         })
@@ -76,12 +79,15 @@ const yelpRequest = (query) => {
 
 
 
-// const amznRequest = (query) => {
-//   return $.get((`/api/amazonprice/${query}`))
-//     .then((data) => {
+const amznRequest = (query) => {
+  return $.get((`/api/amazonprice/${query}`))
+    .then((data) => {
+      // console.log('in amazonReq');
+      // console.log(data);
 
-//     })
-//     .fail((err) => {
-//       console.log(err.message);
-//     });
-// }
+      return data;
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
+}
