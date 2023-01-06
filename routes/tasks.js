@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
 
   const queryParams = {
     user_id: req.session.user_id,
-    // completed: false,
   };
 
   database
@@ -29,7 +28,7 @@ router.get('/', (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
-    }); // this is rnot returning completed tasks for some reason
+    });
 });
 
 /*
@@ -125,12 +124,6 @@ router.get('/:filter/:completed', (req, res) => {
       res.status(500).json({ error: err.message });
     });
 });
-
-
-
-
-
-
 
 
 /*
