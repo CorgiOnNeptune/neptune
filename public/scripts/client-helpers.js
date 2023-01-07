@@ -201,7 +201,7 @@ const createTaskElement = (task) => {
       <div class="ratings">
         <div class="IMDB-rating">
           <img src="images/IMDB-logo.png" alt="">
-          <span id="imdb">7.9/10</span>
+          <span id="imdb">7.9</span>
         </div>
         <div class="RT-rating">
           <img src="images/RT-logo.png" alt="">
@@ -291,10 +291,12 @@ const renderDetails = function (category) {
               `);
             });
             const ratings = task.ratings;
-            taskElement.find("#imdb").text(ratings[0]);
+            const imdbRating = ratings[0].slice(0, 3);
+            taskElement.find("#imdb").text(imdbRating);
             if (ratings.length === 3) {
+              const mcRating = ratings[2].slice(0, 2);
               taskElement.find("#rt").text(ratings[1]);
-              taskElement.find("#meta").text(ratings[2]);
+              taskElement.find("#meta").text(mcRating);
             }
             taskElement.find("#just-watch-link").attr("href", `${getJustWatchURL(task)}`);
           }
