@@ -205,7 +205,7 @@ const createTaskElement = (task) => {
         </div>
         <div class="RT-rating">
           <img src="images/RT-logo.png" alt="">
-          <span id="RT">92%</span>
+          <span id="rt">92%</span>
         </div>
         <div class="MC-rating">
           <img src="images/metacritic-logo.png" alt="">
