@@ -315,6 +315,11 @@ const renderDetails = function (category) {
                 `);
               });
             }
+            let type = task.type.charAt(0).toUpperCase() + task.type.slice(1);
+            taskElement.find(".genres").prepend(`
+                <span class="genre">${type}</span>
+                `);
+
 
             const ratings = task.ratings;
             const imdbRating = ratings[0].slice(0, 3);
