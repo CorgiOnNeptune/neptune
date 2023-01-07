@@ -2,23 +2,34 @@ const makeAPIRequests = (query) => {
   const encodedQuery = encodeURIComponent(query);
   console.log('encodedQuery ➡️ ', `${encodedQuery}`);
 
+  const timeoutPromise = (ms, promise) => {
+    const timeout = new Promise((resolve, reject) =>
+      setTimeout(
+        () => reject(`Timed out after ${ms} ms.`),
+        ms));
+    return Promise.race([
+      promise,
+      timeout
+    ]);
+  };
+
   // Amazon is commented for now because of the request limit
   // lmao
   const requests = [
-    makeYelpRequest(encodedQuery),
-    makeOMDBRequest(encodedQuery),
-    // makeTMDBRequest(encodedQuery),
-    makeGBooksRequest(encodedQuery)
+    timeoutPromise(5000, makeYelpRequest(encodedQuery)),
+    timeoutPromise(5000, makeOMDBRequest(encodedQuery)),
+    timeoutPromise(5000, makeTMDBRequest(encodedQuery)),
+    timeoutPromise(5000, makeGBooksRequest(encodedQuery))
     // makeAMZNRequest(encodedQuery)
   ];
 
-  return Promise.any(requests)
-    .then((data) => {
-      console.log('data in promise');
-      console.log(data);
-      console.log('in the promise');
+  return Promise.allSettled(requests)
+    .then((results) => {
+      // console.log('data in promise');
+      console.log(results);
+      // console.log('in the promise');
 
-      return data;
+      return results;
     })
     .catch((err) => {
       console.log(err.message);
@@ -39,8 +50,7 @@ const makeOMDBRequest = (query) => {
 }
 
 const makeTMDBRequest = (query) => {
-  const apiKey = process.env.TMDB_API_KEY;
-  return $.get((`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`))
+  return $.get((`/api/tmdb/${query}`))
     .then((data) => {
       // console.log('in omdbRequest');
       // console.log(data);
