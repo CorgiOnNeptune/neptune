@@ -288,10 +288,12 @@ const renderDetails = function (category) {
         tasks.forEach(function (task) {
           const id = `task_id_${task.task_id}`;
           const taskElement = $('#' + id);
+
           if (taskElement[0]) {
             taskElement.find(".title").text(task.title);
             taskElement.find("#poster").attr("src", `${task.poster}`);
             taskElement.find(".description").text(task.plot);
+
             if (task.director !== "N/A") {
               taskElement.find(".director-name").text(task.director);
             } else {
@@ -299,16 +301,21 @@ const renderDetails = function (category) {
               const writers = task.writer.replaceAll(",", " ·");
               taskElement.find(".director-name").text(writers);
             }
+
             taskElement.find(".description").text(task.plot);
+
             const actors = task.actors.replaceAll(",", " ·");
             taskElement.find(".cast-names").text(actors);
-            console.log(typeof (task.genre));
-            const genres = task.genre.split(", ");
-            genres.forEach((genre) => {
-              taskElement.find(".genres").append(`
-              <span class="genre">${genre}</span>
-              `);
-            });
+
+            if (task.genre !== 'N/A') {
+              const genres = task.genre.split(", ");
+              genres.forEach((genre) => {
+                taskElement.find(".genres").append(`
+                <span class="genre">${genre}</span>
+                `);
+              });
+            }
+
             const ratings = task.ratings;
             const imdbRating = ratings[0].slice(0, 3);
             taskElement.find("#imdb").text(imdbRating);
@@ -317,6 +324,7 @@ const renderDetails = function (category) {
               taskElement.find("#rt").text(ratings[1]);
               taskElement.find("#meta").text(mcRating);
             }
+
             taskElement.find("#just-watch-link").attr("href", `${getJustWatchURL(task)}`);
           }
         });
