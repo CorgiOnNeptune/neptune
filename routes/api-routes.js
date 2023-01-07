@@ -6,9 +6,15 @@
 
 require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
+let axios = require('axios');
 const router = express.Router();
 
+// proxy setting: uncomment if you need to run axios with proxy
+// const HttpsProxyAgent = require("https-proxy-agent");
+// const host = process.env.HTTPS_HOST;
+// const port = process.env.HTTPS_PORT;
+// const httpsAgent = new HttpsProxyAgent({host: `${host}`, port: `${port}`});
+// axios = axios.create({httpsAgent});
 
 router.get('/omdb/:query', (req, res, next) => {
   const query = req.params.query;
