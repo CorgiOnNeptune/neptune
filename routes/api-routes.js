@@ -55,7 +55,6 @@ router.get('/gbooks/:query', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
 router.get('/yelp/:query/:latitude/:longitude', (req, res, next) => {
   const query = req.params.query;
   const apiKey = process.env.YELP_API_KEY;
