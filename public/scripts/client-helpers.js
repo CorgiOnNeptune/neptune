@@ -296,10 +296,12 @@ const renderDetails = function (category) {
               taskElement.find(".director-name").text(task.director);
             } else {
               taskElement.find(".director-title").text("Writers");
-              taskElement.find(".director-name").text(task.writer);
+              const writers = task.writer.replaceAll(",", " ·");
+              taskElement.find(".director-name").text(writers);
             }
             taskElement.find(".description").text(task.plot);
-            taskElement.find(".cast-names").text(task.actors);
+            const actors = task.actors.replaceAll(",", " ·");
+            taskElement.find(".cast-names").text(actors);
             console.log(typeof (task.genre));
             const genres = task.genre.split(", ");
             genres.forEach((genre) => {
