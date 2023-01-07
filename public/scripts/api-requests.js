@@ -7,6 +7,7 @@ const makeAPIRequests = (query) => {
   const requests = [
     makeYelpRequest(encodedQuery),
     makeOMDBRequest(encodedQuery),
+    // makeTMDBRequest(encodedQuery),
     makeGBooksRequest(encodedQuery)
     // makeAMZNRequest(encodedQuery)
   ];
@@ -29,6 +30,21 @@ const makeOMDBRequest = (query) => {
     .then((data) => {
       // console.log('in omdbRequest');
       // console.log(data);
+
+      return data;
+    })
+    .fail((err) => {
+      console.log(err.message);
+    });
+}
+
+const makeTMDBRequest = (query) => {
+  const apiKey = process.env.TMDB_API_KEY;
+  return $.get((`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`))
+    .then((data) => {
+      // console.log('in omdbRequest');
+      // console.log(data);
+      console.log("TMDB request successful");
 
       return data;
     })

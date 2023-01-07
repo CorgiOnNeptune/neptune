@@ -17,4 +17,8 @@ $(() => {
   loadTasks("incomplete");
 
   loadTasksByCategory();
+
+  // $("#header-text").click(()=> {
+  //   makeTMDBRequest();
+  // });
 });
