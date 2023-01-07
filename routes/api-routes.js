@@ -25,6 +25,21 @@ router.get('/omdb/:query', (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.get('/tmdb/:query', (req, res, next) => {
+  const query = req.params.query;
+  const apiKey = process.env.TMDB_API_KEY;
+
+  axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`)
+    .then(data => {
+      console.log('TMDB Request Complete');
+      // console.log(data);
+      if (!data.data.Error) {
+        res.send(data.data);
+      }
+    })
+    .catch(err => next(err));
+});
+
 
 router.get('/gbooks/:query', (req, res, next) => {
   const query = req.params.query;
