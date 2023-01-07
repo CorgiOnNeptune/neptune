@@ -42,7 +42,8 @@ CREATE TABLE films(
   Writer VARCHAR(255),
   Actors VARCHAR(255),
   imdbRating VARCHAR(255),
-  tmdb_rating VARCHAR(255)
+  tmdb_rating VARCHAR(255),
+  type VARCHAR(255)
 );
 
 CREATE TABLE books(
