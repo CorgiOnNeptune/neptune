@@ -79,7 +79,7 @@ const determineCategory = (task) => {
         if (tmdbResult.status === 'fulfilled' || firstResult.name === omdbResult.value.Title) {
           const posterPath = firstResult.poster_path;
           const tmdbRating = firstResult.vote_average;
-          const posterUrl = `https://image.tmdb.org/t/p/original/${posterPath}`;
+          const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
           omdbResult.value.Poster = posterUrl;
           omdbResult.value.tmdb_rating = tmdbRating;
         }
