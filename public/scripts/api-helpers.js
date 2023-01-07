@@ -54,35 +54,50 @@ const determineCategory = (task) => {
   }
 
   return makeAPIRequests(task.description)
-    .then((data) => {
-      if (!data) {
-        task.category = 'others';
-        return task;
-      }
+    .then((results) => {
+      const yelpResult = results[0];
+      const omdbResult = results[1];
+      const tmdbResult = results[2];
+      const gbooksResult = results[3];
 
-      if (data.Director) {
+      console.log('Yelp result:', yelpResult);
+      console.log('OMDB result:', omdbResult);
+      console.log('TMDB result:', tmdbResult);
+      console.log('Gbooks result:', gbooksResult);
+
+      // if (yelpResult.status === 'fulfilled') {
+      //   task.category = 'restaurants';
+      //   task.data = yelpResult.value;
+      //   return task;
+      // }
+
+      // use OMDB results to determine category for films and shows because it's stricker than TMDB, which apparently sends back results for anything
+      // put additional information from TMDB to OMDB's value and pack them up in task
+      if (omdbResult.status === 'fulfilled') {
         task.category = 'films';
-        task.data = data;
+        const firstResult = tmdbResult.value.results[0];
+        if (tmdbResult.status === 'fulfilled' || firstResult.name === omdbResult.value.Title) {
+          const posterPath = firstResult.poster_path;
+          const tmdbRating = firstResult.vote_average;
+          const posterUrl = `https://image.tmdb.org/t/p/original/${posterPath}`;
+          omdbResult.value.Poster = posterUrl;
+          omdbResult.value.tmdb_rating = tmdbRating;
+        }
+        task.data = omdbResult.value;
         return task;
       }
 
-      if (data.authors) {
+      if (gbooksResult.status === 'fulfilled') {
         task.category = 'books';
-        task.data = data;
+        task.data = gbooksResult.value;
         return task;
       }
 
-      if (data.distance) {
-        task.category = 'restaurants';
-        task.data = data;
-        return task;
-      }
-
-      if (data.ASIN) {
-        task.category = 'products';
-        task.data = data;
-        return task;
-      }
+      // if (data.ASIN) {
+      //   task.category = 'products';
+      //   task.data = data;
+      //   return task;
+      // }
 
     })
     .catch((err) => {
