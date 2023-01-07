@@ -12,6 +12,8 @@ const openEditor = function (editor) {
   if (!editor) return;
   editor.classList.add('active');
   overlay.addClass('active');
+  $("#loading-animation").hide();
+  $(editor).find("form").css("visibility", "visible");
 };
 
 const closeEditor = function (editor) {

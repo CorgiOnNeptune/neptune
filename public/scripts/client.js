@@ -5,6 +5,8 @@
 $(() => {
   $('.new-task-form').on('submit', function (event) {
     event.preventDefault();
+    $("#loading-animation").show();
+    $(this).css("visibility", "hidden");
     submitNewTask(this);
   });
 
