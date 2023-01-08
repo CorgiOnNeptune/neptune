@@ -74,7 +74,9 @@ INSERT INTO films(
     Director,
     Writer,
     Actors,
-    imdbRating
+    imdbRating,
+    tmdb_rating,
+    type
   )
 VALUES(
     2,
@@ -90,7 +92,9 @@ VALUES(
     'Denis Villeneuve',
     'Eric Heisserer',
     'Amy Adams, Jeremy Renner, Forest Whitaker',
-    '7.9/10'
+    '7.9/10',
+    '7.6',
+    'movie'
   )
 RETURNING *;
 

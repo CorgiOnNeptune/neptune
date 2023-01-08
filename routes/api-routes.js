@@ -6,9 +6,15 @@
 
 require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
+let axios = require('axios');
 const router = express.Router();
 
+// proxy setting: uncomment if you need to run axios with proxy
+// const HttpsProxyAgent = require("https-proxy-agent");
+// const host = process.env.HTTPS_HOST;
+// const port = process.env.HTTPS_PORT;
+// const httpsAgent = new HttpsProxyAgent({host: `${host}`, port: `${port}`});
+// axios = axios.create({httpsAgent});
 
 router.get('/omdb/:query', (req, res, next) => {
   const query = req.params.query;
@@ -17,6 +23,21 @@ router.get('/omdb/:query', (req, res, next) => {
   axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&t=${query}`)
     .then(data => {
       console.log('OMDB Request Complete');
+      // console.log(data);
+      if (!data.data.Error) {
+        res.send(data.data);
+      }
+    })
+    .catch(err => next(err));
+});
+
+router.get('/tmdb/:query', (req, res, next) => {
+  const query = req.params.query;
+  const apiKey = process.env.TMDB_API_KEY;
+
+  axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`)
+    .then(data => {
+      console.log('TMDB Request Complete');
       // console.log(data);
       if (!data.data.Error) {
         res.send(data.data);
@@ -39,7 +60,6 @@ router.get('/gbooks/:query', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-
 
 router.get('/yelp/:query/:latitude/:longitude', (req, res, next) => {
   const query = req.params.query;
