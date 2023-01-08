@@ -177,7 +177,12 @@ const filterKeywords = (string) => {
 
   keywords.some((val, index) => {
     if (findWordInString(string, val)) {
-      newString = string.replace(val, '').trim();
+          const regEx = new RegExp(val, "ig");
+          if (newString) {
+            newString = newString.replace(regEx, '').trim();
+          } else {
+            newString = string.replace(regEx, '').trim();
+          }
     }
   });
 
