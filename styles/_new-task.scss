@@ -47,6 +47,7 @@
     font-size: 1.2em;
     font-weight: 500;
     background-color: $theme-color;
+    position: relative;
 
     .task-name-label {
       margin: 2% 0;
@@ -120,3 +121,14 @@
   pointer-events: all;
   opacity: 1;
 }
+
+#loading-animation {
+  width: 30%;
+  display: none;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
