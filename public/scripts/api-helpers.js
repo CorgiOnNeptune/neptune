@@ -94,26 +94,54 @@ const determineCategory = task => {
  * @return  {{}}      The original task + the data received from the API call
  */
 const callAPIByCategory = async (task) => {
-  const query = filterKeywords(task.description);
+  const query = filterKeyword(task.description);
+  console.log("query", query);
   const encodedQuery = encodeURIComponent(query);
 
   switch (task.category) {
     case 'films':
-      task.data = await makeOMDBRequest(encodedQuery);
-      return task;
+      const requests = [
+        timeoutPromise(5000, makeOMDBRequest(encodedQuery)),
+        timeoutPromise(5000, makeTMDBRequest(encodedQuery)),
+      ];
+      return Promise.allSettled(requests)
+      .then(results => {
+        console.log('↓ callAPIByCategory(), category: films, results ↓');
+        console.log(results);
+        const omdbResult = results[0];
+        const tmdbResult = results[1];
+        if (omdbResult.status === 'fulfilled') {
+          const firstResult = tmdbResult.value.results[0];
+
+          if (tmdbResult.status === 'fulfilled' || firstResult.name === omdbResult.value.Title) {
+            const posterPath = firstResult.poster_path;
+            const tmdbRating = firstResult.vote_average;
+            const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
+            omdbResult.value.Poster = posterUrl;
+            omdbResult.value.tmdb_rating = tmdbRating;
+          }
+          task.data = omdbResult.value;
+          return task;
+        }
+      })
+      .catch(err => console.log(err.message));
       break;
+
     case 'books':
-      task.data = await makeGBooksRequest(encodedQuery);
+      task.data = await timeoutPromise(5000, makeGBooksRequest(encodedQuery));
       return task;
       break;
+
     case 'restaurants':
-      task.data = await makeYelpRequest(encodedQuery);
+      task.data = await timeoutPromise(5000, makeYelpRequest(encodedQuery));
       return task;
       break;
+
     case 'products':
-      task.data = await makeAMZNRequest(encodedQuery);
+      task.data = await timeoutPromise(5000, makeAMZNRequest(encodedQuery));
       return task;
       break;
+
     default:
       return task;
   }
@@ -137,15 +165,6 @@ const timeoutPromise = (ms, promise) => {
   ]);
 };
 
-/**
- * Checks if given word is found in the given string
- * @param  {string}  str  String to check condition
- * @param  {string}  word Word to look for in the string
- * @return {boolean}      Boolean if word found in string
- */
-const findWordInString = (str, word) => {
-  return new RegExp('\\b' + word + '\\b', 'i').test(str);
-};
 
 /**
  * Matches string against key values to check for easy API match
@@ -157,36 +176,30 @@ const matchCategoryKeyword = (string) => {
   const categories = ['restaurants', 'films', 'books', 'products'];
   const keywords = ['eat', 'watch', 'read', 'buy'];
 
-  keywords.some((val, index) => {
-    if (findWordInString(string, val)) {
-      category = categories[index];
+  for (let i in keywords) {
+    if (string.trim().split(" ")[0].toLowerCase() === keywords[i]) {
+      category = categories[i];
     }
-  });
+  }
 
+  console.log("Keyword matched. Category:", category);
   return category;
 };
 
 /**
  * Trim given string of matched keyword and whitespace from the start/end
  * @param  {string} string Takes in string to check for keyword
- * @return {string}        Trimmed string
+ * @return {string}        Altered string
  */
-const filterKeywords = (string) => {
+const filterKeyword = (string) => {
   const keywords = ['eat', 'watch', 'read', 'buy'];
-  let newString = '';
-
-  keywords.some((val, index) => {
-    if (findWordInString(string, val)) {
-          const regEx = new RegExp(val, "ig");
-          if (newString) {
-            newString = newString.replace(regEx, '').trim();
-          } else {
-            newString = string.replace(regEx, '').trim();
-          }
-    }
-  });
-
-  return newString;
+  const splitTask = string.trim().split(" ");
+  const firstWord = splitTask[0].toLowerCase();
+  if (keywords.includes(firstWord)) {
+    splitTask.shift();
+  }
+  const filteredString = splitTask.join(" ");
+  return filteredString;
 };
 
 
