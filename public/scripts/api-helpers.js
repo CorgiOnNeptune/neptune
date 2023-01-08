@@ -1,46 +1,22 @@
-/**
- * @param {string} str Takes in string to check condition.
- * @param {string} word Word to check for in string.
- * @return boolean if the word is in the string.
+/*
+ *  Functions to help out API calls or run algorithms with API results
  */
-const findWordInString = (str, word) => {
-  return new RegExp('\\b' + word + '\\b', 'i').test(str);
-};
 
 /**
- * @param {string} string Takes in string to check for keyword.
- * @return appropriate category if value match found.
+ * Determine category of given task
+ * Runs task description through a keyword check first
+ * Returns a promise to specific API if category determined by keyword
+ * If keyword check fails, makes a request to all APIs
+ * API results are sorted by most to least strict results
+ * This allows for more accurate categorization of the given task
+ * @param  {{}}          task Task object to run through algorithm
+ * @return {Promise<{}>}      A promise to the API(s), returning task updated
+ *                            with data received from the API(s)
  */
-const matchCategoryKeyword = (string) => {
-  let category;
-  const categories = ['restaurants', 'films', 'books', 'products'];
-  const keywords = ['eat', 'watch', 'read', 'buy'];
-
-  keywords.some((val, index) => {
-    if (findWordInString(string, val)) {
-      category = categories[index];
-    }
-  });
-
-  return category;
-};
-
-const filterKeywords = (string) => {
-  const keywords = ['eat', 'watch', 'read', 'buy'];
-  let newString = '';
-
-  keywords.some((val, index) => {
-    if (findWordInString(string, val)) {
-      newString = string.replace(val, '').trim();
-    }
-  });
-
-  return newString;
-}
-
-const determineCategory = (task) => {
+const determineCategory = task => {
   let autoCategory = matchCategoryKeyword(task.description);
 
+  // If keyword matches, return a promise to the relevant API
   if (autoCategory) {
     task.category = autoCategory;
     return callAPIByCategory(task)
@@ -48,34 +24,39 @@ const determineCategory = (task) => {
         console.log(task);
         return task;
       })
-      .catch(err => {
-        console.log(err.message);
-      })
+      .catch(err => console.log(err.message));
   }
 
+  // Make request to all APIs, results sorted by API strictness
   return makeAPIRequests(task.description)
-    .then((results) => {
+    .then(results => {
       const yelpResult = results[0];
       const omdbResult = results[1];
       const tmdbResult = results[2];
       const gbooksResult = results[3];
+      const amznResult = results[4];
 
       console.log('Yelp result:', yelpResult);
       console.log('OMDB result:', omdbResult);
       console.log('TMDB result:', tmdbResult);
       console.log('Gbooks result:', gbooksResult);
+      console.log('Amzn result:', amznResult);
 
-      // if (yelpResult.status === 'fulfilled') {
-      //   task.category = 'restaurants';
-      //   task.data = yelpResult.value;
-      //   return task;
-      // }
+      // Return category restaurants if Yelp is fulfilled
+      if (yelpResult.status === 'fulfilled') {
+        task.category = 'restaurants';
+        task.data = yelpResult.value;
+        return task;
+      }
 
-      // use OMDB results to determine category for films and shows because it's stricker than TMDB, which apparently sends back results for anything
-      // put additional information from TMDB to OMDB's value and pack them up in task
+      /* Use OMDB results to determine category for films and shows because
+       * it's stricter than TMDB.
+       * Combine information from TMDB and OMDB in returned task.
+       */
       if (omdbResult.status === 'fulfilled') {
         task.category = 'films';
         const firstResult = tmdbResult.value.results[0];
+
         if (tmdbResult.status === 'fulfilled' || firstResult.name === omdbResult.value.Title) {
           const posterPath = firstResult.poster_path;
           const tmdbRating = firstResult.vote_average;
@@ -83,29 +64,35 @@ const determineCategory = (task) => {
           omdbResult.value.Poster = posterUrl;
           omdbResult.value.tmdb_rating = tmdbRating;
         }
+
         task.data = omdbResult.value;
         return task;
       }
 
+      // Return category books if GBooks is fulfilled
       if (gbooksResult.status === 'fulfilled') {
         task.category = 'books';
         task.data = gbooksResult.value;
         return task;
       }
 
-      // if (data.ASIN) {
-      //   task.category = 'products';
-      //   task.data = data;
-      //   return task;
-      // }
+      // Return category products if Amazon Price is fulfilled
+      if (amznResult.status === 'fulfilled') {
+        task.category = 'products';
+        task.data = data;
+        return task;
+      }
 
     })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    .catch(err => console.log(err.message));
 };
 
-
+/**
+ * Makes a call to a specific API depending on the category of the given task
+ * @async
+ * @param   {{}} task The task from which to send the API request with
+ * @return  {{}}      The original task + the data received from the API call
+ */
 const callAPIByCategory = async (task) => {
   const query = filterKeywords(task.description);
   const encodedQuery = encodeURIComponent(query);
@@ -130,4 +117,71 @@ const callAPIByCategory = async (task) => {
     default:
       return task;
   }
-}
+};
+
+/**
+ * Gives a time limit to a promise
+ * Given promise is rejected if not resolved before timeout
+ * @param  {number}      ms      Length of ms before timeout
+ * @param  {Promise<{}>} promise Promise to limit
+ * @return {Promise<>}
+ */
+const timeoutPromise = (ms, promise) => {
+  const timeout = new Promise((resolve, reject) =>
+    setTimeout(() =>
+      reject(`Timed out after ${ms} ms.`), ms));
+
+  return Promise.race([
+    promise,
+    timeout
+  ]);
+};
+
+/**
+ * Checks if given word is found in the given string
+ * @param  {string}  str  String to check condition
+ * @param  {string}  word Word to look for in the string
+ * @return {boolean}      Boolean if word found in string
+ */
+const findWordInString = (str, word) => {
+  return new RegExp('\\b' + word + '\\b', 'i').test(str);
+};
+
+/**
+ * Matches string against key values to check for easy API match
+ * @param  {string} string Takes in string to check for keyword
+ * @return {string}        String of category matched, else undefined
+ */
+const matchCategoryKeyword = (string) => {
+  let category;
+  const categories = ['restaurants', 'films', 'books', 'products'];
+  const keywords = ['eat', 'watch', 'read', 'buy'];
+
+  keywords.some((val, index) => {
+    if (findWordInString(string, val)) {
+      category = categories[index];
+    }
+  });
+
+  return category;
+};
+
+/**
+ * Trim given string of matched keyword and whitespace from the start/end
+ * @param  {string} string Takes in string to check for keyword
+ * @return {string}        Trimmed string
+ */
+const filterKeywords = (string) => {
+  const keywords = ['eat', 'watch', 'read', 'buy'];
+  let newString = '';
+
+  keywords.some((val, index) => {
+    if (findWordInString(string, val)) {
+      newString = string.replace(val, '').trim();
+    }
+  });
+
+  return newString;
+};
+
+
