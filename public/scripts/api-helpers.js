@@ -100,21 +100,48 @@ const callAPIByCategory = async (task) => {
 
   switch (task.category) {
     case 'films':
-      task.data = await makeOMDBRequest(encodedQuery);
-      return task;
+      const requests = [
+        timeoutPromise(5000, makeOMDBRequest(encodedQuery)),
+        timeoutPromise(5000, makeTMDBRequest(encodedQuery)),
+      ];
+      return Promise.allSettled(requests)
+      .then(results => {
+        console.log('↓ callAPIByCategory(), category: films, results ↓');
+        console.log(results);
+        const omdbResult = results[0];
+        const tmdbResult = results[1];
+        if (omdbResult.status === 'fulfilled') {
+          const firstResult = tmdbResult.value.results[0];
+
+          if (tmdbResult.status === 'fulfilled' || firstResult.name === omdbResult.value.Title) {
+            const posterPath = firstResult.poster_path;
+            const tmdbRating = firstResult.vote_average;
+            const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
+            omdbResult.value.Poster = posterUrl;
+            omdbResult.value.tmdb_rating = tmdbRating;
+          }
+          task.data = omdbResult.value;
+          return task;
+        }
+      })
+      .catch(err => console.log(err.message));
       break;
+
     case 'books':
-      task.data = await makeGBooksRequest(encodedQuery);
+      task.data = await timeoutPromise(5000, makeGBooksRequest(encodedQuery));
       return task;
       break;
+
     case 'restaurants':
-      task.data = await makeYelpRequest(encodedQuery);
+      task.data = await timeoutPromise(5000, makeYelpRequest(encodedQuery));
       return task;
       break;
+
     case 'products':
-      task.data = await makeAMZNRequest(encodedQuery);
+      task.data = await timeoutPromise(5000, makeAMZNRequest(encodedQuery));
       return task;
       break;
+
     default:
       return task;
   }
