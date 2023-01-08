@@ -95,8 +95,8 @@ const determineCategory = task => {
  */
 const callAPIByCategory = async (task) => {
   const query = filterKeyword(task.description);
-  console.log("query", query);
   const encodedQuery = encodeURIComponent(query);
+  console.log("query", query);
 
   switch (task.category) {
     case 'films':
@@ -104,27 +104,33 @@ const callAPIByCategory = async (task) => {
         timeoutPromise(5000, makeOMDBRequest(encodedQuery)),
         timeoutPromise(5000, makeTMDBRequest(encodedQuery)),
       ];
-      return Promise.allSettled(requests)
-      .then(results => {
-        console.log('↓ callAPIByCategory(), category: films, results ↓');
-        console.log(results);
-        const omdbResult = results[0];
-        const tmdbResult = results[1];
-        if (omdbResult.status === 'fulfilled') {
-          const firstResult = tmdbResult.value.results[0];
 
-          if (tmdbResult.status === 'fulfilled' || firstResult.name === omdbResult.value.Title) {
-            const posterPath = firstResult.poster_path;
-            const tmdbRating = firstResult.vote_average;
-            const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
-            omdbResult.value.Poster = posterUrl;
-            omdbResult.value.tmdb_rating = tmdbRating;
+      return Promise.allSettled(requests)
+        .then(results => {
+          console.log('↓ callAPIByCategory(), category: films, results ↓');
+          console.log(results);
+
+          const omdbResult = results[0];
+          const tmdbResult = results[1];
+
+          // Grab poster and rating from TMDB if available
+          if (omdbResult.status === 'fulfilled') {
+            const firstResult = tmdbResult.value.results[0];
+
+            if (tmdbResult.status === 'fulfilled' || firstResult.name === omdbResult.value.Title) {
+              const posterPath = firstResult.poster_path;
+              const tmdbRating = firstResult.vote_average;
+              const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
+              omdbResult.value.Poster = posterUrl;
+              omdbResult.value.tmdb_rating = tmdbRating;
+            }
+
+            task.data = omdbResult.value;
+            return task;
           }
-          task.data = omdbResult.value;
-          return task;
-        }
-      })
-      .catch(err => console.log(err.message));
+
+        })
+        .catch(err => console.log(err.message));
       break;
 
     case 'books':
@@ -165,6 +171,17 @@ const timeoutPromise = (ms, promise) => {
   ]);
 };
 
+/**
+ * Gets the first alpha-numeric word of a given string
+ * @param  {string}  str  String to check condition
+ * @return {string}       First word of string
+ */
+const getFirstWordInString = (str) => {
+  let string = str.replace(/[^0-9a-z\s]/gi, '');
+  string = string.trim().split(' ')[0].toLowerCase();
+
+  return string;
+};
 
 /**
  * Matches string against key values to check for easy API match
@@ -172,34 +189,36 @@ const timeoutPromise = (ms, promise) => {
  * @return {string}        String of category matched, else undefined
  */
 const matchCategoryKeyword = (string) => {
-  let category;
   const categories = ['restaurants', 'films', 'books', 'products'];
   const keywords = ['eat', 'watch', 'read', 'buy'];
+  string = getFirstWordInString(string);
+  let category;
 
-  for (let i in keywords) {
-    if (string.trim().split(" ")[0].toLowerCase() === keywords[i]) {
-      category = categories[i];
+  keywords.some((val, index) => {
+    if (string === val) {
+      return category = categories[index];
     }
-  }
+  });
 
-  console.log("Keyword matched. Category:", category);
   return category;
 };
 
 /**
- * Trim given string of matched keyword and whitespace from the start/end
+ * Trim given string of matched keyword
  * @param  {string} string Takes in string to check for keyword
- * @return {string}        Altered string
+ * @return {string}        String with removed keyword
  */
 const filterKeyword = (string) => {
   const keywords = ['eat', 'watch', 'read', 'buy'];
-  const splitTask = string.trim().split(" ");
-  const firstWord = splitTask[0].toLowerCase();
-  if (keywords.includes(firstWord)) {
-    splitTask.shift();
-  }
-  const filteredString = splitTask.join(" ");
-  return filteredString;
+  let firstWord = getFirstWordInString(string);
+  let result = string;
+
+  keywords.some((val, index) => {
+    if (firstWord === val) {
+      return result = string.replace(val, '');
+    }
+  });
+
+  // Remove extra non-alphanumeric and whitespace
+  return result = result.replace(/[^0-9a-z\s]/gi, '').trim();
 };
-
-
