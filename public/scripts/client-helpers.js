@@ -322,7 +322,7 @@ const renderDetails = function (category) {
             }
             let type = task.type.charAt(0).toUpperCase() + task.type.slice(1);
             taskElement.find(".genres").prepend(`
-                <span class="genre">${type}</span>
+                <span class="genre" id="shovie-type">${type}</span>
                 `);
 
             const ratings = task.ratings;
@@ -520,6 +520,9 @@ const getJustWatchURL = (film) => {
   const filmTitle = film.title.replace(regex, '');
   const titleArr = filmTitle.split(' ');
   const urlTitle = titleArr.join('-');
-
-  return `https://www.justwatch.com/ca/movie/${urlTitle}`;
+  let type = $("#shovie-type").text().toLowerCase();
+  if (type === "series") {
+    type = "tv-show";
+  }
+  return `https://www.justwatch.com/ca/${type}/${urlTitle}`;
 };
