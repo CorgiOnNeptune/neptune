@@ -215,7 +215,7 @@ const filterKeyword = (string) => {
 
   keywords.some((val, index) => {
     if (firstWord === val) {
-      return result = string.replace(val, '');
+      return result = string.toLowerCase().replace(val, '');
     }
   });
 
