@@ -94,7 +94,7 @@ const determineCategory = task => {
  * @return  {{}}      The original task + the data received from the API call
  */
 const callAPIByCategory = async (task) => {
-  const query = removeFirstWord(task.description);
+  const query = filterKeyword(task.description);
   console.log("query", query);
   const encodedQuery = encodeURIComponent(query);
 
@@ -181,6 +181,7 @@ const matchCategoryKeyword = (string) => {
       category = categories[i];
     }
   }
+
   console.log("Keyword matched. Category:", category);
   return category;
 };
@@ -190,9 +191,13 @@ const matchCategoryKeyword = (string) => {
  * @param  {string} string Takes in string to check for keyword
  * @return {string}        Altered string
  */
-const removeFirstWord = (string) => {
+const filterKeyword = (string) => {
+  const keywords = ['eat', 'watch', 'read', 'buy'];
   const splitTask = string.trim().split(" ");
-  splitTask.shift();
+  const firstWord = splitTask[0].toLowerCase();
+  if (keywords.includes(firstWord)) {
+    splitTask.shift();
+  }
   const filteredString = splitTask.join(" ");
   return filteredString;
 };

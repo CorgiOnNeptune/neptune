@@ -54,7 +54,8 @@ const submitNewTask = async (element) => {
   if (!task.category || task.category === 'auto') {
     task = await determineCategory(task);
   } else {
-    await callAPIByCategory(task);
+    console.log("Selected category:", task.category);
+    task = await callAPIByCategory(task);
   }
 
   $.post('/tasks', task)
