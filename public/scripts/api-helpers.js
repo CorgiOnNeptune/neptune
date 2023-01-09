@@ -106,31 +106,62 @@ const callAPIByCategory = async (task) => {
 
           const omdbResult = results[0];
           const tmdbResult = results[1];
-
-          // Grab poster and rating from TMDB if available
-          if (omdbResult.status === 'fulfilled') {
-            const firstResult = tmdbResult.value.results[0];
-
-            if (
-              tmdbResult.status === 'fulfilled' ||
-              firstResult.name === omdbResult.value.Title
-            ) {
-              const posterPath = firstResult.poster_path;
-              const tmdbRating = firstResult.vote_average;
-              const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
-              omdbResult.value.Poster = posterUrl;
-              omdbResult.value.tmdb_rating = tmdbRating;
+          if (
+            tmdbResult.status === 'rejected' ||
+            tmdbResult.value.results.length === 0
+          ) {
+            if (omdbResult.status === 'rejected') {
+              // both rejected: return task with no data
+              console.log('No results from OMDB or TMDB');
+              return task;
             }
-
+            // OMDB fulfilled, TMDB rejected: use OMDB data
             task.data = omdbResult.value;
             return task;
           }
-          // TODO: OMDB rejects when no match is found, use TMDB's first result instead
+          const firstResult = tmdbResult.value.results[0];
+          if (omdbResult.status === 'rejected') {
+            // OMDB rejected, TMDB fulfilled: grab the title from the first TMDB result and search on OMDB again
+            const newQuery = firstResult.title || firstResult.name;
+            const encodedNewQuery = encodeURIComponent(newQuery);
+            console.log(
+              `Nothing comes back from OMDB but TMDB found: ${newQuery}, searching again`
+            );
+            return timeoutPromise(5000, makeOMDBRequest(encodedNewQuery))
+              .then((data) => {
+                console.log('OMDB result from second search:', data);
+                omdbResult.value = data;
+                // both fulfilled (after a second search on OMDB) and titles match:
+                // use OMDB data with TMDB poster and TMDB rating unless titles don't match
+                const posterPath = firstResult.poster_path;
+                const tmdbRating = firstResult.vote_average;
+                const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
+                omdbResult.value.Poster = posterUrl;
+                omdbResult.value.tmdb_rating = tmdbRating;
+                task.data = omdbResult.value;
+                return task;
+              })
+              .catch((err) => console.log(err.message));
+          }
+          if (
+            firstResult.name !== omdbResult.value.Title &&
+            firstResult.title !== omdbResult.value.Title
+          ) {
+            // both fulfilled but titles don't match: use OMDB data
+            task.data = omdbResult.value;
+            return task;
+          }
+          // both fulfilled and titles match: use OMDB data with TMDB poster and TMDB rating unless titles don't match
+          const posterPath = firstResult.poster_path;
+          const tmdbRating = firstResult.vote_average;
+          const posterUrl = `https://image.tmdb.org/t/p/w780/${posterPath}`;
+          omdbResult.value.Poster = posterUrl;
+          omdbResult.value.tmdb_rating = tmdbRating;
+          task.data = omdbResult.value;
           return task;
         })
         .catch((err) => console.log(err.message));
     }
-
     case 'books':
       task.data = await timeoutPromise(5000, makeGBooksRequest(encodedQuery));
       return task;
