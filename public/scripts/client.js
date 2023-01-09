@@ -2,11 +2,13 @@
  * Client-side JS logic
  */
 
+/* global submitNewTask deleteTask loadTasks loadTasksByCategory */
+
 $(() => {
   $('.new-task-form').on('submit', function (event) {
     event.preventDefault();
-    $("#loading-animation").show();
-    $(this).css("visibility", "hidden");
+    $('#loading-animation').show();
+    $(this).css('visibility', 'hidden');
     submitNewTask(this);
   });
 
@@ -16,7 +18,7 @@ $(() => {
     deleteTask(taskID);
   });
 
-  loadTasks("incomplete");
+  loadTasks('incomplete');
 
   loadTasksByCategory();
 });
