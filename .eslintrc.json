@@ -21,6 +21,7 @@
     "no-unused-vars": "warn",
     "object-shorthand": "warn",
     "prefer-template": "warn",
-    "prefer-destructuring": "warn"
+    "prefer-destructuring": "warn",
+    "no-param-reassign": "warn"
   }
 }
