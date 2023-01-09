@@ -31,7 +31,7 @@ const getAllTasks = (queryParams) => {
       tasks.complete${categorySpecified ? `, ${category}.* ` : ` `}
       FROM tasks `;
 
-  //TODO: Can't use variables ($2) in SELECT or JOIN statements
+  // TODO: Can't use variables ($2) in SELECT or JOIN statements
   if (categorySpecified) {
     queryString += `JOIN ${category} ON task_id = tasks.id `;
   }
@@ -52,7 +52,7 @@ const getAllTasks = (queryParams) => {
   WHERE tasks.user_id = $1 `;
   } else {
     queryString += `
-    AND tasks.user_id = $1 `
+    AND tasks.user_id = $1 `;
   }
 
   queryString += `ORDER BY tasks.complete DESC, tasks.due_date DESC;`;
@@ -139,14 +139,14 @@ const deleteTaskData = (task) => {
   AND tasks.user_id = $2
   `;
 
-  const values = [task.id, task.user_id]
+  const values = [task.id, task.user_id];
 
   return db
     .query(queryString, values)
     .then((data) => {
       console.log(data.rows);
       console.log(queryString);
-      console.log(`successfully deleted task ${task.id}`)
+      console.log(`successfully deleted task ${task.id}`);
       return data.rows[0];
     })
     .catch((err) => {
@@ -154,7 +154,6 @@ const deleteTaskData = (task) => {
       return null;
     });
 };
-
 
 /**
  * Adds new task data to appropriate category database
@@ -164,7 +163,25 @@ const deleteTaskData = (task) => {
  * @return {Promise<[{}]>} A promise to the tasks categories.
  */
 const addTaskToCategory = async (task_id, category, taskData) => {
-
+  if (!taskData) {
+    // if no data for the task, only insert task_id
+    console.log('no taskData, posting without data');
+    const queryString = `
+    INSERT INTO ${category}(task_id)
+    VALUES(${task_id})
+    RETURNING *;
+  `;
+    return db
+      .query(queryString)
+      .then((data) => {
+        console.log(data.rows);
+        return data.rows[0];
+      })
+      .catch((err) => {
+        console.log(err.message);
+        return null;
+      });
+  }
   taskData.task_id = task_id;
   const columns = await dbHelpers.getDataColumns(category);
   const taskDataLower = dbHelpers.lowercaseKeys(taskData);
@@ -203,5 +220,5 @@ module.exports = {
   createTask,
   addTaskToCategory,
   changeTaskStatus,
-  deleteTaskData
+  deleteTaskData,
 };
