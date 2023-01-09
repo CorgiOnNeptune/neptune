@@ -1,9 +1,11 @@
+/* global determineCategory callAPIByCategory */
+
 let openEditorButtons = document.querySelectorAll('[data-modal-target]');
 let closeEditorButton = $('.close-btn');
 let overlay = $('#overlay');
 
 const escape = function (str) {
-  let div = document.createElement("div");
+  const div = document.createElement('div');
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
 };
@@ -12,8 +14,8 @@ const openEditor = function (editor) {
   if (!editor) return;
   editor.classList.add('active');
   overlay.addClass('active');
-  $("#loading-animation").hide();
-  $(editor).find("form").css("visibility", "visible");
+  $('#loading-animation').hide();
+  $(editor).find('form').css('visibility', 'visible');
 };
 
 const closeEditor = function (editor) {
@@ -27,7 +29,7 @@ const addEditorEvents = function () {
   closeEditorButton = $('.close-btn');
   overlay = $('#overlay');
 
-  openEditorButtons.forEach(button => {
+  openEditorButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const editor = document.querySelector(button.dataset.modalTarget);
       openEditor(editor);
@@ -40,6 +42,285 @@ const addEditorEvents = function () {
   });
 };
 
+/**
+ * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
+ * @param {string} date
+ */
+const formatDate = (date) => {
+  if (!date) return;
+
+  const dateArr = date.split('-');
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  let month = dateArr[1];
+
+  months.forEach((val, index) => {
+    if (index + 1 === Number(month)) {
+      month = months[index];
+    }
+  });
+
+  return `${month} ${dateArr[2]}, ${dateArr[0]}`;
+};
+
+const setDefaultDate = function () {
+  const date = new Date();
+
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  if (month < 10) {
+    month = '0' + month;
+  }
+  if (day < 10) {
+    day = '0' + day;
+  }
+
+  const today = year + '-' + month + '-' + day;
+  $('#due_date').attr('value', today);
+};
+
+const convertDate = function (date) {
+  let newDate = '';
+  let month;
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  for (let i in months) {
+    if (date.slice(0, 3) === months[i]) {
+      month = Number(i) + 1;
+    }
+  }
+  if (month < 10) {
+    month = '0' + month;
+  }
+  newDate += `${date.slice(8)}-${month}-${date.slice(4, 6)}`;
+  return newDate;
+};
+
+const setDefaultValue = function () {
+  $('.edit-button').click(function () {
+    const li = $(this).closest('li');
+    const taskTitle = li.find('.task-title').text();
+    const dueDate = li.find('.due-date').text().slice(4);
+    const icon = li.find('.category-icon');
+    let category = 'others';
+    if (icon.hasClass('fa-video')) {
+      category = 'films';
+    }
+    if (icon.hasClass('fa-book-open')) {
+      category = 'books';
+    }
+    if (icon.hasClass('fa-utensils')) {
+      category = 'restaurants';
+    }
+    if (icon.hasClass('fa-cart-shopping')) {
+      category = 'products';
+    }
+
+    $('#old-task-editor').find('#task_name').text(taskTitle);
+    $('#old-task-editor')
+      .find('option')
+      .each(function () {
+        if ($(this).attr('selected') === 'selected') {
+          $(this).removeAttr('selected');
+        }
+        if ($(this).attr('value') === category) {
+          $(this).attr('selected', 'selected');
+        }
+      });
+    $('#old-task-editor').find('#due_date').attr('value', convertDate(dueDate));
+  });
+};
+
+const completeStatusAnimation = function () {
+  $('.complete-status').click(function () {
+    $(this)
+      .fadeOut(180, function () {
+        let taskId;
+        let status;
+        if ($(this).attr('src') === 'images/not-completed.png') {
+          $(this).attr('src', 'images/completed.png');
+          $(this).removeClass('not-completed');
+          $(this).addClass('completed');
+          taskId = $(this).closest('li').attr('id').slice(8);
+          status = true;
+        } else {
+          $(this).attr('src', 'images/not-completed.png');
+          $(this).removeClass('completed');
+          $(this).addClass('not-completed');
+          taskId = $(this).closest('li').attr('id').slice(8);
+          status = false;
+        }
+        $.ajax({
+          url: `/tasks/${taskId}/status`,
+          method: 'POST',
+          data: { id: taskId, status: status },
+        })
+          .then(() => {
+            console.log(`Complete status changed: ${taskId}: ${status}`);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .fadeIn(180);
+  });
+};
+
+/**
+ * Takes in film object to return JustWatch URL
+ * @param {{}} film
+ */
+const getJustWatchURL = (film) => {
+  const regex = /[^A-Za-z0-9 \w]/g;
+  const filmTitle = film.title.replace(regex, '');
+  const titleArr = filmTitle.split(' ');
+  const urlTitle = titleArr.join('-');
+  let type = $('#shovie-type').text().toLowerCase();
+  if (type === 'series') {
+    type = 'tv-show';
+  }
+  return `https://www.justwatch.com/ca/${type}/${urlTitle}`;
+};
+
+const renderDetails = function (category) {
+  if (
+    !category ||
+    category === 'films' ||
+    category === 'completed' ||
+    category === 'incomplete'
+  ) {
+    const url = `/tasks/films`;
+    $.ajax({
+      url: url,
+      method: 'GET',
+    })
+      .then((data) => {
+        const tasks = data.tasks;
+        tasks.forEach((task) => {
+          const id = `task_id_${task.task_id}`;
+          const taskElement = $('#' + id);
+
+          if (taskElement[0]) {
+            taskElement.find('.title').text(task.title);
+            taskElement.find('#poster').attr('src', `${task.poster}`);
+            taskElement.find('.description').text(task.plot);
+
+            if (task.director !== 'N/A') {
+              taskElement.find('.director-name').text(task.director);
+            } else {
+              taskElement.find('.director-title').text('Writers');
+              const writers = task.writer.replaceAll(',', ' ·');
+              taskElement.find('.director-name').text(writers);
+            }
+
+            taskElement.find('.description').text(task.plot);
+
+            const actors = task.actors.replaceAll(',', ' ·');
+            taskElement.find('.cast-names').text(actors);
+
+            if (task.genre !== 'N/A') {
+              const genres = task.genre.split(', ');
+              genres.forEach((genre) => {
+                taskElement.find('.genres').append(`
+                <span class="genre">${genre}</span>
+                `);
+              });
+            }
+            const type = task.type.charAt(0).toUpperCase() + task.type.slice(1);
+            taskElement.find('.genres').prepend(`
+                <span class="genre" id="shovie-type">${type}</span>
+                `);
+
+            const ratings = task.ratings;
+            const imdbRating = ratings[0].slice(0, 3);
+            taskElement.find('#imdb').text(imdbRating);
+            if (ratings.length === 3) {
+              const mcRating = ratings[2].slice(0, 2);
+              taskElement.find('#rt').text(ratings[1]);
+              taskElement.find('#meta').text(mcRating);
+            } else {
+              taskElement.find('#rt').text(task.tmdb_rating);
+              taskElement.find('#svg3390').remove();
+              taskElement.find('.RT-rating').append(
+                $(`
+                <svg id="tmdb-logo"
+                xmlns=http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 190.24 81.52"><defs><style>.cls-1{fill:url(#linear-gradient);}</style><linearGradient id="linear-gradient" y1="40.76" x2="190.24" y2="40.76" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#90cea1"/><stop offset="0.56" stop-color="#3cbec9"/><stop offset="1" stop-color="#00b3e5"/></linearGradient></defs><title>Asset 2</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M105.67,36.06h66.9A17.67,17.67,0,0,0,190.24,18.4h0A17.67,17.67,0,0,0,172.57.73h-66.9A17.67,17.67,0,0,0,88,18.4h0A17.67,17.67,0,0,0,105.67,36.06Zm-88,45h76.9A17.67,17.67,0,0,0,112.24,63.4h0A17.67,17.67,0,0,0,94.57,45.73H17.67A17.67,17.67,0,0,0,0,63.4H0A17.67,17.67,0,0,0,17.67,81.06ZM10.41,35.42h7.8V6.92h10.1V0H.31v6.9h10.1Zm28.1,0h7.8V8.25h.1l9,27.15h6l9.3-27.15h.1V35.4h7.8V0H66.76l-8.2,23.1h-.1L50.31,0H38.51ZM152.43,55.67a15.07,15.07,0,0,0-4.52-5.52,18.57,18.57,0,0,0-6.68-3.08,33.54,33.54,0,0,0-8.07-1h-11.7v35.4h12.75a24.58,24.58,0,0,0,7.55-1.15A19.34,19.34,0,0,0,148.11,77a16.27,16.27,0,0,0,4.37-5.5,16.91,16.91,0,0,0,1.63-7.58A18.5,18.5,0,0,0,152.43,55.67ZM145,68.6A8.8,8.8,0,0,1,142.36,72a10.7,10.7,0,0,1-4,1.82,21.57,21.57,0,0,1-5,.55h-4.05v-21h4.6a17,17,0,0,1,4.67.63,11.66,11.66,0,0,1,3.88,1.87A9.14,9.14,0,0,1,145,59a9.87,9.87,0,0,1,1,4.52A11.89,11.89,0,0,1,145,68.6Zm44.63-.13a8,8,0,0,0-1.58-2.62A8.38,8.38,0,0,0,185.63,64a10.31,10.31,0,0,0-3.17-1v-.1a9.22,9.22,0,0,0,4.42-2.82,7.43,7.43,0,0,0,1.68-5,8.42,8.42,0,0,0-1.15-4.65,8.09,8.09,0,0,0-3-2.72,12.56,12.56,0,0,0-4.18-1.3,32.84,32.84,0,0,0-4.62-.33h-13.2v35.4h14.5a22.41,22.41,0,0,0,4.72-.5,13.53,13.53,0,0,0,4.28-1.65,9.42,9.42,0,0,0,3.1-3,8.52,8.52,0,0,0,1.2-4.68A9.39,9.39,0,0,0,189.66,68.47ZM170.21,52.72h5.3a10,10,0,0,1,1.85.18,6.18,6.18,0,0,1,1.7.57,3.39,3.39,0,0,1,1.22,1.13,3.22,3.22,0,0,1,.48,1.82,3.63,3.63,0,0,1-.43,1.8,3.4,3.4,0,0,1-1.12,1.2,4.92,4.92,0,0,1-1.58.65,7.51,7.51,0,0,1-1.77.2h-5.65Zm11.72,20a3.9,3.9,0,0,1-1.22,1.3,4.64,4.64,0,0,1-1.68.7,8.18,8.18,0,0,1-1.82.2h-7v-8h5.9a15.35,15.35,0,0,1,2,.15,8.47,8.47,0,0,1,2.05.55,4,4,0,0,1,1.57,1.18,3.11,3.11,0,0,1,.63,2A3.71,3.71,0,0,1,181.93,72.72Z"/></g></g></svg>
+                `)
+              );
+              taskElement.find('.MC-rating').remove();
+              taskElement.find('svg').css('margin-top', '8%');
+              taskElement.find('.rating-numbers').css('margin-top', '6%');
+              taskElement.find('#rt').css('margin-top', '3.5%');
+            }
+
+            taskElement
+              .find('#just-watch-link')
+              .attr('href', `${getJustWatchURL(task)}`);
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
+const renderTasks = function (tasks) {
+  for (let task of tasks) {
+    const $task = createTaskElement(task);
+    $('#tasks-ul').prepend($task);
+  }
+};
+
+const loadTasks = function (category) {
+  let url = '/tasks';
+  if (category) {
+    url += `/${category}`;
+  }
+  $.ajax({
+    url: url,
+    method: 'GET',
+  })
+    .then((tasks) => {
+      renderTasks(tasks.tasks);
+      // re-register the click events
+      completeStatusAnimation();
+      addEditorEvents();
+      setDefaultDate();
+      setDefaultValue();
+      renderDetails(category);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 const submitNewTask = async (element) => {
   const $form = $(element);
   const formArray = $form.serializeArray();
@@ -48,19 +329,19 @@ const submitNewTask = async (element) => {
     description: formArray[0].value,
     category: formArray[1].value,
     due_date: formArray[2].value,
-    data: {}
+    data: {},
   };
 
   if (!task.category || task.category === 'auto') {
     task = await determineCategory(task);
   } else {
-    console.log("Selected category:", task.category);
+    console.log('Selected category:', task.category);
     task = await callAPIByCategory(task);
   }
 
   $.post('/tasks', task)
     .then(() => {
-      $("#tasks-ul").empty();
+      $('#tasks-ul').empty();
       loadTasks('incomplete');
       $form[0].reset();
       closeEditor($('.editor'));
@@ -70,78 +351,48 @@ const submitNewTask = async (element) => {
     });
 };
 
-const completeStatusAnimation = function () {
-  $(".complete-status").click(function () {
-    $(this).fadeOut(180, function () {
-      let taskId;
-      let status;
-      if ($(this).attr("src") === "images/not-completed.png") {
-        $(this).attr("src", "images/completed.png");
-        $(this).removeClass("not-completed");
-        $(this).addClass("completed");
-        taskId = $(this).closest("li").attr("id").slice(8);
-        status = true;
-      } else {
-        $(this).attr("src", "images/not-completed.png");
-        $(this).removeClass("completed");
-        $(this).addClass("not-completed");
-        taskId = $(this).closest("li").attr("id").slice(8);
-        status = false;
-      }
-      $.ajax({
-        url: `/tasks/${taskId}/status`,
-        method: "POST",
-        data: { id: taskId, status: status }
-      })
-        .then(() => {
-          console.log(`Complete status changed: ${taskId}: ${status}`);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-    }).fadeIn(180);
-  });
-};
-
 const createTaskElement = (task) => {
   let completeStatus;
   let iconSrc;
   if (task.complete === true) {
-    completeStatus = "completed";
-    iconSrc = "images/completed.png";
+    completeStatus = 'completed';
+    iconSrc = 'images/completed.png';
   } else {
-    completeStatus = "not-completed";
-    iconSrc = "images/not-completed.png";
+    completeStatus = 'not-completed';
+    iconSrc = 'images/not-completed.png';
   }
   const dueDate = formatDate(task.due_date.slice(0, 10));
   let iconType = `<i class="fa-solid fa-clipboard-question category-icon"></i>`;
-  if (task.category === "films") {
+  if (task.category === 'films') {
     iconType = `<i class="fa-solid fa-video category-icon"></i>`;
   }
-  if (task.category === "books") {
+  if (task.category === 'books') {
     iconType = `<i class="fa-solid fa-book-open category-icon"></i>`;
   }
-  if (task.category === "restaurants") {
+  if (task.category === 'restaurants') {
     iconType = `<i class="fa-solid fa-utensils category-icon"></i>`;
   }
-  if (task.category === "products") {
+  if (task.category === 'products') {
     iconType = `<i class="fa-solid fa-cart-shopping category-icon"></i>`;
   }
-  if (task.category === "others") {
+  if (task.category === 'others') {
     iconType = `<i class="fa-solid fa-clipboard-question category-icon"></i>`;
   }
 
   let $task;
-  const header = $("#header-text").text();
+  const header = $('#header-text').text();
   let id;
-  if (header === "Watch" || header === "Read" || header === "Eat" || header === "Shop") {
+  if (
+    header === 'Watch' ||
+    header === 'Read' ||
+    header === 'Eat' ||
+    header === 'Shop'
+  ) {
     id = task.task_id;
   } else {
     id = task.id;
-
   }
-  if (task.category === "others") {
+  if (task.category === 'others') {
     $task = $(`
     <li id="task_id_${id}">
     <div class="task-content">
@@ -249,161 +500,48 @@ const createTaskElement = (task) => {
   return $task;
 };
 
-const renderTasks = function (tasks) {
-  for (let task of tasks) {
-    const $task = createTaskElement(task);
-    $('#tasks-ul').prepend($task);
-  }
-};
-
-const loadTasks = function (category) {
-  let url = "/tasks";
-  if (category) {
-    url += `/${category}`;
-  }
-  $.ajax({
-    url: url,
-    method: "GET"
-  })
-    .then((tasks) => {
-      renderTasks(tasks.tasks);
-      // re-register the click events
-      completeStatusAnimation();
-      addEditorEvents();
-      setDefaultDate();
-      setDefaultValue();
-      renderDetails(category);
-
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-const renderDetails = function (category) {
-
-  if (!category || category === "films" || category === "completed" || category === "incomplete") {
-    let url = `/tasks/films`;
-    $.ajax({
-      url: url,
-      method: "GET"
-    })
-      .then((data) => {
-        const tasks = data.tasks;
-        tasks.forEach(function (task) {
-          const id = `task_id_${task.task_id}`;
-          const taskElement = $('#' + id);
-
-          if (taskElement[0]) {
-            taskElement.find(".title").text(task.title);
-            taskElement.find("#poster").attr("src", `${task.poster}`);
-            taskElement.find(".description").text(task.plot);
-
-            if (task.director !== "N/A") {
-              taskElement.find(".director-name").text(task.director);
-            } else {
-              taskElement.find(".director-title").text("Writers");
-              const writers = task.writer.replaceAll(",", " ·");
-              taskElement.find(".director-name").text(writers);
-            }
-
-            taskElement.find(".description").text(task.plot);
-
-            const actors = task.actors.replaceAll(",", " ·");
-            taskElement.find(".cast-names").text(actors);
-
-            if (task.genre !== 'N/A') {
-              const genres = task.genre.split(", ");
-              genres.forEach((genre) => {
-                taskElement.find(".genres").append(`
-                <span class="genre">${genre}</span>
-                `);
-              });
-            }
-            let type = task.type.charAt(0).toUpperCase() + task.type.slice(1);
-            taskElement.find(".genres").prepend(`
-                <span class="genre" id="shovie-type">${type}</span>
-                `);
-
-            const ratings = task.ratings;
-            const imdbRating = ratings[0].slice(0, 3);
-            taskElement.find("#imdb").text(imdbRating);
-            if (ratings.length === 3) {
-              const mcRating = ratings[2].slice(0, 2);
-              taskElement.find("#rt").text(ratings[1]);
-              taskElement.find("#meta").text(mcRating);
-            } else {
-              taskElement.find("#rt").text(task.tmdb_rating);
-              taskElement.find("#svg3390").remove();
-              taskElement.find(".RT-rating").append(
-                $(`
-                <svg id="tmdb-logo"
-                xmlns=http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 190.24 81.52"><defs><style>.cls-1{fill:url(#linear-gradient);}</style><linearGradient id="linear-gradient" y1="40.76" x2="190.24" y2="40.76" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#90cea1"/><stop offset="0.56" stop-color="#3cbec9"/><stop offset="1" stop-color="#00b3e5"/></linearGradient></defs><title>Asset 2</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M105.67,36.06h66.9A17.67,17.67,0,0,0,190.24,18.4h0A17.67,17.67,0,0,0,172.57.73h-66.9A17.67,17.67,0,0,0,88,18.4h0A17.67,17.67,0,0,0,105.67,36.06Zm-88,45h76.9A17.67,17.67,0,0,0,112.24,63.4h0A17.67,17.67,0,0,0,94.57,45.73H17.67A17.67,17.67,0,0,0,0,63.4H0A17.67,17.67,0,0,0,17.67,81.06ZM10.41,35.42h7.8V6.92h10.1V0H.31v6.9h10.1Zm28.1,0h7.8V8.25h.1l9,27.15h6l9.3-27.15h.1V35.4h7.8V0H66.76l-8.2,23.1h-.1L50.31,0H38.51ZM152.43,55.67a15.07,15.07,0,0,0-4.52-5.52,18.57,18.57,0,0,0-6.68-3.08,33.54,33.54,0,0,0-8.07-1h-11.7v35.4h12.75a24.58,24.58,0,0,0,7.55-1.15A19.34,19.34,0,0,0,148.11,77a16.27,16.27,0,0,0,4.37-5.5,16.91,16.91,0,0,0,1.63-7.58A18.5,18.5,0,0,0,152.43,55.67ZM145,68.6A8.8,8.8,0,0,1,142.36,72a10.7,10.7,0,0,1-4,1.82,21.57,21.57,0,0,1-5,.55h-4.05v-21h4.6a17,17,0,0,1,4.67.63,11.66,11.66,0,0,1,3.88,1.87A9.14,9.14,0,0,1,145,59a9.87,9.87,0,0,1,1,4.52A11.89,11.89,0,0,1,145,68.6Zm44.63-.13a8,8,0,0,0-1.58-2.62A8.38,8.38,0,0,0,185.63,64a10.31,10.31,0,0,0-3.17-1v-.1a9.22,9.22,0,0,0,4.42-2.82,7.43,7.43,0,0,0,1.68-5,8.42,8.42,0,0,0-1.15-4.65,8.09,8.09,0,0,0-3-2.72,12.56,12.56,0,0,0-4.18-1.3,32.84,32.84,0,0,0-4.62-.33h-13.2v35.4h14.5a22.41,22.41,0,0,0,4.72-.5,13.53,13.53,0,0,0,4.28-1.65,9.42,9.42,0,0,0,3.1-3,8.52,8.52,0,0,0,1.2-4.68A9.39,9.39,0,0,0,189.66,68.47ZM170.21,52.72h5.3a10,10,0,0,1,1.85.18,6.18,6.18,0,0,1,1.7.57,3.39,3.39,0,0,1,1.22,1.13,3.22,3.22,0,0,1,.48,1.82,3.63,3.63,0,0,1-.43,1.8,3.4,3.4,0,0,1-1.12,1.2,4.92,4.92,0,0,1-1.58.65,7.51,7.51,0,0,1-1.77.2h-5.65Zm11.72,20a3.9,3.9,0,0,1-1.22,1.3,4.64,4.64,0,0,1-1.68.7,8.18,8.18,0,0,1-1.82.2h-7v-8h5.9a15.35,15.35,0,0,1,2,.15,8.47,8.47,0,0,1,2.05.55,4,4,0,0,1,1.57,1.18,3.11,3.11,0,0,1,.63,2A3.71,3.71,0,0,1,181.93,72.72Z"/></g></g></svg>
-                `)
-              );
-              taskElement.find(".MC-rating").remove();
-              taskElement.find("svg").css("margin-top", "8%");
-              taskElement.find(".rating-numbers").css("margin-top", "6%");
-              taskElement.find("#rt").css("margin-top", "3.5%");
-
-            }
-
-
-            taskElement.find("#just-watch-link").attr("href", `${getJustWatchURL(task)}`);
-          }
-        });
-
-
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-};
-
 const loadTasksByCategory = function () {
-  $(".menu-category").click(function () {
-    $("#tasks-ul").empty();
+  $('.menu-category').click(function () {
+    $('#tasks-ul').empty();
 
-    if ($(this).hasClass("all-tasks")) {
+    if ($(this).hasClass('all-tasks')) {
       loadTasks();
-      $("#header-text").text("All");
-
+      $('#header-text').text('All');
     }
 
-    if ($(this).hasClass("incomplete-tasks")) {
-      $("#header-text").text("Incomplete");
-      loadTasks("incomplete");
+    if ($(this).hasClass('incomplete-tasks')) {
+      $('#header-text').text('Incomplete');
+      loadTasks('incomplete');
     }
 
-    if ($(this).hasClass("completed-tasks")) {
-      $("#header-text").text("Completed");
-      loadTasks("completed");
+    if ($(this).hasClass('completed-tasks')) {
+      $('#header-text').text('Completed');
+      loadTasks('completed');
     }
 
-    if ($(this).hasClass("watch-tasks")) {
-      $("#header-text").text("Watch");
-      loadTasks("films");
+    if ($(this).hasClass('watch-tasks')) {
+      $('#header-text').text('Watch');
+      loadTasks('films');
     }
 
-    if ($(this).hasClass("read-tasks")) {
-      $("#header-text").text("Read");
-      loadTasks("books");
+    if ($(this).hasClass('read-tasks')) {
+      $('#header-text').text('Read');
+      loadTasks('books');
     }
 
-    if ($(this).hasClass("eat-tasks")) {
-      $("#header-text").text("Eat");
-      loadTasks("restaurants");
+    if ($(this).hasClass('eat-tasks')) {
+      $('#header-text').text('Eat');
+      loadTasks('restaurants');
     }
 
-    if ($(this).hasClass("shop-tasks")) {
-      $("#header-text").text("Shop");
-      loadTasks("products");
+    if ($(this).hasClass('shop-tasks')) {
+      $('#header-text').text('Shop');
+      loadTasks('products');
     }
 
-    if ($(this).hasClass("others-tasks")) {
-      $("#header-text").text("Others");
-      loadTasks("others");
+    if ($(this).hasClass('others-tasks')) {
+      $('#header-text').text('Others');
+      loadTasks('others');
     }
   });
 };
@@ -412,7 +550,7 @@ const deleteTask = (taskID) => {
   $.ajax({
     url: `/tasks/${taskID}/delete`,
     method: 'POST',
-    data: { id: taskID, status: status }
+    data: { id: taskID, status: status },
   })
     .then(() => {
       console.log('Task deleted successfully');
@@ -420,109 +558,4 @@ const deleteTask = (taskID) => {
     .catch((err) => {
       console.log(err);
     });
-};
-
-/**
- * Takes in a date string "YYYY-MM-DD" converts it to 'Month DD, YYYY'
- * @param {string} date
- */
-const formatDate = (date) => {
-  if (!date) return;
-
-  const dateArr = date.split('-');
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  let month = dateArr[1];
-
-  months.forEach((val, index) => {
-    if (index + 1 === Number(month)) {
-      month = months[index];
-    }
-  });
-
-  return `${month} ${dateArr[2]}, ${dateArr[0]}`;
-};
-
-const setDefaultDate = function () {
-  const date = new Date();
-
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  const year = date.getFullYear();
-
-  if (month < 10) {
-    month = "0" + month;
-  }
-  if (day < 10) {
-    day = "0" + day;
-  }
-
-  const today = year + "-" + month + "-" + day;
-  $("#due_date").attr("value", today);
-};
-
-const convertDate = function (date) {
-  let newDate = "";
-  let month;
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  for (let i in months) {
-    if (date.slice(0, 3) === months[i]) {
-      month = Number(i) + 1;
-    }
-  }
-  if (month < 10) {
-    month = "0" + month;
-  }
-  newDate += `${date.slice(8)}-${month}-${date.slice(4, 6)}`;
-  return newDate;
-};
-
-
-const setDefaultValue = function () {
-  $(".edit-button").click(function () {
-    const li = $(this).closest("li");
-    const taskTitle = li.find(".task-title").text();
-    const dueDate = li.find(".due-date").text().slice(4);
-    const icon = li.find(".category-icon");
-    let category = "others";
-    if (icon.hasClass("fa-video")) {
-      category = "films";
-    }
-    if (icon.hasClass("fa-book-open")) {
-      category = "books";
-    }
-    if (icon.hasClass("fa-utensils")) {
-      category = "restaurants";
-    }
-    if (icon.hasClass("fa-cart-shopping")) {
-      category = "products";
-    }
-
-    $("#old-task-editor").find("#task_name").text(taskTitle);
-    $("#old-task-editor").find("option").each(function () {
-      if ($(this).attr("selected") === "selected") {
-        $(this).removeAttr("selected");
-      }
-      if ($(this).attr("value") === category) {
-        $(this).attr("selected", "selected");
-      }
-    });
-    $("#old-task-editor").find("#due_date").attr("value", convertDate(dueDate));
-
-  });
-};
-
-/**
- * Takes in film object to return JustWatch URL
- * @param {{}} film
- */
-const getJustWatchURL = (film) => {
-  const regex = /[^A-Za-z0-9 \w]/g;
-  const filmTitle = film.title.replace(regex, '');
-  const titleArr = filmTitle.split(' ');
-  const urlTitle = titleArr.join('-');
-  let type = $("#shovie-type").text().toLowerCase();
-  if (type === "series") {
-    type = "tv-show";
-  }
-  return `https://www.justwatch.com/ca/${type}/${urlTitle}`;
 };
