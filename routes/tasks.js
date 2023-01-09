@@ -138,7 +138,7 @@ router.post('/', (req, res) => {
     due_date: req.body.due_date,
   };
 
-  console.log(req.body.data);
+  console.log('task data:', req.body.data);
 
   database
     .createTask(newTask)
