@@ -32,7 +32,7 @@ CREATE TABLE restaurants(
 CREATE TABLE films(
   id SERIAL PRIMARY KEY NOT NULL,
   task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
-  Title VARCHAR(255) NOT NULL,
+  Title VARCHAR(255),
   Year VARCHAR(255),
   Poster VARCHAR(255),
   Ratings VARCHAR(255) [],
