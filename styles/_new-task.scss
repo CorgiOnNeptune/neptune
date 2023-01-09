@@ -18,7 +18,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1.5px solid rgba($color: $font-color, $alpha: .5);
+    border-bottom: 1.5px solid rgba($color: $font-color, $alpha: 0.5);
 
     .editor-title {
       margin: 0 auto;
@@ -54,7 +54,7 @@
     }
     #task_name {
       width: 100%;
-      border: 1.5px solid rgba($color: $font-color, $alpha: .5);
+      border: 1.5px solid rgba($color: $font-color, $alpha: 0.5);
       resize: none;
       border-radius: 10px;
       background-color: transparent;
@@ -73,7 +73,7 @@
     select,
     #due_date {
       background-color: transparent;
-      border: 1.5px solid rgba($color: $font-color, $alpha: .5);
+      border: 1.5px solid rgba($color: $font-color, $alpha: 0.5);
       border-radius: 5px;
       margin-left: 1.5em;
       color: $font-color;
@@ -83,7 +83,7 @@
     }
 
     .submit-btn {
-      border: 1.5px solid rgba($color: $font-color, $alpha: .5);
+      border: 1.5px solid rgba($color: $font-color, $alpha: 0.5);
       border-radius: 6px;
       color: $font-color;
       display: block;
@@ -104,7 +104,6 @@
   transform: translate(-50%, -50%) scale(1);
 }
 
-
 #overlay {
   position: fixed;
   opacity: 0;
@@ -113,7 +112,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba($color: black, $alpha: .5);
+  background-color: rgba($color: black, $alpha: 0.5);
   pointer-events: none;
 }
 
@@ -131,4 +130,3 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-

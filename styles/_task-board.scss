@@ -17,7 +17,6 @@
     margin-left: 5%;
     //TODO: make the header fixed (with background color)
 
-
     p {
       font-size: 1.7rem;
       font-weight: 700;
@@ -83,7 +82,7 @@
           color: $hover-color;
           cursor: pointer;
         }
-      };
+      }
 
       &:hover {
         box-shadow: 10px 10px $font-color;
@@ -97,7 +96,7 @@
 
       .collapse-btn {
         position: absolute;
-        bottom: 0.5em;;
+        bottom: 0.5em;
         right: 50%;
         line-height: 1em;
       }
@@ -105,7 +104,6 @@
       .new-task-btn {
         line-height: 1em;
       }
-
     }
     .details {
       background-color: $theme-color;
