@@ -39,8 +39,8 @@
     padding: 0;
     &:hover {
       transition: 0.5s all;
-        color: $hover-color;
-        cursor: pointer;
+      color: $hover-color;
+      cursor: pointer;
     }
   }
 
@@ -57,5 +57,4 @@
       margin-right: 1rem;
     }
   }
-
 }

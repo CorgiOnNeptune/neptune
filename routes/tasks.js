@@ -6,6 +6,7 @@
 
 const express = require('express');
 const { getDataColumns } = require('../db/db-helpers');
+
 const router = express.Router();
 const database = require('../db/queries/tasks');
 
@@ -15,7 +16,6 @@ const database = require('../db/queries/tasks');
 router.get('/', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to view tasks.');
-    return;
   }
 
   const queryParams = {
@@ -38,7 +38,6 @@ router.get('/', (req, res) => {
 router.get('/completed', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to view tasks.');
-    return;
   }
 
   const queryParams = {
@@ -59,7 +58,6 @@ router.get('/completed', (req, res) => {
 router.get('/incomplete', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to view tasks.');
-    return;
   }
 
   const queryParams = {
@@ -83,7 +81,6 @@ router.get('/incomplete', (req, res) => {
 router.get('/:filter', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to view tasks.');
-    return;
   }
 
   const queryParams = {
@@ -126,14 +123,12 @@ router.get('/:filter/:completed', (req, res) => {
     });
 });
 
-
 /*
  * Post to create new task
  */
 router.post('/', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to create tasks.');
-    return;
   }
 
   const newTask = {
@@ -145,13 +140,12 @@ router.post('/', (req, res) => {
 
   console.log(req.body.data);
 
-  database.createTask(newTask)
-    .then((task) => {
-      return database.addTaskToCategory(task.id, task.category, req.body.data);
-    })
-    .then((task) => {
-      return res.json({ task });
-    })
+  database
+    .createTask(newTask)
+    .then((task) =>
+      database.addTaskToCategory(task.id, task.category, req.body.data)
+    )
+    .then((task) => res.json({ task }))
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
@@ -160,12 +154,11 @@ router.post('/', (req, res) => {
 router.post('/:task_id/status', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to change task status');
-    return;
   }
 
   const data = {
     id: req.body.id,
-    status: req.body.status
+    status: req.body.status,
   };
   database
     .changeTaskStatus(data)
@@ -177,19 +170,17 @@ router.post('/:task_id/status', (req, res) => {
     });
 });
 
-
 router.post('/:task_id/delete', (req, res) => {
   if (!req.session.user_id) {
     throw new Error('Must be logged in to change task status');
-    return;
   }
 
   const data = {
     id: req.body.id,
-    user_id: req.session.user_id
-  }
+    user_id: req.session.user_id,
+  };
 
   database.deleteTaskData(data);
-})
+});
 
 module.exports = router;
