@@ -1,4 +1,13 @@
-/* global determineCategory callAPIByCategory */
+/*
+global
+determineCategory
+callAPIByCategory
+completeStatusAnimation
+addEditorEvents setDefaultDate
+setDefaultValue
+renderDetails
+closeEditor
+*/
 
 const renderTasks = (tasks) => {
   for (let task of tasks) {
