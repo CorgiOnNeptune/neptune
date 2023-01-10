@@ -431,12 +431,12 @@ const createTaskElement = (task) => {
     class="collapse-btn"
     type="button"
     data-bs-toggle="collapse"
-    data-bs-target="#collapseExample"
+    data-bs-target="#collapseDetails${id}"
     aria-expanded="false"
-    aria-controls="collapseExample">
+    aria-controls="collapseDetails${id}">
     <i class="fa-solid fa-angles-down"></i>
   </button>
-  <div class="details" id="collapseExample">
+  <div class="collapse details" id="collapseDetails${id}">
     <div class="poster-container"><img src="https://www.themoviedb.org/t/p/original/1AnfXMG9PPMVjwXcHW6JLSJUbPo.jpg" alt="poster" id="poster"></div>
     <div class="info">
       <div class="info-header">
