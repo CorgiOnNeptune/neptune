@@ -5,6 +5,13 @@
 /* global submitNewTask deleteTask loadTasks loadTasksByCategory */
 
 $(() => {
+  loadScript('component-helpers');
+  loadScript('editor-events');
+  loadScript('createTaskElement');
+  loadScript('renderDetails');
+  loadScript('api-helpers');
+  loadScript('api-requests');
+
   $('.new-task-form').on('submit', function (event) {
     event.preventDefault();
     $('#loading-animation').show();
