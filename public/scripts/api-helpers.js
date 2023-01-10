@@ -257,7 +257,7 @@ const determineCategory = (task) => {
       }
 
       // Return category products if Amazon Price is fulfilled
-      if (amznResult.status === 'fulfilled') {
+      if (amznResult?.status === 'fulfilled') {
         task.category = 'products';
         task.data = amznResult.value;
         return task;
