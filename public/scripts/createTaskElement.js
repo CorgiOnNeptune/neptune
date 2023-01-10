@@ -39,7 +39,7 @@ const createTaskElement = (task) => {
     id = task.id;
   }
   if (task.category === 'others') {
-    let $task = $(`
+    const $task = $(`
     <li id="task_id_${id}">
     <div class="task-content">
       <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">
@@ -56,7 +56,7 @@ const createTaskElement = (task) => {
     return $task;
   }
 
-  $task = $(`
+  const $task = $(`
   <li id="task_id_${id}">
     <div class="task-content">
       <img src="${iconSrc}" alt="" class="complete-status ${completeStatus}">

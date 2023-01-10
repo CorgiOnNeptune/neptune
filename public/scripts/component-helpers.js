@@ -1,3 +1,5 @@
+/* global loadTasks editTaskStatus */
+
 const escape = (str) => {
   const div = document.createElement('div');
   div.appendChild(document.createTextNode(str));

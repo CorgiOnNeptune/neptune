@@ -1,3 +1,5 @@
+/* global getJustWatchURL */
+
 const renderDetails = function (category) {
   if (
     !category ||

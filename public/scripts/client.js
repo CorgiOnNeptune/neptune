@@ -2,7 +2,13 @@
  * Client-side JS logic
  */
 
-/* global submitNewTask deleteTask loadTasks loadTasksByCategory */
+/* global
+submitNewTask
+deleteTask
+loadTasks
+loadTasksByCategory
+loadScript
+*/
 
 $(() => {
   loadScript('component-helpers');
