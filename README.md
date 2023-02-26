@@ -21,15 +21,16 @@ When given input to assess, Neptune makes calls to multiple APIs to gather data 
 
 ![default page view](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/main-screen.png?raw=true)
 
-![movie card](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/movie-card.png?raw=true)
+![API search for task](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/create-task.gif?raw=true)
 
-### Task Demos
+&nbsp;
 
-![API search for task](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/searching-movie.gif?raw=true)
+![card dropdown](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/card-dropdown.gif?raw=true)
 
 ![completed task button](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/complete-task-button.gif?raw=true)
 
-![card dropdown](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/card-dropdown.gif?raw=true)
+![movie card](https://github.com/CorgiOnNeptune/neptune/blob/master/docs/movie-card.png?raw=true)
+
 
 &nbsp;
 
@@ -43,9 +44,7 @@ When given input to assess, Neptune makes calls to multiple APIs to gather data 
 4. Update the .env file with your relevant local information.
 5. Install dependencies: `npm i`
 6. Reset database: `npm run db:reset`
-
 7. Run the server: `npm run start`
-
 8. Visit `http://localhost:8080/`
 
 
